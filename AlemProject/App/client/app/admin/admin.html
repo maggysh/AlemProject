@@ -1,0 +1,27 @@
+
+<navbar-admin></navbar-admin>
+
+<header class="hero-unit" id="banner">
+
+  <style>
+    html                    { overflow-y:scroll; }
+    body                    { padding-top:0px; }
+  </style>
+
+</header>
+
+<div id="create-user" class="row" style="padding-top:2%">
+  <div class="col-sm-8 col-sm-offset-2 text-center">
+    <form>
+      <div class="form-group">
+        <input type="text" class="form-control input-lg" placeholder="Ime i prezime" autocomplete="off" ng-model="info.name"><br>
+        <input type="text" class="form-control input-lg" placeholder="Username"  autocomplete="off" ng-model="info.username"><br>
+        <input type="password" class="form-control input-lg" placeholder="Password"  autocomplete="off" ng-model="info.password"><br>
+        <input type="text" class="form-control input-lg" placeholder="E-mail" autocomplete="off" ng-model="info.mail"><br>
+        <input type="text" class="form-control input-lg" placeholder="Naziv firme" autocomplete="off" ng-model="info.firma"><br>
+      </div>
+      <button type="submit" class="btn btn-primary btn-lg" ng-click="addUser(); clearAddUserForm()" >Dodaj korisnika</button>
+    </form>
+  </div>
+</div>
+

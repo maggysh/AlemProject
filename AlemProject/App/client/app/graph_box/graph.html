@@ -1,0 +1,25 @@
+<div style="float: right; margin-right:2%; width:40%;">
+  <div ng-controller="graphController" ng-init="graphInit()">
+
+    <div class="panel-group">
+
+      <div class="panel panel-default">
+        <div class="panel-heading"><label>Temperatura</label></div>
+        <nvd3 options="optionsT" data="dataT"><svg></svg></nvd3>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading"><label>Vodostaj</label></div>
+        <nvd3 options="optionsV" data="dataV"></nvd3>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading"><label>Padavine</label></div>
+        <nvd3 options="optionsP" data="dataP"></nvd3>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+

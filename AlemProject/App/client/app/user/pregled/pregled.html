@@ -1,0 +1,29 @@
+<navbar-user></navbar-user>
+
+<header class="hero-unit" id="banner">
+
+  <style>
+    html                    { overflow-y:scroll; }
+    body                    { padding-top:0px; }
+  </style>
+
+</header>
+
+<!-- ODABIR STANICE -->
+<div ng-init="pregledInit()">
+      <form class="form-inline" role="form" style="padding-left:30px; padding-top:2%">
+        <div class="form-group" >
+          <select class="form-control" ng-model="pregled.id">
+            <option value="" selected disabled hidden>Odaberite stanicu</option>
+            <option name="stanica" ng-repeat="stanica in pregled.stanice" value="{{stanica[0].id}}">{{stanica[0].Naziv}}</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary btn" type="button" ng-click="osvjezi(pregled.id)">Osvježi</button>
+      </form>
+</div>
+<br><br>
+<!-- GRAF -->
+<div class="panel panel-default" style="width: 99%">
+  <div class="panel-heading"><label>Pregled vrijednosti po stanicama</label></div>
+  <nvd3 options="options" data="pregled.dnevni"></nvd3>
+</div>

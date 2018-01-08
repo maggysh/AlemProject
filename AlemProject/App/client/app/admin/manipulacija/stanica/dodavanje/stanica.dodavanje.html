@@ -1,0 +1,26 @@
+<navbar-admin></navbar-admin>
+
+<header class="hero-unit" id="banner">
+  <style>
+    html                    { overflow-y:scroll; }
+    body                    { padding-top:0px; }
+  </style>
+</header>
+
+<div id="create-stanica" class="row" style="padding-top:2%" ng-init="initStanicaDodavanje()">
+  <div class="col-sm-8 col-sm-offset-2 text-center">
+    <form>
+      <div class="form-group">
+        <input type="text" class="form-control input-lg " placeholder="Naziv stanice" autocomplete="off" ng-model="StanicaDodavanje.naziv"><br>
+        <input type="text" class="form-control input-lg " placeholder="Kod stanice"  autocomplete="off" ng-model="StanicaDodavanje.kod"><br>
+        <input type="text" class="form-control input-lg " placeholder="Geografska širina"  autocomplete="off" ng-model="StanicaDodavanje.sirina"><br>
+        <input type="text" class="form-control input-lg " placeholder="Geografska dužina" autocomplete="off" ng-model="StanicaDodavanje.duzina"><br>
+        <select class="form-control input-lg text-center" ng-model="StanicaDodavanje.Stip" >
+          <option value="" selected disabled hidden>Odaberite tip stanice</option>
+          <option name="tipStanice" ng-repeat="entry in StanicaDodavanjeData" value="{{entry.id}}">{{entry.Tip_stanice}}</option>
+        </select><br>
+      </div>
+      <button type="submit" class="btn btn-primary btn-lg" ng-click="addStanicaDodavanje(); clearStanicaDodavanje()" >Dodaj stanicu</button>
+    </form>
+  </div>
+</div>

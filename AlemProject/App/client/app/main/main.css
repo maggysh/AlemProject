@@ -1,0 +1,48 @@
+.thing-form {
+  margin: 20px 0;
+}
+
+#banner {
+  border-bottom: none;
+  margin-top: -20px;
+}
+
+#banner h1 {
+  font-size: 60px;
+  line-height: 1;
+  letter-spacing: -1px;
+}
+
+.hero-unit {
+  position: relative;
+  padding: 30px 5px;
+  color: #F5F5F5;
+  text-align: center;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+  background: #4393B9;
+}
+
+.navbar-text {
+  margin-left: 15px;
+}
+
+#circle {
+  background: #2C4992;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+}
+
+#circle2 {
+  background: #B4045F;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+}
+
+#circle3 {
+  background: #E4E133;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+}

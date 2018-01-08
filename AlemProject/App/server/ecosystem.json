@@ -1,0 +1,20 @@
+{
+  "apps" : [{
+    // Application #1
+    "name"        : "alem",
+    "script"      : "app.js",
+    "watch"       : true,
+	"ignore_watch" : ["temp", "client/assets/images/"],
+    "cwd"         : "./",
+    "env": {
+      "NODE_ENV": "production"
+    },
+    "env_production" : {
+       "NODE_ENV": "production"
+    },
+    "env_staging" : {
+       "NODE_ENV" : "staging",
+       "TEST"     : true
+    }
+  }]
+}

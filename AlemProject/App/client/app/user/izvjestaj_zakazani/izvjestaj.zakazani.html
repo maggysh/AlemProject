@@ -1,0 +1,53 @@
+<navbar-user></navbar-user>
+
+<header class="hero-unit" id="banner">
+  <style>
+    html                    { overflow-y:scroll; }
+    body                    { padding-top:0px; }
+  </style>
+</header>
+
+<div class="panel panel-default" style="width: 99%">
+  <div class="panel-heading"><label>Postavljanje parametara za automatsko generisanje izvjestaja</label></div>
+  <form class="form-inline" role="form" style="padding-left:30px; padding-top:2%">
+
+    <div class="form-group" >
+      <select class="form-control" ng-model="pregled.id">
+        <option value="" selected disabled hidden>Odaberite stanicu</option>
+        <option name="stanica" ng-repeat="(key,value) in pregled.stanice" value="{{key}}">{{value.Naziv}}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <input class="form-control" value="Dnevni: {{pregled.stanice[pregled.id].Dnevni}}" readonly>
+    </div>
+    <div class="form-group">
+      <input class="form-control" value="Sedmicni: {{pregled.stanice[pregled.id].Sedmicni}}" readonly>
+    </div>
+    <div class="form-group">
+      <input class="form-control" value="Mjesecni: {{pregled.stanice[pregled.id].Mjesecni}}" readonly>
+    </div>
+
+    <select class="form-control" ng-model="dnevni">
+      <option value="" selected disabled hidden>Dnevni</option>
+      <option value="1">Da</option>
+      <option value="0">Ne</option>
+    </select>
+
+    <select class="form-control" ng-model="sedmicni">
+      <option value="" selected disabled hidden>Sedmicni</option>
+      <option value="1">Da</option>
+      <option value="0">Ne</option>
+    </select>
+
+    <select class="form-control" ng-model="mjesecni">
+      <option value="" selected disabled hidden>Mjesecni</option>
+      <option value="1">Da</option>
+      <option value="0">Ne</option>
+    </select>
+
+    <button type="submit" class="btn btn-primary btn" type="button" ng-click="novoStanje(pregled.stanice[pregled.id].id)">Spasi promjene</button>
+
+  </form><br><br>
+  <div class="panel-footer"><label></label></div>
+</div>
+

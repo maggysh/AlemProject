@@ -1,0 +1,79 @@
+<navbar-user></navbar-user>
+<header class="hero-unit" id="banner">
+  <style>
+    html                    { overflow-y:scroll; }
+    body                    { padding-top:0px; }
+    #tabela{
+      margin-left: 10px;
+    }
+  </style>
+</header>
+
+<!-- INIT -->
+
+<!-- TABELA -->
+<div ng-init="pregledInit()">
+<body ng-controller="tabelarniPrikazCtrl">
+<table st-set-filter="customFilter" st-table="displayed" st-safe-src="collection" class="table table-bordered table-striped">
+      <thead>
+      <tr>
+          <th st-sort="Naziv">Naziv stanice</th>
+          <th st-sort="Kod_senzora">Kod senzora</th>
+          <th st-sort="Tip_senzora">Tip senzora</th>
+          <th st-sort="Datum">Datum</th>
+          <th st-sort="Vrijednost">Vrijednost</th>
+      </tr>
+      <tr>
+            <th style="width:12%">
+                <st-select-multiple collection="collection" predicate="Naziv"></st-select-multiple>
+            </th>
+            <th style="width:15%">
+              <st-select-multiple collection="collection" predicate="Kod_senzora"></st-select-multiple>
+            </th>
+            <th style="width:15%">
+                <st-select-multiple collection="collection" predicate="Tip_senzora"></st-select-multiple>
+            </th>
+            <th style="width:13%">
+                 <st-date-range predicate="Datum" before="query.before" after="query.after"></st-date-range>
+            </th>
+            <th style="width:12%">
+              <st-number-range predicate="Vrijednost" lower="query.lower" higher="query.higher"></st-number-range>
+            </th>
+
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="row in displayed">
+            <td>{{row.Naziv}}</td>
+            <td>{{row.Kod_senzora}}</td>
+            <td>{{row.Tip_senzora}}</td>
+            <td>{{row.Datum}}</td>
+            <td>{{row.Vrijednost}}</td>
+      </tr>
+      </tbody><br>
+      <tfoot><br>
+      <tr>
+        <td colspan="8" class="text-center">
+          <!--<div st-pagination="" st-items-by-page="16" st-displayed-pages="5"></div>-->
+          <div st-items-by-page="15" st-pagination="" st-template="app/user/pregled/page.html"></div>
+        </td>
+      </tr>
+      </tfoot>
+
+</table>
+</body>
+</div>
+
+
+
+<div style="float:right; width:8%; padding-right:1%">
+  <div class="panel panel-default">
+    <div class="panel-heading"><label>DETALJI</label></div>
+    <div class="panel-heading"><label>{{"Max: " + max}}</label></div>
+    <div class="panel-heading"><label>{{"Min: " + min}}</label></div>
+    <div class="panel-heading"><label>{{"Avg: " + avg}}</label></div>
+    <!-- <div class="panel-footer">Alem Sistem</div> -->
+  </div>
+</div>
+
+

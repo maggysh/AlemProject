@@ -1,0 +1,34 @@
+<navbar-admin></navbar-admin>
+
+<header class="hero-unit" id="banner">
+
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+  <style>
+    html                    { overflow-y:scroll; }
+    body                    { padding-top:0px; }
+  </style>
+
+</header>
+
+<div id="user-privileges" class="row" style="padding-top:2%" ng-init="popuni()">
+  <div class="col-sm-8 col-sm-offset-2 text-center">
+    <form>
+
+      <select class="form-control input-lg text-center" ng-model="prava.stanica" >
+        <option value="" selected disabled hidden>Odaberite stanicu</option>
+        <option name="stanica" ng-repeat="entry in checkbox.stanica" value="{{entry.id}}">{{entry.Naziv}}</option>
+      </select><br>
+
+      <select class="form-control input-lg text-center" ng-model="prava.user">
+        <option value="" disabled selected hidden>Odaberite korisnika</option>
+        <option name="user" ng-repeat="entry in checkbox.user" value="{{entry.id}}">{{entry.ime_prezime}}</option>
+      </select><br>
+
+      <button type="submit" class="btn btn-primary btn-lg" ng-click="dajPrava()" >Dodaj prava</button>
+
+    </form>
+
+  </div>
+</div>
+
+

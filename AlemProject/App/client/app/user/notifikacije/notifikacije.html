@@ -1,0 +1,64 @@
+<navbar-user></navbar-user>
+
+<header class="hero-unit" id="banner">
+
+  <style>
+    html                    { overflow-y:scroll; }
+    body                    { padding-top:0px; }
+  </style>
+
+</header>
+
+<!--
+  <form class="form-inline" role="form" style="padding-left:30px; padding-top:2%">
+    <div class="form-group">
+      <select class="form-control" ng-model="stanica.id">
+        <option value="" selected disabled hidden>Odaberite stanicu</option>
+        <option name="stanica" ng-repeat="stanica in pregled.stanice" value="{{stanica[0].id}}">{{stanica[0].Naziv}}</option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary btn" type="button" ng-click="osvjezi(pregled.id)">Osvježi</button>
+  </form> -->
+<br>
+<div class="panel panel-default" style="width: 99%">
+  <div class="panel-heading"><label>Postavljanje gornje i donje granice za vrijednosti u senzorima</label></div>
+  <form class="form-inline" role="form" style="padding-left:30px; padding-top:2%">
+
+     <div class="form-group">
+      <select class="form-control " ng-model="notifikacije.indeks.stanica"
+              ng-model-options="{ updateOn: 'mouseup blur' }">
+        <option value="" selected disabled hidden>Odaberite stanicu</option>
+        <option value="{{key}}" ng-repeat="(key,value) in notifikacije.stanica">
+          {{value.Kod_stanice + ' - ' + value.Naziv}}
+        </option>
+      </select><br>
+      </div>
+
+    <div class="form-group">
+      <select class="form-control" ng-model="notifikacije.indeks.senzor"
+              ng-model-options="{ updateOn: 'mouseup blur' }">
+        <option value="" selected disabled hidden>Odaberite senzor</option>
+        <option value="{{key}}" ng-repeat="(key,value) in notifikacije.senzori[notifikacije.indeks.stanica]">
+          {{value.Kod_senzora + " - " + value.Tip_senzora}}
+        </option>
+      </select><br>
+    </div>
+    <div class="form-group">
+      <input class="form-control" value="MAX: {{notifikacije.senzori[notifikacije.indeks.stanica][notifikacije.indeks.senzor].Max}}" readonly>
+    </div>
+    <div class="form-group">
+      <input class="form-control" value="MIN: {{notifikacije.senzori[notifikacije.indeks.stanica][notifikacije.indeks.senzor].Min}}" readonly>
+    </div>
+    <div class="form-group">
+      <input class="form-control" placeholder="Novi max" ng-model="max">
+    </div>
+    <div class="form-group">
+      <input class="form-control" placeholder="Novi min" ng-model="min">
+    </div>
+    <button type="submit" class="btn btn-primary btn" type="button" ng-click="noviMaxMin()">Spasi promjene</button>
+
+  </form><br><br>
+  <div class="panel-footer"><label></label></div>
+<div>
+
+

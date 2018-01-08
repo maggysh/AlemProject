@@ -1,0 +1,69 @@
+<navbar-user></navbar-user>
+
+<header class="hero-unit" id="banner">
+    <style>
+        html                    { overflow-y:scroll; }
+        body                    { padding-top:0px; }
+    </style>
+</header>
+
+<br><div class="panel panel-default" style="width: 99%">
+    <div class="panel-heading"><label>Postavljanje parametara za generisanje izvještaja - Dnevni</label></div>
+    <form class="form" role="form" style="padding-left:30px; padding-top:2%">
+
+        <div class="form-group" style="width:20%">
+            <select class="form-control" ng-model="pregled.id">
+                <option value="" selected disabled hidden>Odaberite stanicu</option>
+                <option name="stanica" ng-repeat="stanica in pregled.stanice" value="{{stanica[0].id}}">{{stanica[0].Naziv}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <div class="input-group" style="width:20%">
+                <input type="text" class="form-control" datepicker-popup="dd/MM/yyyy" ng-model="before" is-open="status_prije.opened"
+                       datepicker-options="dateOptions"  ng-required="true" close-text="Close" placeholder="Datum: prije"/>
+                    <span class="input-group-btn">
+                         <button type="button" class="btn btn-default" ng-click="open_prije($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                     </span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="input-group" style="width:20%">
+                <input type="text" class="form-control" datepicker-popup="dd/MM/yyyy" ng-model="after" is-open="status_poslije.opened"
+                       datepicker-options="dateOptions"  ng-required="true" close-text="Close" placeholder="Datum: poslije"/>
+                <span class="input-group-btn">
+                     <button type="button" class="btn btn-default" ng-click="open_poslije($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                 </span>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn" type="button" ng-click="Osvjezi()">Osvježi</button>
+        <button  class="btn btn-primary btn" type="button" ng-click="printIt()">PDF</button>
+      <button  class="btn btn-primary btn" type="button" ng-click="printItCSV()">CSV</button>
+
+    </form><br>
+</div>
+
+<table st-table="displayed" st-safe-src="collection" class="table table-bordered table-striped">
+    <thead>
+    <tr>
+        <th style="width:20%">Datum</th>
+        <th ng-repeat="item in distinctTipSenzora" style="width:20%">{{item}}</th>
+        <!-- <th st-sort="Kod_senzora">Kod senzora</th>
+        <th st-sort="Tip_senzora">Tip senzora</th>
+        <th st-sort="Vrijednost">Vrijednost</th> -->
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="item in displayed track by $index">
+        <td ng-repeat="value in item track by $index">{{value}}</td>
+    </tr>
+    </tbody><br>
+    <tfoot><br>
+    <tr>
+        <td colspan="8" class="text-center">
+            <!--<div st-pagination="" st-items-by-page="16" st-displayed-pages="5"></div>-->
+            <div st-items-by-page="15" st-pagination="" st-template="app/user/pregled/page.html"></div>
+        </td>
+    </tr>
+    </tfoot>
+
+</table>

@@ -1,0 +1,62 @@
+<navbar-user></navbar-user>
+
+<header class="hero-unit" id="banner">
+  <style>
+    html                    { overflow-y:scroll; }
+    body                    { padding-top:0px; }
+  </style>
+</header>
+
+<div ng-init="pregledInit()">
+      <form class="form-inline" role="form" style="padding-left:30px; padding-top:2%">
+        <div class="form-group">
+          <select class="form-control" ng-model="idTipSenzora">
+            <option value="" selected disabled hidden>Odaberite tip senzora</option>
+            <option name="stanica" ng-repeat="tipSenzora in pregled.tip_senzora" value="{{tipSenzora.id}}">{{tipSenzora.Tip_Senzora}}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <select class="form-control" ng-model="pregled[0]">
+            <option value="" selected disabled hidden>Odaberite stanicu #1</option>
+            <option name="stanica" ng-repeat="stanica in pregled.stanice" value="{{stanica[0].id}}">{{stanica[0].Naziv}}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <select class="form-control" ng-model="pregled[1]">
+            <option value="" selected disabled hidden>Odaberite stanicu #2</option>
+            <option name="stanica" ng-repeat="stanica in pregled.stanice" value="{{stanica[0].id}}">{{stanica[0].Naziv}}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <select class="form-control" ng-model="pregled[2]">
+            <option value="" selected disabled hidden>Odaberite stanicu #3</option>
+            <option name="stanica" ng-repeat="stanica in pregled.stanice" value="{{stanica[0].id}}">{{stanica[0].Naziv}}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <select class="form-control" ng-model="pregled[3]">
+            <option value="" selected disabled hidden>Odaberite stanicu #4</option>
+            <option name="stanica" ng-repeat="stanica in pregled.stanice" value="{{stanica[0].id}}">{{stanica[0].Naziv}}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <select class="form-control" ng-model="pregled[4]">
+            <option value="" selected disabled hidden>Odaberite stanicu #5</option>
+            <option name="stanica" ng-repeat="stanica in pregled.stanice" value="{{stanica[0].id}}">{{stanica[0].Naziv}}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <select class="form-control" ng-model="pregled[5]">
+            <option value="" selected disabled hidden>Odaberite stanicu #6</option>
+            <option name="stanica" ng-repeat="stanica in pregled.stanice" value="{{stanica[0].id}}">{{stanica[0].Naziv}}</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary btn" type="button" ng-click="osvjezi()">Osvježi</button>
+      </form>
+</div><br><br>
+
+<!-- GRAF -->
+<div class="panel panel-default" style="width: 99%">
+  <div class="panel-heading"><label>Pregled vrijednosti po stanicama</label></div>
+  <nvd3 options="options" data="pregled.dnevni"></nvd3>
+</div>

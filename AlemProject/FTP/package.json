@@ -1,0 +1,27 @@
+{
+  "name": "start",
+  "main": "start.js",
+  "dependencies": {
+    "async": "latest",
+    "mysql": "^2.10.0",
+    "passport": "~0.1.17",
+    "passport-local": "~0.1.6",
+    "sequelize": "^3.15.1",
+    "sequelize-mysql": "^1.7.0",
+    "nodemailer": "^0.7.1",
+    "nodemailer-smtp-transport": "latest",
+    "nodemailer-mailgun-transport": "latest",
+    "fsmonitor": "latest"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": "^4.2.3",
+    "npm": "^2.14.7"
+  },
+  "scripts": {
+    "start": "node server",
+    "test": "grunt test",
+    "update-webdriver": "node node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update"
+  },
+  "private": true
+}

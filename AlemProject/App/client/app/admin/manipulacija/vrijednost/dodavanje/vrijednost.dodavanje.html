@@ -1,0 +1,56 @@
+<navbar-admin></navbar-admin>
+
+<header class="hero-unit" id="banner">
+  <style>
+    html                    { overflow-y:scroll; }
+    body                    { padding-top:0px; }
+  </style>
+</header>
+
+<div id="create-vrijednost" class="row" style="padding-top:2%" ng-init="initVrijednostDodavanje()">
+  <div class="col-sm-8 col-sm-offset-2 text-center">
+
+    <form>
+
+      <div class="form-group">
+
+        <select class="form-control input-lg text-center" ng-model="VrijednostDodavanje.indeks.stanica"
+                ng-model-options="{ updateOn: 'mouseup blur' }">
+          <option value="" selected disabled hidden>Odaberite stanicu</option>
+          <option value="{{key}}" ng-repeat="(key,value) in VrijednostDodavanje.stanica">
+            {{value.Kod_stanice + ' - ' + value.Naziv}}
+          </option>
+        </select><br>
+
+        <select class="form-control input-lg text-center" ng-model="VrijednostDodavanje.indeks.senzor"
+                ng-model-options="{ updateOn: 'mouseup blur' }">
+          <option value="" selected disabled hidden>Odaberite senzor</option>
+          <option value="{{value.id}}" ng-repeat="(key,value) in VrijednostDodavanje.senzori[VrijednostDodavanje.indeks.stanica]">
+            {{value.Kod_senzora + ' - ' + value.Tip_senzora.Tip_Senzora}}
+          </option>
+        </select><br>
+
+        <input type="text" class="form-control input-lg " placeholder="Vrijednost"
+               ng-model="VrijednostDodavanje.vrijednost" autocomplete="off"><br>
+
+        <p class="input-group">
+          <input type="text" class="form-control input-lg" datepicker-popup="{{format}}" ng-model="dt" is-open="status.opened"
+                 datepicker-options="dateOptions"  ng-required="true" close-text="Close" />
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-default input-lg" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+          </span>
+        </p>
+
+        <timepicker ng-model="tt"></timepicker>
+
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-lg"
+              ng-click="addVrijednostDodavanje(); resetDropDown()">
+        Dodaj vrijednost </button>
+
+    </form>
+    {{$scope.VrijednostDodavanje.datum}}
+
+  </div>
+</div>

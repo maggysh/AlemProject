@@ -1,0 +1,45 @@
+<navbar-admin></navbar-admin>
+
+<header class="hero-unit" id="banner">
+  <style>
+    html                    { overflow-y:scroll; }
+    body                    { padding-top:0px; }
+  </style>
+</header>
+
+<div id="create-vrijednost" class="row" style="padding-top:2%" ng-init="initSenzorDodavanje()">
+  <div class="col-sm-8 col-sm-offset-2 text-center">
+
+    <form>
+
+      <div class="form-group">
+
+        <select class="form-control input-lg text-center" ng-model="SenzorDodavanje.stanica"
+                ng-model-options="{ updateOn: 'mouseup blur' }">
+          <option value="" selected disabled hidden>Odaberite stanicu</option>
+          <option value="{{value.id}}" ng-repeat="(key,value) in SenzorDodavanje.stanice">
+            {{value.Kod_stanice + ' - ' + value.Naziv}}
+          </option>
+        </select><br>
+
+        <select class="form-control input-lg text-center" ng-model="SenzorDodavanje.senzor"
+                ng-model-options="{ updateOn: 'mouseup blur' }">
+          <option value="" selected disabled hidden>Odaberite tip senzora</option>
+          <option value="{{value.id}}" ng-repeat="(key,value) in SenzorDodavanje.tip_senzora">
+            {{value.Tip_Senzora}}
+          </option>
+        </select><br>
+
+        <input type="text" class="form-control input-lg" placeholder="Kod senzora"
+               autocomplete="off" ng-model="SenzorDodavanje.kod">
+
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-lg"
+              ng-click="addSenzorDodavanje(); clearSenzorDodavanje()">
+        Dodaj senzor </button>
+
+    </form>
+
+  </div>
+</div>

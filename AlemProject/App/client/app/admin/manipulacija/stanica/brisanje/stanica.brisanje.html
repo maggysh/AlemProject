@@ -1,0 +1,45 @@
+<navbar-admin></navbar-admin>
+
+<header class="hero-unit" id="banner">
+  <style>
+    html                    { overflow-y:scroll; }
+    body                    { padding-top:0px; }
+    #tabela{
+      margin-left: 10px;
+    }
+  </style>
+</header><br>
+
+<table id="tabela" st-table="rowCollection" class="table table-striped" ng-init="initStanicaBrisanje()">
+  <thead>
+  <tr>
+    <th>Naziv stanice</th>
+    <th>Kod stanice</th>
+    <th>Geografska širina</th>
+    <th>Geografska dužina</th>
+    <th>Spasi promjene</th>
+    <th>Obrisati stanicu</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr ng-repeat="stanica in StanicaBrisanjeData">
+    <td><input type="text" class="form-control" ng-model="stanica.Naziv" style="border: none; background: transparent"></td>
+    <td><input type="text" class="form-control" ng-model="stanica.Kod_stanice" style="border: none; background: transparent"></td>
+    <td><input type="text" class="form-control" ng-model="stanica.Geo_sirina" style="border: none; background: transparent"></td>
+    <td><input type="text" class="form-control" ng-model="stanica.Geo_duzina" style="border: none; background: transparent"></td>
+    <td>
+      <button type="button" ng-click="updateStanica(stanica)" class="btn btn-sm btn-success">
+        <i class="glyphicon glyphicon-ok">
+        </i>
+      </button>
+    </td>
+    <td>
+      <button type="button" ng-click="deleteStanicaBrisanje(stanica.id); removeItem(stanica)" class="btn btn-sm btn-danger">
+        <i class="glyphicon glyphicon-remove">
+        </i>
+      </button>
+    </td>
+  </tr>
+  </tbody>
+</table>
+

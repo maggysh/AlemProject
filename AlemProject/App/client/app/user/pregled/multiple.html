@@ -1,0 +1,23 @@
+<!-- <select ng-model="item.selected" ng-options="item as item.value for item in distinctItems"></select> -->
+<!--
+<div class="dropdown">
+  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+    Dropdown
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+    <li ng-repeat="item in distinctItems">
+        <input type="checkbox" ng-model="item.selected" ng-click="filterChanged()"> {{item.value}}
+    </li>
+  </ul>
+</div>
+-->
+
+<div dropdown>
+  <button class="btn btn btn-block" dropdown-toggle>{{dropdownLabel}}<b class="caret"></b></button>
+  <ul class="dropdown-menu">
+    <li ng-repeat="item in distinctItems">
+      <input type="checkbox" ng-model="item.selected" ng-click="filterChanged()"> {{item.value}}
+    </li>
+  </ul>
+</div>

@@ -1,0 +1,55 @@
+<navbar-admin></navbar-admin>
+
+<header class="hero-unit" id="banner">
+  <style>
+    html                    { overflow-y:scroll; }
+    body                    { padding-top:0px; }
+    #tabela{
+      margin-left: 10px;
+    }
+  </style>
+</header>
+
+
+<table id="tabela" st-table="displayedCollection" st-safe-src="rowCollection" class="table table-striped"
+       ng-init="initSenzorBrisanje()">
+  <thead>
+  <tr>
+    <th st-sort="Naziv">Naziv</th>
+    <th st-sort="Kod_senzora">Kod senzora</th>
+    <th>Spasi promjene</th>
+    <th>Obrisati senzor</th>
+  </tr>
+  <tr>
+    <th colspan="7">
+      <input st-search placeholder="Pretraga" class="input-sm form-control" type="search"/>
+    </th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr ng-repeat="(key,row) in displayedCollection">
+    <td>{{row.Naziv}}</td>
+    <td><input type="text" class="form-control"  ng-show="true" ng-model="row.Kod_senzora" style="border: none; background: transparent"></td>
+    <td>
+      <button type="button" ng-click="updateSenzor(row)" class="btn btn-sm btn-success">
+        <i class="glyphicon glyphicon-ok">
+        </i>
+      </button>
+    </td>
+    <td>
+      <button type="button" ng-click="deleteSenzorBrisanje(row.id); removeItemSenzor(row)" class="btn btn-sm btn-danger">
+        <i class="glyphicon glyphicon-remove">
+        </i>
+      </button>
+    </td>
+  </tr>
+  </tbody><br>
+  <tfoot><br>
+  <tr>
+    <td colspan="8" class="text-center">
+      <div st-items-by-page="15" st-pagination="" st-template="app/user/pregled/page.html"></div>
+    </td>
+  </tr>
+  </tfoot>
+</table>
+

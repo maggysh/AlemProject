@@ -1,0 +1,19 @@
+<style>
+  .select-page {
+    width: 50px;
+    text-align: center;
+  }
+  .pagination li a input {
+    padding: 0;
+    margin: -5px 0;
+  }
+</style>
+<nav ng-if="pages.length >= 2">
+  <ul class="pagination">
+    <li><a ng-click="selectPage(1)">Prva</a>
+    </li><li><a ng-click="selectPage(currentPage - 1)">&lt;</a>
+  </li><li><a><page-select></page-select> od {{numPages}}</a>
+  </li><li><a ng-click="selectPage(currentPage + 1)">&gt;</a>
+  </li><li><a ng-click="selectPage(numPages)">Zadnja</a></li>
+  </ul>
+</nav>

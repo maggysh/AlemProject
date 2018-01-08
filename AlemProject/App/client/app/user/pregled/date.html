@@ -1,0 +1,20 @@
+<div>
+<label>Prije</label>
+<div class="input-group">
+  <input type="text" class="form-control input-sm" datepicker-popup="dd/MM/yyyy" ng-model="before" is-open="isBeforeOpen"
+         close-text="Close"/>
+    <span class="input-group-btn">
+                <button type="button" class="btn btn-sm" ng-click="openBefore($event)"><i
+                  class="glyphicon glyphicon-calendar"></i></button>
+                </span>
+</div>
+<label>Poslije</label>
+<div class="input-group" >
+  <input type="text" class="form-control input-sm datepicker-popup="dd/MM/yyyy" ng-model="after" is-open="isAfterOpen"
+         close-text="Close"/>
+    <span class="input-group-btn">
+                <button type="button" class="btn btn-sm" ng-click="openAfter($event)"><i
+                  class="glyphicon glyphicon-calendar"></i></button>
+                </span>
+</div>
+</div>

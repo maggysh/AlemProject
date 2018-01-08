@@ -1,0 +1,7 @@
+{
+  "schema": "alemdbv2",
+  "username": "root",
+  "password": "root",
+  "host": "localhost",
+  "database": "mysql"
+}

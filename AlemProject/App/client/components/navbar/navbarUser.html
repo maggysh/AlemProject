@@ -1,0 +1,40 @@
+<div class="navbar navbar-default navbar-static-top" ng-controller="NavbarController">
+  <div class="container">
+    <div class="navbar-header">
+      <button class="navbar-toggle" type="button" ng-click="nav.isCollapsed = !nav.isCollapsed">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a href="/" class="navbar-brand">
+        <img style="width:40px; height:40px; margin-top:-10px" src="../.././assets/images/alemsistem.jpg">
+        <!-- <label>{{info.name}}</label> -->
+      </a> <!-- NAZIV U NAVBARU -->
+    </div>
+    <div collapse="nav.isCollapsed" class="navbar-collapse collapse" id="navbar-main">
+      <ul class="nav navbar-nav">
+        <li ng-repeat="item in nav.menuUser" ui-sref-active="active">
+          <a ui-sref="{{item.state}}">{{item.title}}</a>
+        </li>
+        <li dropdown>
+          <a href="#" dropdown-toggle>Grafovi<b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li><a href="/graf">Single</a></li>
+            <li><a href="/graf/multi">Multiple</a></li>
+          </ul>
+        </li>
+        <li dropdown>
+          <a href="#" dropdown-toggle>Izvještaj<b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li><a href="/izvjestaj">Satnica</a></li>
+            <li><a href="/izvjestaj/statistika">Dnevni</a></li>
+            <li><a href="/izvjestaj/zakazani">Zakazani</a></li>
+          </ul>
+        </li>
+      </ul>
+
+    </div>
+  </div>
+</div>
+
