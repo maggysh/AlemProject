@@ -5,8 +5,8 @@ function initMap() {
 
   function pinColor(color){
     return {
-      path: google.maps.SymbolPath.CIRCLE,
-      scale: 12, //velicina
+      path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
+      scale: 7, //velicina
       strokeColor: "black", //boja okvira
       strokeWeight: 1, //debljina okvira
       fillColor: color, //boja unutrasnjosti
@@ -19,11 +19,14 @@ function initMap() {
   var myOptions =
   {
     zoom: 8,
-    mapTypeId: google.maps.MapTypeId.ROADMAP,
+  //  mapTypeId: google.maps.MapTypeId.ROADMAP,
+    mapTypeId: 'satellite',
     draggable: true,
-    minZoom: 8, //zabrana  zumiranja
-    maxZoom: 12,
-    disableDefaultUI: true, //brisanje ikona za zumiranje
+    //minZoom: 8, //zabrana  zumiranja
+    //maxZoom: 12,
+    center: {lat: 44.13311, lng: 18.12292},
+    zoom: 9,
+    disableDefaultUI: false, //brisanje ikona za zumiranje//postavljeno da se moze zumirati
   };
 
 

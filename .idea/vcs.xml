@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="GitSharedSettings">
+    <option name="FORCE_PUSH_PROHIBITED_PATTERNS">
+      <list>
+        <option value="Praksa" />
+      </list>
+    </option>
+  </component>
   <component name="VcsDirectoryMappings">
     <mapping directory="C:\Users\IRMA\Documents\AlemProject\ALEM" vcs="Git" />
     <mapping directory="C:\Users\IRMA\Documents\AlemProject\Praksa" vcs="Git" />
+    <mapping directory="C:\Users\IRMA\Documents\AlemProject\Praksa1" vcs="Git" />
   </component>
 </project>
