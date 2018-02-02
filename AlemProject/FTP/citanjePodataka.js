@@ -9,8 +9,8 @@ var path = "files";
 var models = require('./models');
 var email = require('./sendEmail.js');
 var file="";
-//console.log(file);
-//console.log("PROLAZAK \n");
+console.log(file);
+console.log("PROLAZAK \n");
 function ucitavanjePodataka1(fileName){
     //path = "files/" + fileName.name;
     //console.log("path " + path);

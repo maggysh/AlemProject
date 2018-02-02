@@ -27,7 +27,8 @@
     "passport-local": "~0.1.6",
     "sequelize": "^3.15.1",
     "sequelize-mysql": "^1.7.0",
-    "serve-favicon": "^2.3.0"
+    "serve-favicon": "^2.3.0",
+    "promise-ftp": "latest"
   },
   "devDependencies": {
     "autoprefixer": "^6.0.0",

@@ -1,7 +1,7 @@
 {
-  "schema": "alemdb",
+  "schema": "alem",
   "username": "root",
   "password": "root",
-  "host": "localhost",
+  "host": "192.168.0.140",
   "database": "mysql"
 }
