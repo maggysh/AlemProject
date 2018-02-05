@@ -8,51 +8,125 @@
 </header>
 
 <div ng-init="pregledInit()">
-      <form class="form-inline" role="form" style="padding-left:30px; padding-top:2%">
+  <form class="form-inline" role="form" style="padding-left:30px; padding-top:2%">
+    <!-- <div class="form-group">
+            <select class="form-control" ng-model="idTipSenzora">
+               <option value="" selected disabled hidden>Odaberite tip senzora</option>
+               <option name="stanica" ng-repeat="tipSenzora in pregled.tip_senzora" value="{{tipSenzora.id}}">{{tipSenzora.Tip_Senzora}}</option>
+             </select>
+           </div>
+            <div class="form-group">
+             <select class="form-control" ng-model="pregled[0]">
+               <option value="" selected disabled hidden>Odaberite stanicu #1</option>
+               <option name="stanica" ng-repeat="stanica in pregled.stanice" value="{{stanica[0].id}}">{{stanica[0].Naziv}}</option>
+             </select>
+           </div>
+           <div class="form-group">
+             <select class="form-control" ng-model="pregled[1]">
+               <option value="" selected disabled hidden>Odaberite stanicu #2</option>
+               <option name="stanica" ng-repeat="stanica in pregled.stanice" value="{{stanica[0].id}}">{{stanica[0].Naziv}}</option>
+             </select>
+           </div>
+           <div class="form-group">
+             <select class="form-control" ng-model="pregled[2]">
+               <option value="" selected disabled hidden>Odaberite stanicu #3</option>
+               <option name="stanica" ng-repeat="stanica in pregled.stanice" value="{{stanica[0].id}}">{{stanica[0].Naziv}}</option>
+             </select>
+           </div>
+           <div class="form-group">
+             <select class="form-control" ng-model="pregled[3]">
+               <option value="" selected disabled hidden>Odaberite stanicu #4</option>
+               <option name="stanica" ng-repeat="stanica in pregled.stanice" value="{{stanica[0].id}}">{{stanica[0].Naziv}}</option>
+             </select>
+           </div>
+           <div class="form-group">
+             <select class="form-control" ng-model="pregled[4]">
+               <option value="" selected disabled hidden>Odaberite stanicu #5</option>
+               <option name="stanica" ng-repeat="stanica in pregled.stanice" value="{{stanica[0].id}}">{{stanica[0].Naziv}}</option>
+             </select>
+           </div>
+           <div class="form-group">
+             <select class="form-control" ng-model="pregled[5]">
+               <option value="" selected disabled hidden>Odaberite stanicu #6</option>
+               <option name="stanica" ng-repeat="stanica in pregled.stanice" value="{{stanica[0].id}}">{{stanica[0].Naziv}}</option>
+             </select>
+           </div>-->
+    <div style="display: flex; justify-content: space-around; align-content: space-around;">
+      <div class="form-group">
+        <label for="multipleSelectSenzori">Odaberite tipove senzora: </label><br>
+        <select name="multipleSelectSenzori" id="multipleSelectSenzori" ng-model="odabraniSenzor" multiple>
+          <option name="senzor" ng-repeat="tipSenzora in pregled.tip_senzora" value="{{tipSenzora.id+','+tipSenzora.Tip_Senzora}}">{{tipSenzora.Tip_Senzora}}</option>
+        </select><br>
+        <button style="width: 100%" type="submit" class="btn btn-primary btn" type="button" ng-click="dodajSenzor()">Odaberi</button>
+      </div>
+      <div class="form-group">
+        <label for="odabraniSenzori">Odabrani senzori: </label><br>
+        <select style="width: 16rem" name="odabraniSenzori" id="odabraniSenzori"  ng-model="obrisiSenzor" multiple>
+          <option name="stanica" ng-repeat="s in senzori" value="{{s.id}}">{{s.tip_senzora}}</option>
+        </select><br>
+        <button style="width: 100%" type="submit" class="btn btn-primary btn" type="button" ng-click="odstraniSenzor()">Odstrani</button>
+      </div>
+      <div class="form-group">
+        <label for="multipleSelectStanice">Odaberite stanicu: </label><br>
+        <select name="multipleSelectStanice" id="multipleSelectStanice" ng-model="odabranaStanica" multiple>
+          <option name="stanica" ng-repeat="stanica in pregled.stanice" value="{{stanica[0].id+','+stanica[0].Naziv}}">{{stanica[0].Naziv}}</option>
+        </select><br>
+        <button style="width: 100%" type="submit" class="btn btn-primary btn" type="button" ng-click="dodajStanicu()">Odaberi</button>
+      </div>
+
+      <div class="form-group" >
+        <label for="odabraneStanice">Odabrane stanice: </label><br>
+        <select style="width: 16rem" name="odabraneStanice" id="odabraneStanice" ng-model="obrisiStanicu"  multiple>
+          <option name="stanica" ng-repeat="s in stanice" value="{{s.id}}">{{s.naziv}}</option>
+        </select><br>
+        <button style="width: 100%" type="submit" class="btn btn-primary btn" type="button" ng-click="odstraniStanicu()">Odstrani</button>
+      </div>
+      <div style="display: flex; flex-direction: column;">
         <div class="form-group">
-          <select class="form-control" ng-model="idTipSenzora">
-            <option value="" selected disabled hidden>Odaberite tip senzora</option>
-            <option name="stanica" ng-repeat="tipSenzora in pregled.tip_senzora" value="{{tipSenzora.id}}">{{tipSenzora.Tip_Senzora}}</option>
-          </select>
+
+          <label for="startDate">Odaberite pocetni datum: </label><br>
+          <div class="input-group" style="width:16em">
+            <input id="startDate" type="text" class="form-control" datepicker-popup="dd/MM/yyyy" ng-model="pocetniDatum" is-open="status_prije.opened"
+                   datepicker-options="dateOptions"  ng-required="true" close-text="Close" placeholder="Datum: prije"/>
+            <span class="input-group-btn">
+                         <button type="button" class="btn btn-default" ng-click="open_prije($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                     </span>
+          </div>
         </div>
         <div class="form-group">
-          <select class="form-control" ng-model="pregled[0]">
-            <option value="" selected disabled hidden>Odaberite stanicu #1</option>
-            <option name="stanica" ng-repeat="stanica in pregled.stanice" value="{{stanica[0].id}}">{{stanica[0].Naziv}}</option>
-          </select>
+          <label for="endDate">Odaberite krajnji datum: </label><br>
+          <div class="input-group" style="width:16em">
+            <input id="endDate" type="text" class="form-control" datepicker-popup="dd/MM/yyyy" ng-model="krajnjiDatum" is-open="status_poslije.opened"
+                   datepicker-options="dateOptions"  ng-required="true" close-text="Close" placeholder="Datum: poslije"/>
+            <span class="input-group-btn">
+                     <button type="button" class="btn btn-default" ng-click="open_poslije($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                 </span>
+          </div>
         </div>
-        <div class="form-group">
-          <select class="form-control" ng-model="pregled[1]">
-            <option value="" selected disabled hidden>Odaberite stanicu #2</option>
-            <option name="stanica" ng-repeat="stanica in pregled.stanice" value="{{stanica[0].id}}">{{stanica[0].Naziv}}</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <select class="form-control" ng-model="pregled[2]">
-            <option value="" selected disabled hidden>Odaberite stanicu #3</option>
-            <option name="stanica" ng-repeat="stanica in pregled.stanice" value="{{stanica[0].id}}">{{stanica[0].Naziv}}</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <select class="form-control" ng-model="pregled[3]">
-            <option value="" selected disabled hidden>Odaberite stanicu #4</option>
-            <option name="stanica" ng-repeat="stanica in pregled.stanice" value="{{stanica[0].id}}">{{stanica[0].Naziv}}</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <select class="form-control" ng-model="pregled[4]">
-            <option value="" selected disabled hidden>Odaberite stanicu #5</option>
-            <option name="stanica" ng-repeat="stanica in pregled.stanice" value="{{stanica[0].id}}">{{stanica[0].Naziv}}</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <select class="form-control" ng-model="pregled[5]">
-            <option value="" selected disabled hidden>Odaberite stanicu #6</option>
-            <option name="stanica" ng-repeat="stanica in pregled.stanice" value="{{stanica[0].id}}">{{stanica[0].Naziv}}</option>
-          </select>
-        </div>
-        <button type="submit" class="btn btn-primary btn" type="button" ng-click="osvjezi()">Osvježi</button>
-      </form>
+        <div><button style="width: 16em" type="submit" class="btn btn-primary btn" type="button" ng-click="osvjezi()">Osvježi</button></div>
+
+      </div>
+    </div>
+
+
+    <!--     <div class="form-group">
+             <script type="text/ng-template" id="multi.pregled.html">
+               <div ng-transclude></div>
+             </script>
+             <div ng-repeat="alert in alerts" ng-class="{'alert': true, 'alert-dismissable': true, 'alert-success': true}" close="closeAlert($index)">{{alert.msg}}</div>
+           <div ng-repeat="alert in alerts"  class="alert alert-success alert-dismissable" close="closeAlert($index)">
+             <a href="#" onclick="closeAlert($index)" class="close" data-dismiss="alert" aria-label="close" >&times;</a>
+
+             <strong>{{alert.msg}}</strong>
+           </div>
+           <div ng-repeat="alert in alerts" class="alert {{alert.type}}">
+             <button type="button" class="close" aria-label="Close" ng-click="deleteAlert($index)">×</button>
+             {{alert.msg}}
+           </div>
+         </div>-->
+
+  </form>
+
 </div><br><br>
 
 <!-- GRAF -->
