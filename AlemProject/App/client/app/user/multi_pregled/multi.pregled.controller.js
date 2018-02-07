@@ -18,7 +18,6 @@ angular.module('appApp')
     $scope.pocetniDatum='';
     $scope.krajnjiDatum='';
 
-
     //-----------------------------------------------------------------------------------------
     $scope.pregledInit = function(){
       $http.get('/loggedin').then(function (response) {
@@ -195,20 +194,24 @@ angular.module('appApp')
 
     };
 
-    /*
-        $scope.addAlert = function() {
-          $scope.alerts.push({msg: 'Another alert!'});
-        };
-
-        $scope.closeAlert = function(index) {
-          $scope.alerts.splice(index, 1);
-        };
-        */
-
-
 
     //---------------------------------------------------------------------------------------------
+    $scope.callback = function(scope,element){
+      $scope.myChartScope = scope;
+    }
     //---------------------------------------------------------------------------------------------
+
+    $scope.PNG = function () {
+      console.log($scope.myChartScope.svg);
+      console.log($scope.myChartScope.chart);
+      saveSvgAsPng($scope.myChartScope.svg[0][0], "diagram.png", {backgroundColor: "white"});
+    };
+    $scope.JPG = function () {
+
+    }
+    $scope.BMP = function () {
+
+    }
     //-----------------------------------------------------------------------------------------
 
   });
