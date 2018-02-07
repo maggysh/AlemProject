@@ -51,37 +51,37 @@
                <option name="stanica" ng-repeat="stanica in pregled.stanice" value="{{stanica[0].id}}">{{stanica[0].Naziv}}</option>
              </select>
            </div>-->
-    <div style="display: flex; justify-content: space-around; align-content: space-around;">
-      <div class="form-group">
+    <div style="display: flex; flex-wrap: wrap; ">
+      <div class="form-group" style="margin: 1rem;">
         <label for="multipleSelectSenzori">Odaberite tipove senzora: </label><br>
-        <select name="multipleSelectSenzori" id="multipleSelectSenzori" ng-model="odabraniSenzor" multiple>
+        <select style="width: 17rem;" name="multipleSelectSenzori" id="multipleSelectSenzori" ng-model="odabraniSenzor" multiple>
           <option name="senzor" ng-repeat="tipSenzora in pregled.tip_senzora" value="{{tipSenzora.id+','+tipSenzora.Tip_Senzora}}">{{tipSenzora.Tip_Senzora}}</option>
         </select><br>
         <button style="width: 100%" type="submit" class="btn btn-primary btn" type="button" ng-click="dodajSenzor()">Odaberi</button>
       </div>
-      <div class="form-group">
+      <div class="form-group" style="margin: 1rem;">
         <label for="odabraniSenzori">Odabrani senzori: </label><br>
-        <select style="width: 16rem" name="odabraniSenzori" id="odabraniSenzori"  ng-model="obrisiSenzor" multiple>
+        <select style="width: 17rem;" name="odabraniSenzori" id="odabraniSenzori"  ng-model="obrisiSenzor" multiple>
           <option name="stanica" ng-repeat="s in senzori" value="{{s.id}}">{{s.tip_senzora}}</option>
         </select><br>
         <button style="width: 100%" type="submit" class="btn btn-primary btn" type="button" ng-click="odstraniSenzor()">Odstrani</button>
       </div>
-      <div class="form-group">
+
+      <div class="form-group" style="margin: 1rem;">
         <label for="multipleSelectStanice">Odaberite stanicu: </label><br>
-        <select name="multipleSelectStanice" id="multipleSelectStanice" ng-model="odabranaStanica" multiple>
+        <select style="width: 17rem; " name="multipleSelectStanice" id="multipleSelectStanice" ng-model="odabranaStanica" multiple>
           <option name="stanica" ng-repeat="stanica in pregled.stanice" value="{{stanica[0].id+','+stanica[0].Naziv}}">{{stanica[0].Naziv}}</option>
         </select><br>
         <button style="width: 100%" type="submit" class="btn btn-primary btn" type="button" ng-click="dodajStanicu()">Odaberi</button>
       </div>
-
-      <div class="form-group" >
+      <div class="form-group"  style="margin: 1rem;">
         <label for="odabraneStanice">Odabrane stanice: </label><br>
-        <select style="width: 16rem" name="odabraneStanice" id="odabraneStanice" ng-model="obrisiStanicu"  multiple>
+        <select style="width: 17rem;" name="odabraneStanice" id="odabraneStanice" ng-model="obrisiStanicu"  multiple>
           <option name="stanica" ng-repeat="s in stanice" value="{{s.id}}">{{s.naziv}}</option>
         </select><br>
         <button style="width: 100%" type="submit" class="btn btn-primary btn" type="button" ng-click="odstraniStanicu()">Odstrani</button>
       </div>
-      <div style="display: flex; flex-direction: column;">
+      <div style="display: flex; flex-direction: column;"  style="margin: 1rem;">
         <div class="form-group">
 
           <label for="startDate">Odaberite pocetni datum: </label><br>
@@ -89,8 +89,8 @@
             <input id="startDate" type="text" class="form-control" datepicker-popup="dd/MM/yyyy" ng-model="pocetniDatum" is-open="status_prije.opened"
                    datepicker-options="dateOptions"  ng-required="true" close-text="Close" placeholder="Datum: prije"/>
             <span class="input-group-btn">
-                         <button type="button" class="btn btn-default" ng-click="open_prije($event)"><i class="glyphicon glyphicon-calendar"></i></button>
-                     </span>
+                             <button type="button" class="btn btn-default" ng-click="open_prije($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                         </span>
           </div>
         </div>
         <div class="form-group">
@@ -99,11 +99,17 @@
             <input id="endDate" type="text" class="form-control" datepicker-popup="dd/MM/yyyy" ng-model="krajnjiDatum" is-open="status_poslije.opened"
                    datepicker-options="dateOptions"  ng-required="true" close-text="Close" placeholder="Datum: poslije"/>
             <span class="input-group-btn">
-                     <button type="button" class="btn btn-default" ng-click="open_poslije($event)"><i class="glyphicon glyphicon-calendar"></i></button>
-                 </span>
+                         <button  type="button" class="btn btn-default" ng-click="open_poslije($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                     </span>
           </div>
         </div>
         <div><button style="width: 16em" type="submit" class="btn btn-primary btn" type="button" ng-click="osvjezi()">Osvježi</button></div>
+
+      </div>
+      <div class="form-group"  >
+        <div><button style="width: 100%; margin: 1rem;" type="submit" class="btn btn-primary btn" type="button" ng-click="PNG()">PNG</button></div>
+        <div><button style="width: 100%; margin: 1rem;" type="submit" class="btn btn-primary btn" type="button" ng-click="JPG()">JPG</button></div>
+        <div><button style="width: 100%; margin: 1rem;" type="submit" class="btn btn-primary btn" type="button" ng-click="BMP()">BMP</button></div>
 
       </div>
     </div>
@@ -132,5 +138,7 @@
 <!-- GRAF -->
 <div class="panel panel-default" style="width: 99%">
   <div class="panel-heading"><label>Pregled vrijednosti po stanicama</label></div>
-  <nvd3 options="options" data="pregled.dnevni"></nvd3>
+  <nvd3 id="chart" options="options" data="pregled.dnevni" on-ready="callback" ></nvd3>
+  <canvas id="canvas" width="1000px" height="600px"></canvas>
 </div>
+
