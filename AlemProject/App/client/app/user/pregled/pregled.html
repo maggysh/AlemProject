@@ -11,17 +11,37 @@
 
 <!-- ODABIR STANICE -->
 <div ng-init="pregledInit()">
-      <form class="form-inline" role="form" style="padding-left:30px; padding-top:2%">
-        <div class="form-group" >
-          <select class="form-control" ng-model="pregled.id">
-            <option value="" selected disabled hidden>Odaberite stanicu</option>
-            <option name="stanica" ng-repeat="stanica in pregled.stanice" value="{{stanica[0].id}}">{{stanica[0].Naziv}}</option>
-          </select>
-        </div>
-        <button type="submit" class="btn btn-primary btn" type="button" ng-click="osvjezi(pregled.id)">Osvježi</button>
-      </form>
+  <form class="form-inline" role="form" style="padding-left:30px; padding-top:2%">
+    <div class="form-group">
+      <select class="form-control" ng-model="pregled.id">
+        <option value="" selected disabled hidden>Odaberite stanicu</option>
+        <option name="stanica" ng-repeat="stanica in pregled.stanice" value="{{stanica[0].id}}">{{stanica[0].Naziv}}</option>
+      </select>
+    </div>
+
+
+    <div class="form-group">
+      <div class="input-group" style="width:16em">
+        <input id="startDate" type="text" class="form-control" datepicker-popup="dd/MM/yyyy" ng-model="pocetniDatum" is-open="status_prije.opened"
+               datepicker-options="dateOptions"  ng-required="true" close-text="Close" placeholder="Početni datum"/>
+        <span class="input-group-btn">
+                         <button type="button" class="btn btn-default" ng-click="open_prije($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                     </span>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="input-group" style="width:16em">
+        <input id="endDate" type="text" class="form-control" datepicker-popup="dd/MM/yyyy" ng-model="krajnjiDatum" is-open="status_poslije.opened"
+               datepicker-options="dateOptions"  ng-required="true" close-text="Close" placeholder="Krajnji datum"/>
+        <span class="input-group-btn">
+                     <button type="button" class="btn btn-default" ng-click="open_poslije($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                 </span>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary btn" type="button" ng-click="osvjezi(pregled.id)">Osvježi</button>
+    <br><br>
+  </form>
 </div>
-<br><br>
 <!-- GRAF -->
 <div class="panel panel-default" style="width: 99%">
   <div class="panel-heading"><label>Pregled vrijednosti po stanicama</label></div>
