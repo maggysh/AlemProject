@@ -8,8 +8,6 @@
     </option>
   </component>
   <component name="VcsDirectoryMappings">
-    <mapping directory="C:\Users\IRMA\Documents\AlemProject\ALEM" vcs="Git" />
-    <mapping directory="C:\Users\IRMA\Documents\AlemProject\Praksa" vcs="Git" />
-    <mapping directory="C:\Users\IRMA\Documents\AlemProject\Praksa1" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$" vcs="Git" />
   </component>
 </project>
