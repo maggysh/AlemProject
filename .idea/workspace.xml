@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ca8690eb-5c95-4718-9d48-db276b47e066" name="Default" comment="" />
+    <list default="true" id="ca8690eb-5c95-4718-9d48-db276b47e066" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change beforePath="$PROJECT_DIR$/AlemProject/App/client/app/user/multi_pregled/multi.pregled.controller.js" afterPath="$PROJECT_DIR$/AlemProject/App/client/app/user/multi_pregled/multi.pregled.controller.js" />
+      <change beforePath="$PROJECT_DIR$/AlemProject/App/client/app/user/multi_pregled/multi.pregled.html" afterPath="$PROJECT_DIR$/AlemProject/App/client/app/user/multi_pregled/multi.pregled.html" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -27,8 +32,14 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+<<<<<<< HEAD
+<<<<<<< HEAD
+      <file leaf-file-name="credsFTP.json" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/AlemProject/FTP/credsFTP.json">
+=======
       <file leaf-file-name="notifikacije.controller.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/AlemProject/App/client/app/user/notifikacije/notifikacije.controller.js">
+>>>>>>> 0c176a0f38548d8614e82c5549b8f7deef03ca30
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-51">
               <caret line="3" column="14" lean-forward="false" selection-start-line="3" selection-start-column="14" selection-end-line="3" selection-end-column="14" />
@@ -50,15 +61,33 @@
       <file leaf-file-name="start.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/AlemProject/FTP/start.js">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
+            <state relative-caret-position="349">
+              <caret line="22" column="20" lean-forward="false" selection-start-line="22" selection-start-column="20" selection-end-line="22" selection-end-column="20" />
+=======
+      <file leaf-file-name="citanjePodataka.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/AlemProject/FTP/citanjePodataka.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="68">
+              <caret line="76" column="50" lean-forward="false" selection-start-line="76" selection-start-column="50" selection-end-line="76" selection-end-column="50" />
+>>>>>>> 4f44fa9dc3a40a3bacdf2f33a0aef21ec088da17
+=======
             <state relative-caret-position="204">
               <caret line="45" column="33" lean-forward="true" selection-start-line="45" selection-start-column="33" selection-end-line="45" selection-end-column="33" />
+>>>>>>> 0c176a0f38548d8614e82c5549b8f7deef03ca30
               <folding />
             </state>
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
+<<<<<<< HEAD
+      <file leaf-file-name="pregled.controller.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/AlemProject/App/client/app/user/pregled/pregled.controller.js">
+=======
       <file leaf-file-name="creds.json" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/AlemProject/Izvjestaj/creds.json">
+>>>>>>> 0c176a0f38548d8614e82c5549b8f7deef03ca30
           <provider selected="true" editor-type-id="text-editor">
 <<<<<<< HEAD
             <state relative-caret-position="51">
@@ -70,15 +99,31 @@
 =======
             <state relative-caret-position="326">
               <caret line="127" column="0" lean-forward="true" selection-start-line="127" selection-start-column="0" selection-end-line="127" selection-end-column="0" />
+<<<<<<< HEAD
+=======
+      <file leaf-file-name="multi.pregled.controller.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/AlemProject/App/client/app/user/multi_pregled/multi.pregled.controller.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="497">
+              <caret line="214" column="0" lean-forward="true" selection-start-line="214" selection-start-column="0" selection-end-line="214" selection-end-column="0" />
+>>>>>>> 4f44fa9dc3a40a3bacdf2f33a0aef21ec088da17
+=======
 >>>>>>> 4f9fdafcc90abd8b63eef80391aedfc0e394d3c0
 >>>>>>> 0dda442e3d8976cecdac8a100da22ec1fa5f986f
+>>>>>>> 0c176a0f38548d8614e82c5549b8f7deef03ca30
               <folding />
             </state>
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
+<<<<<<< HEAD
+      <file leaf-file-name="pregled.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/AlemProject/App/client/app/user/pregled/pregled.html">
+=======
       <file leaf-file-name="nodemailer.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/AlemProject/FTP/node_modules/nodemailer/lib/nodemailer.js">
+>>>>>>> 0c176a0f38548d8614e82c5549b8f7deef03ca30
           <provider selected="true" editor-type-id="text-editor">
 <<<<<<< HEAD
             <state relative-caret-position="-7117">
@@ -96,6 +141,26 @@
                 <element signature="n#style#0;n#div#0;n#div#1;n#form#0;n#div#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#0;n#div#2;n#form#0;n#div#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#1;n#!!top" expanded="true" />
+=======
+      <file leaf-file-name="multi.pregled.html" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/AlemProject/App/client/app/user/multi_pregled/multi.pregled.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="497">
+              <caret line="136" column="0" lean-forward="true" selection-start-line="136" selection-start-column="0" selection-end-line="136" selection-end-column="0" />
+              <folding>
+                <element signature="n#style#0;n#form#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#form#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#button#0;n#div#0;n#div#0;n#form#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#select#0;n#div#1;n#div#0;n#form#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#button#0;n#div#1;n#div#0;n#form#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#button#0;n#div#2;n#div#0;n#form#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#select#0;n#div#3;n#div#0;n#form#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#button#0;n#div#3;n#div#0;n#form#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#4;n#div#0;n#form#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#div#0;n#div#4;n#div#0;n#form#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#div#1;n#div#4;n#div#0;n#form#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#button#0;n#div#2;n#div#4;n#div#0;n#form#0;n#div#0;n#!!top" expanded="true" />
+>>>>>>> 4f44fa9dc3a40a3bacdf2f33a0aef21ec088da17
               </folding>
 >>>>>>> 0dda442e3d8976cecdac8a100da22ec1fa5f986f
             </state>
@@ -180,8 +245,6 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/AlemProject/App/client/app/graph_box/graph.controller.js" />
-        <option value="$PROJECT_DIR$/AlemProject/App/client/app/user/multi_pregled/multi.pregled.html" />
-        <option value="$PROJECT_DIR$/AlemProject/App/client/app/user/multi_pregled/multi.pregled.controller.js" />
         <option value="$PROJECT_DIR$/AlemProject/App/client/app/user/izvjestaj/izvjestaj.html" />
         <option value="$PROJECT_DIR$/AlemProject/App/client/app/user/izvjestaj/izvjestaj.controller.js" />
         <option value="$PROJECT_DIR$/AlemProject/App/client/app/user/izvjestaj_statistika/izvjestaj.statistika.html" />
@@ -189,6 +252,15 @@
         <option value="$PROJECT_DIR$/AlemProject/App/client/app/user/notifikacije/notifikacije.controller.js" />
         <option value="$APPLICATION_CONFIG_DIR$/consoles/db/d7378ede-249c-4987-87fe-71adaa993aee/console.sql" />
         <option value="$PROJECT_DIR$/AlemProject/App/client/app/mapa/GoogleMaps.js" />
+<<<<<<< HEAD
+<<<<<<< HEAD
+        <option value="$PROJECT_DIR$/AlemProject/App/client/app/user/pregled/pregled.controller.js" />
+        <option value="$PROJECT_DIR$/AlemProject/App/client/app/user/pregled/pregled.html" />
+=======
+        <option value="$PROJECT_DIR$/AlemProject/App/client/app/user/multi_pregled/multi.pregled.controller.js" />
+        <option value="$PROJECT_DIR$/AlemProject/App/client/app/user/multi_pregled/multi.pregled.html" />
+>>>>>>> 4f44fa9dc3a40a3bacdf2f33a0aef21ec088da17
+=======
         <option value="$APPLICATION_CONFIG_DIR$/consoles/db/cadeab11-3263-4fd5-9f86-94134be65d4c/console.sql" />
         <option value="$PROJECT_DIR$/AlemProject/FTP/citanjePodataka.js" />
         <option value="$PROJECT_DIR$/AlemProject/FTP/credsFTP.json" />
@@ -199,6 +271,7 @@
         <option value="$PROJECT_DIR$/AlemProject/FTP/creds.json" />
         <option value="$PROJECT_DIR$/AlemProject/App/server/creds.json" />
         <option value="$PROJECT_DIR$/AlemProject/FTP/start.js" />
+>>>>>>> 0c176a0f38548d8614e82c5549b8f7deef03ca30
       </list>
     </option>
   </component>
@@ -263,7 +336,14 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+<<<<<<< HEAD
+<<<<<<< HEAD
+      <pane id="Scratches" />
+=======
+>>>>>>> 4f44fa9dc3a40a3bacdf2f33a0aef21ec088da17
+=======
       <pane id="PackagesPane" />
+>>>>>>> 0c176a0f38548d8614e82c5549b8f7deef03ca30
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -286,21 +366,89 @@
               <item name="AlemProject" type="b2602c69:ProjectViewProjectNode" />
               <item name="AlemProject" type="462c0819:PsiDirectoryNode" />
               <item name="AlemProject" type="462c0819:PsiDirectoryNode" />
-              <item name="FTP" type="462c0819:PsiDirectoryNode" />
+<<<<<<< HEAD
+              <item name="App" type="462c0819:PsiDirectoryNode" />
+              <item name="client" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="AlemProject" type="b2602c69:ProjectViewProjectNode" />
               <item name="AlemProject" type="462c0819:PsiDirectoryNode" />
               <item name="AlemProject" type="462c0819:PsiDirectoryNode" />
+              <item name="App" type="462c0819:PsiDirectoryNode" />
+              <item name="client" type="462c0819:PsiDirectoryNode" />
+              <item name="app" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="AlemProject" type="b2602c69:ProjectViewProjectNode" />
+              <item name="AlemProject" type="462c0819:PsiDirectoryNode" />
+              <item name="AlemProject" type="462c0819:PsiDirectoryNode" />
+              <item name="App" type="462c0819:PsiDirectoryNode" />
+              <item name="client" type="462c0819:PsiDirectoryNode" />
+              <item name="app" type="462c0819:PsiDirectoryNode" />
+              <item name="user" type="462c0819:PsiDirectoryNode" />
+=======
+              <item name="FTP" type="462c0819:PsiDirectoryNode" />
+>>>>>>> 0c176a0f38548d8614e82c5549b8f7deef03ca30
+            </path>
+            <path>
+              <item name="AlemProject" type="b2602c69:ProjectViewProjectNode" />
+              <item name="AlemProject" type="462c0819:PsiDirectoryNode" />
+              <item name="AlemProject" type="462c0819:PsiDirectoryNode" />
+<<<<<<< HEAD
+              <item name="App" type="462c0819:PsiDirectoryNode" />
+              <item name="client" type="462c0819:PsiDirectoryNode" />
+              <item name="app" type="462c0819:PsiDirectoryNode" />
+              <item name="user" type="462c0819:PsiDirectoryNode" />
+              <item name="multi_pregled" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="AlemProject" type="b2602c69:ProjectViewProjectNode" />
+              <item name="AlemProject" type="462c0819:PsiDirectoryNode" />
+              <item name="AlemProject" type="462c0819:PsiDirectoryNode" />
+              <item name="App" type="462c0819:PsiDirectoryNode" />
+              <item name="client" type="462c0819:PsiDirectoryNode" />
+              <item name="app" type="462c0819:PsiDirectoryNode" />
+              <item name="user" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="AlemProject" type="b2602c69:ProjectViewProjectNode" />
+              <item name="AlemProject" type="462c0819:PsiDirectoryNode" />
+              <item name="AlemProject" type="462c0819:PsiDirectoryNode" />
+              <item name="App" type="462c0819:PsiDirectoryNode" />
+              <item name="client" type="462c0819:PsiDirectoryNode" />
+              <item name="app" type="462c0819:PsiDirectoryNode" />
+              <item name="user" type="462c0819:PsiDirectoryNode" />
+              <item name="pregled" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="AlemProject" type="b2602c69:ProjectViewProjectNode" />
+              <item name="AlemProject" type="462c0819:PsiDirectoryNode" />
+              <item name="AlemProject" type="462c0819:PsiDirectoryNode" />
+              <item name="App" type="462c0819:PsiDirectoryNode" />
+              <item name="e2e" type="462c0819:PsiDirectoryNode" />
+=======
               <item name="Izvjestaj" type="462c0819:PsiDirectoryNode" />
+>>>>>>> 0c176a0f38548d8614e82c5549b8f7deef03ca30
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+<<<<<<< HEAD
+      <pane id="PackagesPane" />
+<<<<<<< HEAD
+      <pane id="AndroidView" />
+      <pane id="Scope" />
+=======
+      <pane id="Scope" />
+      <pane id="AndroidView" />
+      <pane id="Scratches" />
+>>>>>>> 4f44fa9dc3a40a3bacdf2f33a0aef21ec088da17
+=======
       <pane id="AndroidView" />
       <pane id="Scope" />
       <pane id="Scratches" />
+>>>>>>> 0c176a0f38548d8614e82c5549b8f7deef03ca30
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -310,8 +458,12 @@
     <property name="last_opened_file_path" value="$USER_HOME$/Desktop/csv2mis" />
     <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file://C:/Users/IRMA/Documents/AlemProject/AlemProject/Izvjestaj/creds.json&#10;creds&#9;FILE&#9;file://C:/Users/IRMA/Documents/AlemProject/AlemProject/FTP/creds.json&#10;graphc&#9;null&#9;null&#10;notifika&#9;null&#9;null&#10;models&#9;FILE&#9;file://C:/Users/IRMA/Documents/AlemProject/AlemProject/App/client/bower_components/angular-bootstrap-datetimepicker/test/model/modelType.spec.js&#10;package&#9;ACTION&#9;NewDir&#10;start&#9;FILE&#9;file://C:/Users/IRMA/Documents/AlemProject/AlemProject/FTP/start.js&#10;port&#9;FILE&#9;file://C:/Users/IRMA/Documents/AlemProject/AlemProject/App/node_modules/relateurl/lib/parse/port.js&#10;port:&#9;null&#9;null&#10;izvje&#9;FILE&#9;file://C:/Users/IRMA/Documents/AlemProject/AlemProject/Izvjestaj/izvjestaj.dnevni.js&#10;citanje&#9;FILE&#9;file://C:/Users/IRMA/Documents/AlemProject/AlemProject/FTP/citanjePodataka.js&#10;cr&#9;FILE&#9;file://C:/Users/IRMA/Documents/AlemProject/AlemProject/FTP/creds.json&#10;dbc&#9;null&#9;null&#10;package.json&#9;FILE&#9;file://C:/Users/IRMA/Documents/AlemProject/AlemProject/App/package.json&#10;noti&#9;FILE&#9;file://C:/Users/IRMA/Documents/AlemProject/AlemProject/App/client/app/user/notifikacije/notifikacije.controller.js&#10;cred&#9;FILE&#9;file://C:/Users/IRMA/Documents/AlemProject/AlemProject/FTP/credsFTP.json&#10;sequ&#9;null&#9;null&#10;creds.json&#9;FILE&#9;file://C:/Users/IRMA/Documents/AlemProject/AlemProject/App/server/creds.json&#10;creds.jso&#9;FILE&#9;file://C:/Users/IRMA/Documents/AlemProject/AlemProject/FTP/creds.json&#10;graph&#9;null&#9;null" />
     <property name="com.intellij.database.dataSource.DataSourceTemplate" value="MySQL" />
+<<<<<<< HEAD
+    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
+=======
     <property name="settings.editor.selected.configurable" value="vcs.Git" />
     <property name="restartRequiresConfirmation" value="false" />
+>>>>>>> 0c176a0f38548d8614e82c5549b8f7deef03ca30
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -444,16 +596,29 @@
 =======
       <workItem from="1516781031095" duration="11853000" />
 <<<<<<< HEAD
+<<<<<<< HEAD
+      <workItem from="1517829475288" duration="61000" />
+=======
+      <workItem from="1517829113076" duration="218000" />
+>>>>>>> 4f44fa9dc3a40a3bacdf2f33a0aef21ec088da17
+=======
       <workItem from="1517829113076" duration="363000" />
 =======
       <workItem from="1517829475288" duration="61000" />
 >>>>>>> 4f9fdafcc90abd8b63eef80391aedfc0e394d3c0
 >>>>>>> 0dda442e3d8976cecdac8a100da22ec1fa5f986f
+>>>>>>> 0c176a0f38548d8614e82c5549b8f7deef03ca30
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
 <<<<<<< HEAD
+<<<<<<< HEAD
+    <option name="totallyTimeSpent" value="128736000" />
+=======
+    <option name="totallyTimeSpent" value="128893000" />
+>>>>>>> 4f44fa9dc3a40a3bacdf2f33a0aef21ec088da17
+=======
     <option name="totallyTimeSpent" value="186121000" />
 =======
 <<<<<<< HEAD
@@ -462,6 +627,7 @@
     <option name="totallyTimeSpent" value="128736000" />
 >>>>>>> 4f9fdafcc90abd8b63eef80391aedfc0e394d3c0
 >>>>>>> 0dda442e3d8976cecdac8a100da22ec1fa5f986f
+>>>>>>> 0c176a0f38548d8614e82c5549b8f7deef03ca30
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -473,7 +639,15 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
+<<<<<<< HEAD
+<<<<<<< HEAD
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+=======
+    <frame x="-8" y="-8" width="1296" height="1000" extended-state="6" />
+>>>>>>> 4f44fa9dc3a40a3bacdf2f33a0aef21ec088da17
+=======
     <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
+>>>>>>> 0c176a0f38548d8614e82c5549b8f7deef03ca30
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -482,7 +656,12 @@
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+<<<<<<< HEAD
+<<<<<<< HEAD
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32843137" sideWeight="0.505295" order="7" side_tool="true" content_ui="tabs" />
+=======
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.33055556" sideWeight="0.51863754" order="7" side_tool="true" content_ui="tabs" />
+>>>>>>> 0c176a0f38548d8614e82c5549b8f7deef03ca30
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
 <<<<<<< HEAD
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.33055556" sideWeight="0.48136246" order="2" side_tool="false" content_ui="tabs" />
@@ -500,9 +679,24 @@
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Database Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3282313" sideWeight="0.494705" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+<<<<<<< HEAD
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19062027" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+=======
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32949308" sideWeight="0.5105178" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32949308" sideWeight="0.4894822" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.328341" sideWeight="0.49433658" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32916668" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19255663" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+>>>>>>> 4f44fa9dc3a40a3bacdf2f33a0aef21ec088da17
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32969153" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+=======
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1895887" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27956298" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+>>>>>>> 0c176a0f38548d8614e82c5549b8f7deef03ca30
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -576,6 +770,13 @@
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <ignored-roots>
+      <path value="C:\Users\IRMA\Documents\AlemProject\ALEM" />
+      <path value="C:\Users\IRMA\Documents\AlemProject\Praksa" />
+      <path value="C:\Users\IRMA\Documents\AlemProject\Praksa1" />
+    </ignored-roots>
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -670,11 +871,25 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
+<<<<<<< HEAD
+    <entry file="file://$PROJECT_DIR$/AlemProject/App/client/app/user/multi_pregled/multi.pregled.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="19" lean-forward="false" selection-start-line="9" selection-start-column="19" selection-end-line="9" selection-end-column="19" />
+=======
+    <entry file="file://$PROJECT_DIR$/AlemProject/App/client/app/user/pregled/tabelarni.controller.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="22" column="20" lean-forward="false" selection-start-line="22" selection-start-column="20" selection-end-line="22" selection-end-column="20" />
+>>>>>>> 4f44fa9dc3a40a3bacdf2f33a0aef21ec088da17
+=======
     <entry file="file://$PROJECT_DIR$/AlemProject/Izvjestaj/izvjestaj.dnevni.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="81">
           <caret line="55" column="24" lean-forward="true" selection-start-line="55" selection-start-column="24" selection-end-line="55" selection-end-column="24" />
           <folding />
+>>>>>>> 0c176a0f38548d8614e82c5549b8f7deef03ca30
         </state>
       </provider>
     </entry>
@@ -686,6 +901,9 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
+    <entry file="file://$PROJECT_DIR$/AlemProject/App/client/app/user/izvjestaj/izvjestaj.js">
+=======
     <entry file="file://$PROJECT_DIR$/AlemProject/App/server/app.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="265">
@@ -695,6 +913,7 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/AlemProject/App/server/ecosystem.json">
+>>>>>>> 0c176a0f38548d8614e82c5549b8f7deef03ca30
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -832,9 +1051,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/AlemProject/App/client/bower_components/angular-smart-table/package-lock.json">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
+        <state relative-caret-position="374">
+          <caret line="38" column="37" lean-forward="false" selection-start-line="38" selection-start-column="37" selection-end-line="38" selection-end-column="37" />
+=======
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
+>>>>>>> 0c176a0f38548d8614e82c5549b8f7deef03ca30
         </state>
       </provider>
     </entry>
@@ -971,9 +1195,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/AlemProject/FTP/models/index.js">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+<<<<<<< HEAD
+=======
         <state relative-caret-position="159">
           <caret line="65" column="0" lean-forward="false" selection-start-line="65" selection-start-column="0" selection-end-line="65" selection-end-column="0" />
           <folding />
+>>>>>>> 0c176a0f38548d8614e82c5549b8f7deef03ca30
         </state>
       </provider>
     </entry>
@@ -990,6 +1220,8 @@
         <state relative-caret-position="102">
           <caret line="6" column="10" lean-forward="false" selection-start-line="6" selection-start-column="10" selection-end-line="6" selection-end-column="10" />
           <folding />
+=======
+>>>>>>> 4f44fa9dc3a40a3bacdf2f33a0aef21ec088da17
         </state>
       </provider>
     </entry>
@@ -1051,7 +1283,27 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
+    <entry file="file://$PROJECT_DIR$/AlemProject/App/client/app/main/main.controller.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="30" lean-forward="true" selection-start-line="9" selection-start-column="30" selection-end-line="9" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AlemProject/App/client/app/main/main.controller.spec.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AlemProject/FTP/citanjePodataka.js">
+=======
     <entry file="file://$PROJECT_DIR$/AlemProject/FTP/creds.json">
+>>>>>>> 0c176a0f38548d8614e82c5549b8f7deef03ca30
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
           <caret line="5" column="21" lean-forward="false" selection-start-line="5" selection-start-column="21" selection-end-line="5" selection-end-column="21" />
@@ -1059,7 +1311,12 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
+<<<<<<< HEAD
+    <entry file="file://$PROJECT_DIR$/AlemProject/App/client/app/user/pregled/tabelarni.controller.js">
+=======
     <entry file="file://$PROJECT_DIR$/AlemProject/FTP/credsFTP.json">
+>>>>>>> 0c176a0f38548d8614e82c5549b8f7deef03ca30
       <provider selected="true" editor-type-id="text-editor">
 <<<<<<< HEAD
         <state relative-caret-position="34">
@@ -1102,9 +1359,41 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/AlemProject/FTP/start.js">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
+        <state relative-caret-position="326">
+          <caret line="127" column="0" lean-forward="true" selection-start-line="127" selection-start-column="0" selection-end-line="127" selection-end-column="0" />
+=======
+    <entry file="file://$PROJECT_DIR$/AlemProject/App/client/app/user/multi_pregled/multi.pregled.controller.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="497">
+          <caret line="214" column="0" lean-forward="true" selection-start-line="214" selection-start-column="0" selection-end-line="214" selection-end-column="0" />
+>>>>>>> 4f44fa9dc3a40a3bacdf2f33a0aef21ec088da17
+=======
         <state relative-caret-position="204">
           <caret line="45" column="33" lean-forward="true" selection-start-line="45" selection-start-column="33" selection-end-line="45" selection-end-column="33" />
+>>>>>>> 0c176a0f38548d8614e82c5549b8f7deef03ca30
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AlemProject/App/client/app/user/multi_pregled/multi.pregled.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="497">
+          <caret line="136" column="0" lean-forward="true" selection-start-line="136" selection-start-column="0" selection-end-line="136" selection-end-column="0" />
+          <folding>
+            <element signature="n#style#0;n#form#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#form#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#button#0;n#div#0;n#div#0;n#form#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#select#0;n#div#1;n#div#0;n#form#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#button#0;n#div#1;n#div#0;n#form#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#button#0;n#div#2;n#div#0;n#form#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#select#0;n#div#3;n#div#0;n#form#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#button#0;n#div#3;n#div#0;n#form#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#4;n#div#0;n#form#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#0;n#div#4;n#div#0;n#form#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#1;n#div#4;n#div#0;n#form#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#button#0;n#div#2;n#div#4;n#div#0;n#form#0;n#div#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

@@ -39,11 +39,14 @@
       </div>
     </div>
     <button type="submit" class="btn btn-primary btn" type="button" ng-click="osvjezi(pregled.id)">Osvježi</button>
+    <button type="submit" class="btn btn-primary btn" type="button" ng-click="PNG()">PNG</button>
+    <button type="submit" class="btn btn-primary btn" type="button" ng-click="JPG()">JPG</button>
+    <button type="submit" class="btn btn-primary btn" type="button" ng-click="PDF()">PDF</button>
     <br><br>
   </form>
 </div>
 <!-- GRAF -->
 <div class="panel panel-default" style="width: 99%">
   <div class="panel-heading"><label>Pregled vrijednosti po stanicama</label></div>
-  <nvd3 options="options" data="pregled.dnevni"></nvd3>
+  <nvd3 options="options" data="pregled.dnevni" on-ready="callback"></nvd3>
 </div>
