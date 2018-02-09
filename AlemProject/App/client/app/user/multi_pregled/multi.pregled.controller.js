@@ -18,7 +18,6 @@ angular.module('appApp')
     $scope.pocetniDatum='';
     $scope.krajnjiDatum='';
 
-
     //-----------------------------------------------------------------------------------------
     $scope.pregledInit = function(){
       $http.get('/loggedin').then(function (response) {
@@ -195,20 +194,33 @@ angular.module('appApp')
 
     };
 
-    /*
-        $scope.addAlert = function() {
-          $scope.alerts.push({msg: 'Another alert!'});
-        };
-
-        $scope.closeAlert = function(index) {
-          $scope.alerts.splice(index, 1);
-        };
-        */
-
-
 
     //---------------------------------------------------------------------------------------------
+    $scope.callback = function(scope,element){
+      $scope.myChartScope = scope;
+    }
     //---------------------------------------------------------------------------------------------
+
+    $scope.PNG = function () {
+      console.log($scope.myChartScope.svg);
+      console.log($scope.myChartScope.chart);
+      saveSvgAsPng($scope.myChartScope.svg[0][0], "diagram.png", {backgroundColor: "white"});
+    };
+    $scope.JPG = function () {
+      saveSvgAsJpg($scope.myChartScope.svg[0][0], "diagram.jpg", {backgroundColor: "white"});
+    }
+    $scope.PDF = function () {
+      svgAsPngUri($scope.myChartScope.svg[0][0], {backgroundColor: "white"}, function(a){
+        var imgData =a;
+        var doc = new jsPDF();
+        doc.setFontSize(12);
+        doc.text(35, 25, "Izvjestaj");
+        doc.addImage(imgData, 'PNG', 15, 40, 180, 130);
+        doc.save('a4.pdf');
+      });
+
+
+    }
     //-----------------------------------------------------------------------------------------
 
   });

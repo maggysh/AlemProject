@@ -98,6 +98,9 @@ angular.module('appApp')
     };
     //---------------------------------------------------------------------------------------------
     //---------------------------------------------------------------------------------------------
+    $scope.callback = function (scope, element) {
+      $scope.myChartScope = scope;
+    }
     //-----------------------------------------------------------------------------------------
     $scope.open_prije = function($event) {
       $scope.status_prije.opened = true;
@@ -124,4 +127,24 @@ angular.module('appApp')
     $scope.status_poslije = {
       opened: false
     };
+    $scope.PNG = function () {
+      console.log($scope.myChartScope.svg);
+      console.log($scope.myChartScope.chart);
+      saveSvgAsPng($scope.myChartScope.svg[0][0], "diagram.png", {backgroundColor: "white"});
+    }
+    $scope.JPG = function () {
+      saveSvgAsJpg($scope.myChartScope.svg[0][0], "diagram.jpg", {backgroundColor: "white"});
+    }
+    $scope.PDF = function () {
+      svgAsPngUri($scope.myChartScope.svg[0][0], {backgroundColor: "white"}, function (a) {
+        var imgData = a;
+        var doc = new jsPDF();
+        doc.setFontSize(12);
+        doc.text(35, 25,"");
+        doc.addImage(imgData, 'PNG', 15, 40, 180, 130);
+        doc.save('a4.pdf');
+      });
+    }
+
+
   });
