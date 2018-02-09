@@ -15,6 +15,7 @@ angular.module('appApp')
         $scope.info.id = response.data.user.id;
         $http.get('/api/user/link/' + $scope.info.id).then(function(data){
           $scope.pregled.stanice = data.data;
+          console.log($scope.pregled.stanice);
         })
       });
     }
@@ -127,23 +128,37 @@ angular.module('appApp')
     $scope.status_poslije = {
       opened: false
     };
-    $scope.PNG = function () {
-      console.log($scope.myChartScope.svg);
-      console.log($scope.myChartScope.chart);
-      saveSvgAsPng($scope.myChartScope.svg[0][0], "diagram.png", {backgroundColor: "white"});
+
+    function parsirajString(s) {
+      var datum = (s.toString()).split(' ')
+      return ({day:datum[2],month:datum[1],year:datum[3]});
     }
+
+    $scope.PNG = function () {
+      saveSvgAsPng($scope.myChartScope.svg[0][0], "diagram.png", {backgroundColor: "white"});
+    };
     $scope.JPG = function () {
       saveSvgAsJpg($scope.myChartScope.svg[0][0], "diagram.jpg", {backgroundColor: "white"});
     }
     $scope.PDF = function () {
-      svgAsPngUri($scope.myChartScope.svg[0][0], {backgroundColor: "white"}, function (a) {
-        var imgData = a;
+      svgAsPngUri($scope.myChartScope.svg[0][0], {backgroundColor: "white"}, function(a){
+        var imgData =a;
         var doc = new jsPDF();
+        var datumPocetni = parsirajString($scope.pocetniDatum);
+        var datumKrajnji = parsirajString($scope.krajnjiDatum);
         doc.setFontSize(12);
-        doc.text(35, 25,"");
+        doc.text(25, 25, "Prikaz od "+ datumPocetni.day +"." + datumPocetni.month +" " + datumPocetni.year + " do "+ datumKrajnji.day +"." + datumKrajnji.month +" " + datumKrajnji.year );
+        // toStringList($scope.senzori);
+        //doc.text(25, 30, "Za stanice: " + toStringStanice($scope.stanice).tekst);
+        //doc.text(25, 35, "Senzori: " + toStringSenzori($scope.senzori).tekst);
+
+
         doc.addImage(imgData, 'PNG', 15, 40, 180, 130);
         doc.save('a4.pdf');
       });
+
+
+
     }
 
 
