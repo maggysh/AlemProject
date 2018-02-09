@@ -200,10 +200,36 @@ angular.module('appApp')
       $scope.myChartScope = scope;
     }
     //---------------------------------------------------------------------------------------------
+    function parsirajString(s) {
+      var datum = (s.toString()).split(' ')
+      return ({day:datum[2],month:datum[1],year:datum[3]});
+    }
+    function toStringSenzori(lista) {
+      var result='';
+      console.log(lista);
+      for(var i=0; i<lista.length; i++){
+        if(i==lista.length-1)
+          result+=lista[i].tip_senzora;
+        else
+          result+=lista[i].tip_senzora+',';
+      }
+
+      return ({tekst:result});
+    }
+    function toStringStanice(lista) {
+      var result='';
+      console.log(lista);
+      for(var i=0; i<lista.length; i++){
+        if(i==lista.length-1)
+          result+=lista[i].naziv;
+        else
+          result+=lista[i].naziv+',';
+      }
+
+      return ({tekst:result});
+    }
 
     $scope.PNG = function () {
-      console.log($scope.myChartScope.svg);
-      console.log($scope.myChartScope.chart);
       saveSvgAsPng($scope.myChartScope.svg[0][0], "diagram.png", {backgroundColor: "white"});
     };
     $scope.JPG = function () {
@@ -213,8 +239,15 @@ angular.module('appApp')
       svgAsPngUri($scope.myChartScope.svg[0][0], {backgroundColor: "white"}, function(a){
         var imgData =a;
         var doc = new jsPDF();
+        var datumPocetni = parsirajString($scope.pocetniDatum);
+        var datumKrajnji = parsirajString($scope.krajnjiDatum);
         doc.setFontSize(12);
-        doc.text(35, 25, "Izvjestaj");
+        doc.text(25, 25, "Prikaz od "+ datumPocetni.day +"." + datumPocetni.month +" " + datumPocetni.year + " do "+ datumKrajnji.day +"." + datumKrajnji.month +" " + datumKrajnji.year );
+        // toStringList($scope.senzori);
+        doc.text(25, 30, "Za stanice: " + toStringStanice($scope.stanice).tekst);
+        doc.text(25, 35, "Senzori: " + toStringSenzori($scope.senzori).tekst);
+
+
         doc.addImage(imgData, 'PNG', 15, 40, 180, 130);
         doc.save('a4.pdf');
       });
