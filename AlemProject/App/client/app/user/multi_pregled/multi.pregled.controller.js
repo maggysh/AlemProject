@@ -207,9 +207,18 @@ angular.module('appApp')
       saveSvgAsPng($scope.myChartScope.svg[0][0], "diagram.png", {backgroundColor: "white"});
     };
     $scope.JPG = function () {
-
+      saveSvgAsJpg($scope.myChartScope.svg[0][0], "diagram.jpg", {backgroundColor: "white"});
     }
-    $scope.BMP = function () {
+    $scope.PDF = function () {
+      svgAsPngUri($scope.myChartScope.svg[0][0], {backgroundColor: "white"}, function(a){
+        var imgData =a;
+        var doc = new jsPDF();
+        doc.setFontSize(12);
+        doc.text(35, 25, "Izvjestaj");
+        doc.addImage(imgData, 'PNG', 15, 40, 180, 130);
+        doc.save('a4.pdf');
+      });
+
 
     }
     //-----------------------------------------------------------------------------------------
