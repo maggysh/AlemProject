@@ -150,19 +150,16 @@ angular.module('appApp')
       var  csvContent= 'data:text/csv;charset=utf-8,';
       angular.forEach($scope.collection, function(entry, key){
         angular.forEach(entry, function(value, keyy){
-          //console.log(value);
-
-          //if(keyy == 0){
-          //  temp["Datum"] = value;
-          //  }
-          //  else {
-          // temp[$scope.distinctTipSenzora[keyy - 1]] = value;
-          if(keyy < entry.length ){
-            csvContent +=  entry +','+'\r\n';//: value +';'+'\r\n';
-          }//}
+          //if(keyy < entry.length ){
+          for(var i=0;i<entry.length;i++) {
+            //var res=entry.split(' ')
+            if(i==entry.length-1)
+              csvContent+=entry[i]+'\r\n';
+            else
+              csvContent += entry[i] + ',';
+          }
         });
       });
-      //csvContent += value + "\r\n"; // add carriage return
       var encodedUri = encodeURI(csvContent);
       var link = document.createElement("a");
       link.setAttribute("href", encodedUri);

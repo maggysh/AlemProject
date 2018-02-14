@@ -125,13 +125,15 @@ angular.module('appApp')
       var  csvContent= 'data:text/csv;charset=utf-8,';
       angular.forEach($scope.collection, function(entry, key){
         angular.forEach(entry, function(value, keyy){
-          if(keyy < entry.length ){
-            for(var i=0;i<keyy;i++) {
-              //var res=entry.split(' ')
-              if(i==key-1) csvContent+=entry[i]+'\r\n';
-              else csvContent += entry[i] + ',';
-            }
+          //if(keyy < entry.length ){
+          for(var i=0;i<entry.length;i++) {
+            //var res=entry.split(' ')
+            if(i==entry.length-1)
+              csvContent+=entry[i]+'\r\n';
+            else
+              csvContent += entry[i] + ',';
           }
+          //}
         });
       });
       var encodedUri = encodeURI(csvContent);
