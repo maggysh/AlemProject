@@ -50,6 +50,7 @@ angular.module('appApp')
       $http.put('/update/notifikacije', {max: $scope.max, min: $scope.min,
       user: $scope.info.id, senzor: $scope.notifikacije.senzori[$scope.notifikacije.indeks.stanica][$scope.notifikacije.indeks.senzor].id}).then(function(response){
       });
+      alert("Uspješno dodano!");
     }
     //-----------------------------------------------------------------------------------------
     //-----------------------------------------------------------------------------------------
