@@ -4,13 +4,14 @@
 
 
 
+var markers = [];
 
 function initMap() {
 
   function pinColor(color){
     return {
       path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
-      scale: 7, //velicina
+      scale: 10, //velicina
       strokeColor: "black", //boja okvira
       strokeWeight: 1, //debljina okvira
       fillColor: color, //boja unutrasnjosti
@@ -29,7 +30,7 @@ function initMap() {
     //minZoom: 8, //zabrana  zumiranja
     //maxZoom: 12,
     center: {lat: 44.13311, lng: 18.12292},
-    zoom: 9,
+    zoom: 8,
     disableDefaultUI: false, //brisanje ikona za zumiranje//postavljeno da se moze zumirati
   };
 
@@ -79,6 +80,7 @@ function initMap() {
   //iscrtavanje mape
   var map = new google.maps.Map(document.getElementById('interactivemap'), myOptions);
   var infoWindow = new google.maps.InfoWindow();
+  
 
   map.setOptions({styles: styles});
   var geocoder = new google.maps.Geocoder;
@@ -95,20 +97,26 @@ function initMap() {
     }
   });
 
+  var locations = [];
   //funkcije za crtanje markera na osnovu zadanog grada
   function lokacija(geoLat, geoLng, tipStanice, grad, idStanice) {
     var geocoder2 = new google.maps.Geocoder;
     var LatLng = {lat: parseFloat(geoLat), lng: parseFloat(geoLng)};
+    locations.push({lat: parseFloat(geoLat), lng: parseFloat(geoLng)});
     geocoder2.geocode({
       'location': LatLng
     }, function(results, status){
       var color;
       //definisanje boje markera na osnovu tipa stanice
       //console.log(tipStanice);
-      if(tipStanice === 1) color = "#2C4992"; //HS
+     /* if(tipStanice === 1) color = "#2C4992"; //HS
       if(tipStanice === 2) color = "#B4045F"; //MS
       if(tipStanice === 3) color = "#E4E133"; //PS
-      if(tipStanice === 4) color = "#ffffff"; //PS
+      if(tipStanice === 4) color = "#ffffff"; //PS*/
+      if(tipStanice === 1) color = "#FF9347"; //HS
+      if(tipStanice === 2) color = "#FFEC60"; //MS
+      if(tipStanice === 3) color = "#55E0D0"; //PS
+      if(tipStanice === 4) color = "#68BDFF"; //PS
       var tipovi= ["Hidrološka stanica","Padavinska stanica","Meteorološka stanica","Hidrometeorološka stanica"];
       var mark = new google.maps.Marker({
         title: grad,
@@ -117,11 +125,53 @@ function initMap() {
         //position: results[0].geometry.location
         position: LatLng
       });
+      
+      markerClusterOptions = {styles: [{
+        height: 56,
+        url: "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m2.png",
+        width: 56
+        },
+        {
+        height: 56,
+        url: "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m2.png",
+        width: 56
+        },
+        {
+        height: 66,
+        url: "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m2.png",
+        width: 66
+        },
+        {
+        height: 78,
+        url: "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m2.png",
+        width: 78
+        },
+        {
+        height: 90,
+        url: "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m2.png",
+        width: 90
+        }]}
+      markers.push(mark);
+      if(markers.length ==133){
+      var markerCluster = new MarkerClusterer(map, markers,markerClusterOptions);
+      }
+     /*
+
+      for (var i = 0; i < locations.length; i++) {
+        var marker = new google.maps.Marker({
+          position: new google.maps.LatLng(locations[i].lat, locations[i].lng),
+          map: map
+        });
+        markers.push(marker);
+      }*/
+      
+     
 
       mark.addListener('click', function(){
           var string = '<b>' + grad + '</b>' + '<br>';
           
           $.getJSON('/senzor/' + idStanice, function(senzori){
+            console.log(senzori.length);
             senzori.forEach(function (senzor) {
               var details = document.getElementById("senzori");
               details.innerHTML="";
@@ -133,7 +183,7 @@ function initMap() {
                   string += tip.Tip_Senzora + ": ";
                   string += vrijednost.Vrijednost + '<br>';
                   infoWindow.setContent(string);
-                  infoWindow.open(map, mark);
+                 // infoWindow.open(map, mark);
                   var s = document.createElement('div');
                   s.setAttribute("class", "senzor");
                  
@@ -161,10 +211,12 @@ function initMap() {
         var stationName = document.getElementById("stationName");
         stationType.innerHTML=tipovi[tipStanice-1];
         stationName.innerHTML=grad;
-
+        
       });
     });
   };
+
+ 
    // Define the LatLng coordinates for the polygon's path.
    var bosna_coord = [
     {lng: 16.9320049285889, lat: 45.2311248779298}, {lng: 16.9356327056886, lat: 45.2309188842776}, 
@@ -449,214 +501,252 @@ function initMap() {
     { lng: 18.9953670501709, lat: 44.4994964599609}, { lng: 18.9983844757081, lat: 44.5021476745608}, { lng: 18.9997844696045, lat: 44.5038146972657}, { lng: 19.0007762908936, lat: 44.505973815918}, { lng: 19.0021591186524, lat: 44.5105857849122}, { lng: 19.0030689239502, lat: 44.512722015381}, { lng: 19.0069313049316, lat: 44.5174217224122}, { lng: 19.0081214904787, lat: 44.5210494995117}, { lng: 19.0088176727296, lat: 44.5279312133791}, { lng: 19.0094738006592, lat: 44.5465812683108}, { lng: 19.0099830627441, lat: 44.5506362915041}, { lng: 19.0106678009033, lat: 44.5531272888186}, { lng: 19.0118522644044, lat: 44.5552978515626}, { lng: 19.0151767730713, lat: 44.5589065551758}, { lng: 19.0177459716797, lat: 44.5641746520997}, { lng: 19.0191268920899, lat: 44.5663070678713}, { lng: 19.0245056152345, lat: 44.5726852416995}, { lng: 19.0275230407715, lat: 44.5753479003909}, { lng: 19.0289421081544, lat: 44.5769653320312}, { lng: 19.029987335205, lat: 44.5790443420411}, { lng: 19.0329246520997, lat: 44.5865440368652}, { lng: 19.037670135498, lat: 44.5952873229983}, { lng: 19.0445079803468, lat: 44.5991172790528}, { lng: 19.0489768981934, lat: 44.6021003723147}, { lng: 19.0525798797607, lat: 44.6052436828613}, { lng: 19.055986404419, lat: 44.6077537536623}, { lng: 19.0601902008057, lat: 44.6122741699221}, { lng: 19.0712833404542, lat: 44.617286682129}, { lng: 19.0820655822756, lat: 44.6210403442383}, { lng: 19.0855350494385, lat: 44.6232719421389}, { lng: 19.0892181396486, lat: 44.625213623047}, { lng: 19.0916881561279, lat: 44.6268882751467}, { lng: 19.0938301086427, lat: 44.627910614014}, { lng: 19.100440979004, lat: 44.6296768188477}, { lng: 19.1041793823243, lat: 44.6314620971679}, { lng: 19.1064968109132, lat: 44.6322212219241}, { lng: 19.109338760376, lat: 44.6324653625489}, { lng: 19.112201690674, lat: 44.6321334838869}, { lng: 19.1147365570068, lat: 44.6310882568359}, { lng: 19.1156463623047, lat: 44.6302871704104}, { lng: 19.1185245513917, lat: 44.6249504089355}, { lng: 19.1248512268069, lat: 44.6191978454592}, { lng: 19.1307258605957, lat: 44.6153144836429}, { lng: 19.1396427154541, lat: 44.6124000549319}, { lng: 19.1471805572513, lat: 44.607418060303}, { lng: 19.1514930725099, lat: 44.6035919189456}, { lng: 19.1528663635254, lat: 44.6019744873049}, { lng: 19.1537971496582, lat: 44.5999641418457}, { lng: 19.1555690765381, lat: 44.5944366455081}, { lng: 19.1538753509521, lat: 44.5884704589844}, { lng: 19.1532402038574, lat: 44.5847778320314}, { lng: 19.1533088684083, lat: 44.5809555053713}, { lng: 19.1540088653565, lat: 44.5786590576174}, { lng: 19.1553688049319, lat: 44.576919555664}, { lng: 19.1604690551758, lat: 44.5726127624513}, { lng: 19.1640300750733, lat: 44.5705375671387}, { lng: 19.1660919189453, lat: 44.5690536499026}
   ];
 
+  var fill_opacity = 0.45;
+  var fill_color= "#58C1E9";
+  var stroke_color= "#000000";
+
   // Construct the polygon.
   var bosna = new google.maps.Polygon({
     paths: bosna_coord,
-    strokeColor: '#FF0000',
+    strokeColor: stroke_color,
     strokeOpacity: 0.8,
     strokeWeight: 2,
-    fillColor: '#FF0000',
-    fillOpacity: 0.35
+    fillColor: fill_color,
+    fillOpacity: fill_opacity
   });
-  //bosna.setMap(map);
+ // bosna.setMap(map);
 
   var brcko = new google.maps.Polygon({
     paths: brcko_coord,
-    strokeColor: '#FF0000',
+    strokeColor: stroke_color,
     strokeOpacity: 0.8,
     strokeWeight: 2,
-    fillColor: '#FF0000',
-    fillOpacity: 0.35
+    fillColor: fill_color,
+    fillOpacity: fill_opacity
   });
   brcko.setMap(map);
 
   var podrinje = new google.maps.Polygon({
     paths: podrinje_coord,
-    strokeColor: '#FF0000',
+    strokeColor: stroke_color,
     strokeOpacity: 0.8,
     strokeWeight: 2,
-    fillColor: '#FF0000',
-    fillOpacity: 0.35
+    fillColor: fill_color,
+    fillOpacity: fill_opacity
   });
   podrinje.setMap(map);
 
   var canton10 = new google.maps.Polygon({
     paths: canton10_coord,
-    strokeColor: '#FF0000',
+    strokeColor: stroke_color,
     strokeOpacity: 0.8,
     strokeWeight: 2,
-    fillColor: '#FF0000',
-    fillOpacity: 0.35
+    fillColor: fill_color,
+    fillOpacity: fill_opacity
   });
   canton10.setMap(map);
 
   var centralnaBiH = new google.maps.Polygon({
     paths: centralnaBiH_coord,
-    strokeColor: '#FF0000',
+    strokeColor: stroke_color,
     strokeOpacity: 0.8,
     strokeWeight: 2,
-    fillColor: '#FF0000',
-    fillOpacity: 0.35
+    fillColor: fill_color,
+    fillOpacity: fill_opacity
   });
   centralnaBiH.setMap(map);
 
   var neretvaHercegovina = new google.maps.Polygon({
     paths: neretvaHercegovina_coord,
-    strokeColor: '#FF0000',
+    strokeColor: stroke_color,
     strokeOpacity: 0.8,
     strokeWeight: 2,
-    fillColor: '#FF0000',
-    fillOpacity: 0.35
+    fillColor: fill_color,
+    fillOpacity: fill_opacity
   });
   neretvaHercegovina.setMap(map);
 
   var posavina = new google.maps.Polygon({
     paths: posavina_coord,
-    strokeColor: '#FF0000',
+    strokeColor: stroke_color,
     strokeOpacity: 0.8,
     strokeWeight: 2,
-    fillColor: '#FF0000',
-    fillOpacity: 0.35
+    fillColor: fill_color,
+    fillOpacity: fill_opacity
   });
   posavina.setMap(map);
 
   var sarajevo = new google.maps.Polygon({
     paths: sarajevo_coord,
-    strokeColor: '#FF0000',
+    strokeColor: stroke_color,
     strokeOpacity: 0.8,
     strokeWeight: 2,
-    fillColor: '#FF0000',
-    fillOpacity: 0.35
+    fillColor: fill_color,
+    fillOpacity: fill_opacity
   });
   sarajevo.setMap(map);
 
   var tuzla = new google.maps.Polygon({
     paths: tuzla_coord,
-    strokeColor: '#FF0000',
+    strokeColor: stroke_color,
     strokeOpacity: 0.8,
     strokeWeight: 2,
-    fillColor: '#FF0000',
-    fillOpacity: 0.35
+    fillColor: fill_color,
+    fillOpacity: fill_opacity
   });
   tuzla.setMap(map);
 
   var unaSana = new google.maps.Polygon({
     paths: unaSana_coord,
-    strokeColor: '#FF0000',
+    strokeColor: stroke_color,
     strokeOpacity: 0.8,
     strokeWeight: 2,
-    fillColor: '#FF0000',
-    fillOpacity: 0.35
+    fillColor: fill_color,
+    fillOpacity: fill_opacity
   });
   unaSana.setMap(map);
 
   var zapadnaHercegovina = new google.maps.Polygon({
     paths: zapadnaHercegovina_coord,
-    strokeColor: '#FF0000',
+    strokeColor: stroke_color,
     strokeOpacity: 0.8,
     strokeWeight: 2,
-    fillColor: '#FF0000',
-    fillOpacity: 0.35
+    fillColor: fill_color,
+    fillOpacity: fill_opacity
   });
   zapadnaHercegovina.setMap(map);
 
   var zenicaDoboj = new google.maps.Polygon({
     paths: zenicaDoboj_coord,
-    strokeColor: '#FF0000',
+    strokeColor: stroke_color,
     strokeOpacity: 0.8,
     strokeWeight: 2,
-    fillColor: '#FF0000',
-    fillOpacity: 0.35
+    fillColor: fill_color,
+    fillOpacity: fill_opacity
   });
   zenicaDoboj.setMap(map);
 
   var banjaLuka = new google.maps.Polygon({
     paths: banjaLuka_coord,
-    strokeColor: '#FF0000',
+    strokeColor: stroke_color,
     strokeOpacity: 0.8,
     strokeWeight: 2,
-    fillColor: '#FF0000',
-    fillOpacity: 0.35
+    fillColor: fill_color,
+    fillOpacity: fill_opacity
   });
   banjaLuka.setMap(map);
 
   var bijeljina = new google.maps.Polygon({
     paths: bijeljina_coord,
-    strokeColor: '#FF0000',
+    strokeColor: stroke_color,
     strokeOpacity: 0.8,
     strokeWeight: 2,
-    fillColor: '#FF0000',
-    fillOpacity: 0.35
+    fillColor: fill_color,
+    fillOpacity: fill_opacity
   });
   bijeljina.setMap(map);
 
   var doboj = new google.maps.Polygon({
     paths: doboj_coord,
-    strokeColor: '#FF0000',
+    strokeColor: stroke_color,
     strokeOpacity: 0.8,
     strokeWeight: 2,
-    fillColor: '#FF0000',
-    fillOpacity: 0.35
+    fillColor: fill_color,
+    fillOpacity: fill_opacity
   });
   doboj.setMap(map);
 
   var foca = new google.maps.Polygon({
     paths: foca_coord,
-    strokeColor: '#FF0000',
+    strokeColor: stroke_color,
     strokeOpacity: 0.8,
     strokeWeight: 2,
-    fillColor: '#FF0000',
-    fillOpacity: 0.35
+    fillColor: fill_color,
+    fillOpacity: fill_opacity
   });
   foca.setMap(map);
 
   var istocnoSarajevo = new google.maps.Polygon({
-    paths: istocnoSarajevo_coord,
-    strokeColor: '#FF0000',
+    paths: [istocnoSarajevo_coord,istocnoSarajevo2_coord],
+    strokeColor: stroke_color,
     strokeOpacity: 0.8,
     strokeWeight: 2,
-    fillColor: '#FF0000',
-    fillOpacity: 0.35
+    fillColor: fill_color,
+    fillOpacity: fill_opacity
   });
   istocnoSarajevo.setMap(map);
-
+/*
   var istocnoSarajevo2 = new google.maps.Polygon({
     paths: istocnoSarajevo2_coord,
-    strokeColor: '#FF0000',
+    strokeColor: stroke_color,
     strokeOpacity: 0.8,
     strokeWeight: 2,
-    fillColor: '#FF0000',
-    fillOpacity: 0.35
+    fillColor: fill_color,
+    fillOpacity: fill_opacity
   });
-  istocnoSarajevo2.setMap(map);
+  istocnoSarajevo2.setMap(map);*/
 
   var trebinje = new google.maps.Polygon({
     paths: trebinje_coord,
-    strokeColor: '#FF0000',
+    strokeColor: stroke_color,
     strokeOpacity: 0.8,
     strokeWeight: 2,
-    fillColor: '#FF0000',
-    fillOpacity: 0.35
+    fillColor: fill_color,
+    fillOpacity: fill_opacity
   });
   trebinje.setMap(map);
 
   var vlasenica = new google.maps.Polygon({
     paths: vlasenica_coord,
-    strokeColor: '#FF0000',
+    strokeColor: stroke_color,
     strokeOpacity: 0.8,
     strokeWeight: 2,
-    fillColor: '#FF0000',
-    fillOpacity: 0.35
+    fillColor: fill_color,
+    fillOpacity: fill_opacity
   });
   vlasenica.setMap(map);
+
+  regioni= [brcko, podrinje, canton10, centralnaBiH, neretvaHercegovina, posavina, sarajevo, tuzla, unaSana, zapadnaHercegovina, zenicaDoboj, banjaLuka, bijeljina, doboj, foca, trebinje, vlasenica,istocnoSarajevo];
+// boje = ["#58E9C1","#7feaff","#65cca9","#7fff94", "#00FF7F", "#4DFFA5", "#65cca9", "#4DFFA5", "#44D2E9","#45BDF6","#38B2FD","#31A1F2", "#428DFF","#58E9C1","#56E8C6","#58E9CC","#58C1E9"]
+
+  for(var i =0; i<regioni.length; i++){
+
+    google.maps.event.addListener(regioni[i],"mouseover",function(){
+      this.setOptions({fillColor: "#cff0fd", strokeColor: "#ffffff"});
+    }); 
+    google.maps.event.addListener(regioni[i],"mouseout",function(){
+         this.setOptions({fillColor: fill_color , strokeColor:stroke_color});
+    });
+  }
+/*
+  regioni.forEach(region => {
+    google.maps.event.addListener(region,"mouseover",function(){
+      this.setOptions({fillColor: "#CC6633", strokeColor: "#CC6633"});
+     }); 
+     
+     google.maps.event.addListener(region,"mouseout",function(){
+
+       this.setOptions({fillColor:"#CC6633" , strokeColor:"#CC6633" });
+     });
+  });*/
+  
+
 
   $.getJSON('/stanica', function(stanica){
       stanica.forEach(function(value){
         lokacija(value.Geo_sirina, value.Geo_duzina, value.TipStaniceId, value.Naziv, value.id);
+        
       })
+     
+  
+     
   });
 
-  /*
+
+
+ 
+  };
+    /*
   var bosna = [
     {lat: 16.9320049285889, lng: 45.2311248779298}, {lat: 16.9356327056886, lng: 45.2309188842776}, 
     {lat: 16.9464874267578, lng: 45.2315521240236}, {lat: 16.9474792480469, lng: 45.2316093444824},
@@ -749,7 +839,7 @@ function initMap() {
   });
   region.setMap(map);*/
 
-};
+
 /*
 var bosna = [
   {lat: 16.9320, lng: 45.2311},
