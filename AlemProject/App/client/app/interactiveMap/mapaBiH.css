@@ -27,7 +27,7 @@
   font-size: 1.5em;
 }
 #stationName{
-  background: #4f5d73;
+  background: #128ecc;
   width: 100%;
   text-align: center;
   color: white;
@@ -80,12 +80,12 @@ hr {
   height:140px; 
 }
 
-.panel{
+#legenda{
   position: absolute;
   bottom: 0;
   width: 100%;
   margin: 0;
-}
+} 
 #circle {
   background: #FF9347;
   width: 25px;
