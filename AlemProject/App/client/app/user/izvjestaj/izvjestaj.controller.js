@@ -143,7 +143,44 @@ angular.module('appApp')
       link.click();
     };
 
-
+    $scope.printIt3 = function(){
+      
+        console.log("scope ",$scope.collection);
+        var data = [];
+        console.log("data",data);
+        var temp={};
+        console.log("scople colleciton",$scope.collection);
+        
+        var xmltext="<data>";
+        angular.forEach($scope.collection, function(entry, key){
+          var podatak="<entry>";
+  
+  
+          for(var i=0; i<entry.length; i++){
+           var tag = "Datum"
+           if(i>0)tag=($scope.distinctTipSenzora[i-1]).replace(/ž/g, "z");
+           tag=(tag).replace(/ /g,"");
+       
+           var p ="<"+tag+">"+entry[i]+"</"+tag+">";
+           podatak+=p;
+          }
+          podatak+="</entry>";
+          xmltext+=podatak;
+        });
+        xmltext+="</data>";
+        var pom = document.createElement('a');
+        
+        var filename = "file.xml";
+        var pom = document.createElement('a');
+        var bb = new Blob([xmltext], {type: 'text/plain'});
+        
+        pom.setAttribute('href', window.URL.createObjectURL(bb));
+        pom.setAttribute('download', filename);
+        
+        pom.dataset.downloadurl = ['text/plain', pom.download, pom.href].join(':');
+        pom.click();
+  
+    };
 
     /*$scope.convertArrayOfObjectsToCSV=function() {
       var result, ctr, keys, data;
