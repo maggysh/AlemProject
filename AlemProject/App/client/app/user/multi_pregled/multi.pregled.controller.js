@@ -17,7 +17,7 @@ angular.module('appApp')
     $scope.stanice= [];
     $scope.pocetniDatum='';
     $scope.krajnjiDatum='';
-
+    $scope.newline=0;
     //-----------------------------------------------------------------------------------------
     $scope.pregledInit = function(){
       $http.get('/loggedin').then(function (response) {
@@ -194,7 +194,7 @@ angular.module('appApp')
 
     };
 
-
+    
     //---------------------------------------------------------------------------------------------
     $scope.callback = function(scope,element){
       $scope.myChartScope = scope;
@@ -219,13 +219,20 @@ angular.module('appApp')
     function toStringStanice(lista) {
       var result='';
       console.log(lista);
+      var linija="";
       for(var i=0; i<lista.length; i++){
+       
+        if(linija.length>35){
+          result+=linija+'\r\n';
+          linija="";
+          $scope.newline+=7;
+        }
         if(i==lista.length-1)
-          result+=lista[i].naziv;
+          linija+=lista[i].naziv;
         else
-          result+=lista[i].naziv+',';
+          linija+=lista[i].naziv+',';
       }
-
+      result+=linija
       return ({tekst:result});
     }
 
@@ -244,11 +251,14 @@ angular.module('appApp')
         doc.setFontSize(12);
         doc.text(25, 25, "Prikaz od "+ datumPocetni.day +"." + datumPocetni.month +" " + datumPocetni.year + " do "+ datumKrajnji.day +"." + datumKrajnji.month +" " + datumKrajnji.year );
         // toStringList($scope.senzori);
+        
         doc.text(25, 30, "Za stanice: " + toStringStanice($scope.stanice).tekst);
-        doc.text(25, 35, "Senzori: " + toStringSenzori($scope.senzori).tekst);
+        //doc.text(25, 35+$scope.newline, "Senzori: " + toStringSenzori($scope.senzori).tekst);
+
+        doc.text(25, 35+$scope.newline, "Senzori: " + toStringSenzori($scope.senzori).tekst);
 
 
-        doc.addImage(imgData, 'PNG', 15, 40, 180, 130);
+        doc.addImage(imgData, 'PNG', 15, 40+$scope.newline, 180, 130);
         doc.save('a4.pdf');
       });
 
