@@ -17,14 +17,13 @@ var smtpTransport = mailer.createTransport("SMTP",{
 
 
 fsmonitor.watch('files', null, function(change){
-    console.log("Added files:    %j", change.addedFiles);
     if(change.addedFiles.length>0){
         async.forEachOf(change.addedFiles, function(file){
             doMagic(file);
         })
     }
 });
-
+var isMISfile=false;
 function doMagic(fileName){
 
     async.waterfall([
@@ -36,11 +35,14 @@ function doMagic(fileName){
         function(callback){
             console.log("Ucitavanje file-a");
             var fileNamePath = 'files/' + fileName;
-            var file = fs.readFileSync(fileNamePath, "utf8");
+            if(fileName.indexOf(".MIS")==-1) isMISfile=false;
+            else{
+                var file = fs.readFileSync(fileNamePath, "utf8");
 
-            setTimeout(function() {
-                callback(null, file);
-            }, 2000);
+                setTimeout(function() {
+                    callback(null, file);
+                }, 2000);
+            }
         },
 
         function(arg1, callback){
