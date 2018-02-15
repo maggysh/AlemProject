@@ -3,7 +3,7 @@
  */
 
 
-
+var brojStanica=0;
 var markers = [];
 
 function initMap() {
@@ -152,7 +152,7 @@ function initMap() {
         width: 90
         }]}
       markers.push(mark);
-      if(markers.length ==133){
+      if(markers.length ==brojStanica){
       var markerCluster = new MarkerClusterer(map, markers,markerClusterOptions);
       }
      /*
@@ -733,6 +733,8 @@ function initMap() {
 
 
   $.getJSON('/stanica', function(stanica){
+    brojStanica=stanica.length;
+    console.log(brojStanica);
       stanica.forEach(function(value){
         lokacija(value.Geo_sirina, value.Geo_duzina, value.TipStaniceId, value.Naziv, value.id);
         

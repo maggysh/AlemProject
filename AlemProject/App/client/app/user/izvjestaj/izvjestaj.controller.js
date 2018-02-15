@@ -12,6 +12,7 @@ angular.module('appApp')
     $scope.distinctDatum = [];
     $scope.pocetniDatum='';
     $scope.krajnjiDatum='';
+    $scope.textOption="";
     //---------------------------------------------------------------------------------------------
     $scope.Init = function(){
       $http.get('/loggedin').then(function (response) {
