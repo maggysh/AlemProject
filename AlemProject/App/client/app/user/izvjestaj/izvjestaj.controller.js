@@ -161,8 +161,9 @@ angular.module('appApp')
            var tag = "Datum"
            if(i>0)tag=($scope.distinctTipSenzora[i-1]).replace(/ž/g, "z");
            tag=(tag).replace(/ /g,"");
-       
-           var p ="<"+tag+">"+entry[i]+"</"+tag+">";
+           var input = entry[i];
+           if(input==undefined) input="";
+           var p ="<"+tag+">"+input+"</"+tag+">";
            podatak+=p;
           }
           podatak+="</entry>";
@@ -182,6 +183,7 @@ angular.module('appApp')
         pom.click();
   
     };
+
     $scope.printIt4 = function(){
       
       console.log("scope ",$scope.collection);
@@ -195,7 +197,7 @@ angular.module('appApp')
         if(entry[0].id==$scope.pregled.id) filename = entry[0].Naziv.replace(/ /g,"");
       });
       var text = ""
-
+      
       if($scope.textOption=="svi"){
         angular.forEach($scope.collection, function(entry, key){
           var date=entry[0].split(' ');
@@ -234,6 +236,7 @@ angular.module('appApp')
         });
         filename+='_'+$scope.textOption+'.txt';
       }
+      
       var element = document.createElement('a');
       element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
       element.setAttribute('download', filename);
@@ -243,6 +246,7 @@ angular.module('appApp')
       element.click();
     
       document.body.removeChild(element);
+      
   };
     /*$scope.convertArrayOfObjectsToCSV=function() {
       var result, ctr, keys, data;

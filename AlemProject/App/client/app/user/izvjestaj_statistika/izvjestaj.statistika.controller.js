@@ -12,6 +12,7 @@ angular.module('appApp')
     $scope.distinctDatum = [];
     $scope.pocetniDatum='';
     $scope.krajnjiDatum='';
+    $scope.textOption="";
     //---------------------------------------------------------------------------------------------
     $scope.Init = function(){
       $http.get('/loggedin').then(function (response) {
@@ -190,8 +191,9 @@ angular.module('appApp')
            var tag = "Datum"
            if(i>0)tag=($scope.distinctTipSenzora[i-1]).replace(/ž/g, "z");
            tag=(tag).replace(/ /g,"");
-       
-           var p ="<"+tag+">"+entry[i]+"</"+tag+">";
+           var input = entry[i];
+           if(input==undefined) input="";
+           var p ="<"+tag+">"+input+"</"+tag+">";
            podatak+=p;
           }
           podatak+="</entry>";
@@ -211,6 +213,69 @@ angular.module('appApp')
         pom.click();
   
     };
+
+    $scope.printIt4 = function(){
+      
+      console.log("scope ",$scope.collection);
+      var data = [];
+      console.log("data",data);
+      var temp={};
+      console.log("scople colleciton",$scope.collection);
+      
+      var filename="file.txt";
+      angular.forEach($scope.pregled.stanice, function(entry,key){
+        if(entry[0].id==$scope.pregled.id) filename = entry[0].Naziv.replace(/ /g,"");
+      });
+      var text = ""
+
+      if($scope.textOption=="svi"){
+        angular.forEach($scope.collection, function(entry, key){
+          var date=entry[0];
+          var line=date.replace(/\//g, ".") + ';';
+          for(var i=1; i<entry.length-1; i++){
+            if(entry[i]==undefined)line+=';';
+            else line+=entry[i]+';';
+          }
+          if(key<$scope.collection.length-1){
+            if(entry[entry.length-1]==undefined)line+=+'\r\n';
+            else line+=entry[entry.length-1]+'\r\n';
+          }else{
+            if(entry[entry.length-1]!=undefined) line+=entry[entry.length-1];
+          }
+            text+=line;
+        });
+        filename+='_svi_senzori.txt';
+      }else{
+        var index=1;
+        for(var i=0; i<$scope.distinctTipSenzora.length; i++){
+          if($scope.textOption == $scope.distinctTipSenzora[i]) index=i;
+        }
+        console.log($scope.distinctTipSenzora.length);
+
+        angular.forEach($scope.collection, function(entry, key){
+          var date=entry[0];
+          var line=date.replace(/\//g, ".") + ';';
+        
+         if(entry[index+1]==undefined){
+          if(key<$scope.collection.length-1)line+='\r\n';
+         }else{
+          if(key<$scope.collection.length-1)line+=entry[index+1]+'\r\n';
+          else line+=entry[index+1];
+         }
+          text+=line;
+        });
+        filename+='_'+$scope.textOption+'.txt';
+      }
+      var element = document.createElement('a');
+      element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+      element.setAttribute('download', filename);
+      element.style.display = 'none';
+      document.body.appendChild(element);
+    
+      element.click();
+    
+      document.body.removeChild(element);
+  };
     //temp[$scope.distinctTipSenzora[keyy-1]]=value;
     //    csvTemp=$scope.convertArrayOfObjectsToCSV();
     console.log("csv");
