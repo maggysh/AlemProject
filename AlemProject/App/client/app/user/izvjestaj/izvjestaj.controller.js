@@ -95,7 +95,7 @@ angular.module('appApp')
       angular.forEach($scope.collection, function(entry, key){
         var temp = {};
         angular.forEach(entry, function(value, keyy){
-          console.log(value);
+          
           if(keyy == 0){
             temp["Datum"] = value;
           }
@@ -220,7 +220,6 @@ angular.module('appApp')
         for(var i=0; i<$scope.distinctTipSenzora.length; i++){
           if($scope.textOption == $scope.distinctTipSenzora[i]) index=i;
         }
-        console.log($scope.distinctTipSenzora.length);
 
         angular.forEach($scope.collection, function(entry, key){
           var date=entry[0].split(' ');
