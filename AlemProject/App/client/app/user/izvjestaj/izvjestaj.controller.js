@@ -91,7 +91,6 @@ angular.module('appApp')
     $scope.printIt = function(){
 
       var data = [];
-      //var data = $scope.collection.slice();
       angular.forEach($scope.collection, function(entry, key){
         var temp = {};
         angular.forEach(entry, function(value, keyy){
@@ -105,13 +104,106 @@ angular.module('appApp')
         });
         data.push(temp);
       });
+
+      var tabela=[];
+      angular.forEach(data,function(value,key){
+        var object={Datum: value.Datum};
+        angular.forEach($scope.distinctTipSenzora, function(senzor,k){
+          
+          if (senzor in value) object[senzor] =value[senzor];
+          else object[senzor]='';
+        });
+        tabela.push(object);
+      });
+      console.log(tabela);
+      var podaci=[];
+      var splitarray=function (input, spacing)
+      {
+        var output = [];
+        for (var i = 0; i < input.length; i += spacing)
+        {
+            output[output.length] = input.slice(i, i + spacing);
+        }
+        return output;
+      }
+    
+      
+      var grupe= splitarray($scope.distinctTipSenzora,4);
+      
+      var result=[];
+      var columns=[];
+      for(var i=0; i<grupe.length; i++){
+        result.push([]);
+        columns.push([]);
+      }
+      angular.forEach(tabela, function(line,key){
+
+        for(var i=0; i<grupe.length; i++){
+          var obj={Datum:line.Datum};
+          for(var j=0; j<grupe[i].length; j++){
+            obj[grupe[i][j]]=line[grupe[i][j]];
+          }
+          result[i].push(obj); 
+        }
+      });
+      
+      
+      for(var i=0; i<grupe.length; i++){
+        var column={title:"Datum",dataKey:"Datum"};
+        for(var j=0; j<grupe[i].length; j++){
+        columns[i].push(column);
+        var title=grupe[i][j];
+        title=title.replace(/č/g,"c");
+        title=title.replace(/ć/g,"c");
+        title=title.replace(/š/g,"s");
+        title=title.replace(/ž/g,"z");
+        title=title.replace(/đ/g,"dj");
+        column={title:title,dataKey:grupe[i][j]};
+        }
+        columns[i].push(column);
+      }
+
       var fontSize = 9;
       var height = 0;
       var doc = new jsPDF('p', 'pt', 'a4', true);
       doc.setFont("courier", "normal");
       doc.setFontSize(fontSize);
-      doc.text(50,100,"hi table");
-      height = doc.drawTable(data, {xstart:10,ystart:10,tablestart:70,marginleft:50});
+      //doc.text(50,100,"hi table");
+
+      var options = {
+        theme: 'grid',
+        headerStyles: {
+          textColor: [0,0,0],
+          fillColor: false,
+          lineColor: 1,
+          lineWidth: 1,
+        },
+        bodyStyles: {
+          textColor: [0,0,0],
+          lineColor: 1,
+          lineWidth: 1
+        },
+        margin: {top: 60},
+        pageBreak: 'always',
+        addPageContent: data => {
+          let footerStr = " " + doc.internal.getNumberOfPages();
+          if (typeof doc.putTotalPages === 'function') {
+            footerStr = footerStr;
+          }
+          doc.setFontSize(10);
+          doc.text(footerStr, data.settings.margin.left, doc.internal.pageSize.height - 15);
+        }
+      };
+      doc.autoTable(columns[0], result[0], options);
+      options["startY"]= doc.autoTableEndPosY() + 20;
+      for(var i=1; i<result.length; i++){
+        console.log(columns[i]);
+        console.log(result[i]);
+        
+        doc.autoTable(columns[i], result[i], options);
+        //height = doc.drawTable(result[i], {xstart:10,ystart:10,tablestart:70,marginleft:50});
+      }
+
       doc.save("satnica-izvjestaj.pdf");
 
     };
