@@ -151,13 +151,20 @@ angular.module('appApp')
       angular.forEach($scope.collection, function(entry, key){
         angular.forEach(entry, function(value, keyy){
           //if(keyy < entry.length ){
-          for(var i=0;i<entry.length;i++) {
-            //var res=entry.split(' ')
-            if(i==entry.length-1)
-              csvContent+=entry[i]+'\r\n';
-            else
-              csvContent += entry[i] + ';';
-          }
+            for(var i=0;i<entry.length;i++) {
+              if(entry[i]==undefined) csvContent+=' '+';';
+              //var res=entry.split(' ')
+              if(i==entry.length-1) {
+                if (entry[i] == undefined)
+                  csvContent += ' ' + '\r\n';
+                else
+                  csvContent += entry[i] + '\r\n';
+              }
+              else {
+                if(entry[i]==undefined) csvContent+=' '+';';
+                else csvContent += entry[i] + ';';
+              }
+            }
         });
       });
       var encodedUri = encodeURI(csvContent);

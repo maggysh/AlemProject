@@ -118,31 +118,38 @@ angular.module('appApp')
 
     $scope.printIt2 = function(){
       console.log("scope ",$scope.collection);
-      var data = [];
-      console.log("data",data);
-      var temp={};
-      console.log("scope colleciton",$scope.collection);
-      var csvTemp={};
+       var data = [];
+       console.log("data",data);
+       var temp={};
+       console.log("scope colleciton",$scope.collection);
+       var csvTemp={};
       var  csvContent= 'data:text/csv;charset=utf-8,';
       angular.forEach($scope.collection, function(entry, key){
-        angular.forEach(entry, function(value, keyy){
-          //if(keyy < entry.length ){
-          for(var i=0;i<entry.length;i++) {
-            //var res=entry.split(' ')
-            if(i==entry.length-1)
-              csvContent+=entry[i]+'\r\n';
-            else
-              csvContent += entry[i] + ';';
-          }
-          //}
-        });
+      angular.forEach(entry, function(value, keyy){
+           //if(keyy < entry.length ){
+             for(var i=0;i<entry.length;i++) {
+               if(entry[i]==undefined) csvContent+=' '+';';
+               //var res=entry.split(' ')
+               if(i==entry.length-1) {
+                 if (entry[i] == undefined)
+                   csvContent += ' ' + '\r\n';
+                 else
+                   csvContent += entry[i] + '\r\n';
+               }
+               else {
+                 if(entry[i]==undefined) csvContent+=' '+';';
+                 else csvContent += entry[i] + ';';
+               }
+             }
+         //}
       });
-      var encodedUri = encodeURI(csvContent);
-      var link = document.createElement("a");
-      link.setAttribute("href", encodedUri);
-      link.setAttribute("download", "my_data.csv");
-      link.click();
-    };
+    });
+           var encodedUri = encodeURI(csvContent);
+           var link = document.createElement("a");
+           link.setAttribute("href", encodedUri);
+           link.setAttribute("download", "my_data.csv");
+           link.click();
+ };
 
     $scope.printIt3 = function(){
       
