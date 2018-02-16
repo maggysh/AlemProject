@@ -132,7 +132,7 @@ angular.module('appApp')
             if(i==entry.length-1)
               csvContent+=entry[i]+'\r\n';
             else
-              csvContent += entry[i] + ',';
+              csvContent += entry[i] + ';';
           }
           //}
         });
