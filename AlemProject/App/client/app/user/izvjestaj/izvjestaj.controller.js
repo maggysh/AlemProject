@@ -215,32 +215,51 @@ angular.module('appApp')
        var temp={};
        console.log("scope colleciton",$scope.collection);
        var csvTemp={};
-      var  csvContent= 'data:text/csv;charset=utf-8,';
+      var  csvContent= "";//'data:text/csv;charset=utf-8,';
       angular.forEach($scope.collection, function(entry, key){
-      angular.forEach(entry, function(value, keyy){
-           //if(keyy < entry.length ){
-             for(var i=0;i<entry.length;i++) {
-               if(entry[i]==undefined) csvContent+=' '+';';
-               //var res=entry.split(' ')
-               if(i==entry.length-1) {
-                 if (entry[i] == undefined)
-                   csvContent += ' ' + '\r\n';
-                 else
-                   csvContent += entry[i] + '\r\n';
-               }
-               else {
-                 if(entry[i]==undefined) csvContent+=' '+';';
-                 else csvContent += entry[i] + ';';
-               }
-             }
-         //}
+        angular.forEach(entry, function(value, keyy){
+            //if(keyy < entry.length ){
+              for(var i=0;i<entry.length;i++) {
+                if(entry[i]==undefined) csvContent+=' '+';';
+                //var res=entry.split(' ')
+                if(i==entry.length-1) {
+                  if (entry[i] == undefined)
+                    csvContent += ' ' + '\r\n';
+                  else
+                    csvContent += entry[i] + '\r\n';
+                }
+                else {
+                  if(entry[i]==undefined) csvContent+=' '+';';
+                  else csvContent += entry[i] + ';';
+                }
+              }
+          //}
+        });
       });
-    });
-           var encodedUri = encodeURI(csvContent);
-           var link = document.createElement("a");
-           link.setAttribute("href", encodedUri);
-           link.setAttribute("download", "my_data.csv");
-           link.click();
+      var csvData = csvContent;
+      var blob = new Blob([ csvData ], {
+          type : "application/csv;charset=utf-8;"
+      });
+
+      if (window.navigator.msSaveBlob) {
+          // FOR IE BROWSER
+          navigator.msSaveBlob(blob, fileName);
+      } else {
+          // FOR OTHER BROWSERS
+          var link = document.createElement("a");
+          var csvUrl = URL.createObjectURL(blob);
+          link.href = csvUrl;
+          link.style = "visibility:hidden";
+          link.download = "fileName.csv";
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+      }
+          //  var encodedUri = encodeURI(csvContent);
+          //  var link = document.createElement("a");
+          //  link.setAttribute("href", encodedUri);
+          //  link.setAttribute("download", "my_data.csv");
+          //  link.click();
  };
 
     $scope.printIt3 = function(){

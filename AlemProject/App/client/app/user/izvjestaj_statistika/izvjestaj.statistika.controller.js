@@ -239,7 +239,7 @@ angular.module('appApp')
       var temp={};
       console.log("scople colleciton",$scope.collection);
       var csvTemp={};
-      var  csvContent= 'data:text/csv;charset=utf-8,';
+      var  csvContent="";//'data:text/csv;charset=utf-8,';
       angular.forEach($scope.collection, function(entry, key){
         angular.forEach(entry, function(value, keyy){
           //if(keyy < entry.length ){
@@ -259,13 +259,32 @@ angular.module('appApp')
             }
         });
       });
-      var encodedUri = encodeURI(csvContent);
-      var link = document.createElement("a");
-      link.setAttribute("href", encodedUri);
-      link.setAttribute("download", "my_data.csv");
-      // document.body.appendChild(link); // Required for FF
+      var csvData = csvContent;
+      var blob = new Blob([ csvData ], {
+          type : "application/csv;charset=utf-8;"
+      });
 
-      link.click();
+      if (window.navigator.msSaveBlob) {
+          // FOR IE BROWSER
+          navigator.msSaveBlob(blob, fileName);
+      } else {
+          // FOR OTHER BROWSERS
+          var link = document.createElement("a");
+          var csvUrl = URL.createObjectURL(blob);
+          link.href = csvUrl;
+          link.style = "visibility:hidden";
+          link.download = "fileName.csv";
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+      }
+      // var encodedUri = encodeURI(csvContent);
+      // var link = document.createElement("a");
+      // link.setAttribute("href", encodedUri);
+      // link.setAttribute("download", "my_data.csv");
+      // // document.body.appendChild(link); // Required for FF
+
+      // link.click();
 
 
 
