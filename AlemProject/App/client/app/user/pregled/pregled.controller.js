@@ -141,13 +141,18 @@ angular.module('appApp')
       saveSvgAsJpg($scope.myChartScope.svg[0][0], "diagram.jpg", {backgroundColor: "white"});
     }
     $scope.PDF = function () {
+      var  filename= 'charset=utf-8,';
+      filename="file.txt";
+      angular.forEach($scope.pregled.stanice, function(entry,key){
+        if(entry[0].id==$scope.pregled.id) filename = entry[0].Naziv.replace(/ /g," ");
+      });
       svgAsPngUri($scope.myChartScope.svg[0][0], {backgroundColor: "white"}, function(a){
         var imgData =a;
         var doc = new jsPDF();
         var datumPocetni = parsirajString($scope.pocetniDatum);
         var datumKrajnji = parsirajString($scope.krajnjiDatum);
         doc.setFontSize(12);
-        doc.text(25, 25, "Prikaz od "+ datumPocetni.day +"." + datumPocetni.month +" " + datumPocetni.year + " do "+ datumKrajnji.day +"." + datumKrajnji.month +" " + datumKrajnji.year );
+        doc.text(25, 25, "Za " + filename + " prikaz od "+ datumPocetni.day +"." + datumPocetni.month +" " + datumPocetni.year + " do "+ datumKrajnji.day +"." + datumKrajnji.month +" " + datumKrajnji.year );
         // toStringList($scope.senzori);
         //doc.text(25, 30, "Za stanice: " + toStringStanice($scope.stanice).tekst);
         //doc.text(25, 35, "Senzori: " + toStringSenzori($scope.senzori).tekst);
