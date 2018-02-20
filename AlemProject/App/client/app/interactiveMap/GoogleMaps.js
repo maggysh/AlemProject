@@ -99,7 +99,7 @@ function initMap() {
 
   var locations = [];
   //funkcije za crtanje markera na osnovu zadanog grada
-  function lokacija(geoLat, geoLng, tipStanice, grad, idStanice) {
+  function lokacija(geoLat, geoLng, tipStanice, grad, idStanice,dopusteneStanice) {
     var geocoder2 = new google.maps.Geocoder;
     var LatLng = {lat: parseFloat(geoLat), lng: parseFloat(geoLng)};
     locations.push({lat: parseFloat(geoLat), lng: parseFloat(geoLng)});
@@ -170,15 +170,20 @@ function initMap() {
       
 
 
+
       mark.addListener('click', function(){
           var string = '<div style="margin-left:1.3em;display:flex; flex-direction:column; align-items: center; justify-items:center; font-size: 1.1em; "><b>' + grad + '</b>';
+
+
           
+
           $.getJSON('/senzor/' + idStanice, function(senzori){
-            
+
+
             senzori.forEach(function (senzor) {
               var details = document.getElementById("senzori");
               details.innerHTML="";
-              
+
               //tip senzora na osnovu id-a senzora
               $.getJSON('/tipSenzora/' + senzor.TipSenzoraId, function(tip){
                 //vrijednost senzora na osnovu id-a senzora
@@ -186,9 +191,14 @@ function initMap() {
                   //string += tip.Tip_Senzora + ": ";
                   //string += vrijednost.Vrijednost + '<br>';
                   //infoWindow.setContent(string+"<button style='background-color:#128ecc;margin:5px 8px; padding:5px 8px; border: none; color: white;' onclick='openDetails("+idStanice+")'><b>Detaljno</b></button></div>");
-                  
+                  console.log(dopusteneStanice);
+                  console.log(idStanice);
+                  if(dopusteneStanice.indexOf(idStanice)==-1){
+                    infoWindow.setContent(string);
+                  }
+                  else{
                   infoWindow.setContent(string+"<li><a ui-sref='detaljno' href='/stanica/detaljno/"+idStanice+"'>Detaljno</a></li></div>");
-                  
+                  }
                 
                   infoWindow.open(map, mark);
                   var s = document.createElement('div');
@@ -738,20 +748,28 @@ function initMap() {
      });
   });*/
   
+  $.getJSON('/loggedin', function(response){
+    console.log(response);
+      $.getJSON('/api/user/link/'+response.user.id,function(data){
+        var dopustene=[];
+        for(var i=0; i<data.length; i++){
+          dopustene.push(data[i][0].id);
+        }
+        console.log(data);
+    $.getJSON('/stanica', function(stanica){
+      brojStanica=stanica.length;
+      console.log(brojStanica);
 
-
-  $.getJSON('/stanica', function(stanica){
-    brojStanica=stanica.length;
-    console.log(brojStanica);
-      stanica.forEach(function(value){
-        lokacija(value.Geo_sirina, value.Geo_duzina, value.TipStaniceId, value.Naziv, value.id);
-        
-      })
-     
-  
-     
+        stanica.forEach(function(value){
+          lokacija(value.Geo_sirina, value.Geo_duzina, value.TipStaniceId, value.Naziv, value.id,dopustene);
+          
+        })
+      
+    
+      
+    });
   });
-
+});
 
 
  
