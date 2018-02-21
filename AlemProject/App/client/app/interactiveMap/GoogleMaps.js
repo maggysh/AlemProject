@@ -750,26 +750,32 @@ function initMap() {
   
   $.getJSON('/loggedin', function(response){
     console.log(response);
+    if(response.user!=undefined){
       $.getJSON('/api/user/link/'+response.user.id,function(data){
-        var dopustene=[];
-        for(var i=0; i<data.length; i++){
-          dopustene.push(data[i][0].id);
-        }
-        console.log(data);
-    $.getJSON('/stanica', function(stanica){
-      brojStanica=stanica.length;
-      console.log(brojStanica);
+          var dopustene=[];
+          for(var i=0; i<data.length; i++){
+            dopustene.push(data[i][0].id);
+          }
+          console.log(data);
 
+        $.getJSON('/stanica', function(stanica){
+          brojStanica=stanica.length;
+          console.log(brojStanica);
+          stanica.forEach(function(value){
+            lokacija(value.Geo_sirina, value.Geo_duzina, value.TipStaniceId, value.Naziv, value.id,dopustene);        
+          })
+        });
+      });
+    }else{
+      $.getJSON('/stanica', function(stanica){
+        brojStanica=stanica.length;
+        console.log(brojStanica);
         stanica.forEach(function(value){
-          lokacija(value.Geo_sirina, value.Geo_duzina, value.TipStaniceId, value.Naziv, value.id,dopustene);
-          
+          lokacija(value.Geo_sirina, value.Geo_duzina, value.TipStaniceId, value.Naziv, value.id,[]);        
         })
-      
-    
-      
-    });
+      });
+    }
   });
-});
 
 
  
