@@ -197,7 +197,7 @@ function initMap() {
                     infoWindow.setContent(string);
                   }
                   else{
-                  infoWindow.setContent(string+"<li><a ui-sref='detaljno' href='/stanica/detaljno/"+idStanice+"'>Detaljno</a></li></div>");
+                    infoWindow.setContent(string+"<a style='background-color: #128ecc; color:white; padding: 5px 8px;' ui-sref='detaljno' href='/stanica/detaljno/"+idStanice+"'>Detaljno</a></div>");
                   }
                 
                   infoWindow.open(map, mark);
