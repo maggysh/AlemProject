@@ -22,9 +22,14 @@ angular.module('appApp')
       $scope.min = Math.min.apply(Math, $scope.vrijednosti);
       var total = 0;
       angular.forEach($scope.vrijednosti, function(entry, key){
-        total = total + entry;
+        if(entry==undefined) total=total;
+        else
+          total = total + entry;
       });
-      $scope.avg = (total/$scope.vrijednosti.length).toFixed(2);
+      if (total==0) $scope.avg=0;
+      else
+        $scope.avg = (total/$scope.vrijednosti.length).toFixed(2);
+      console.log($scope.avg);
     }, true);
 
     //--------------------------------------------------------
