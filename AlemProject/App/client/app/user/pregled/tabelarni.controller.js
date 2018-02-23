@@ -26,7 +26,7 @@ angular.module('appApp')
         else
           total = total + entry;
       });
-      if (total==0) $scope.avg=0;
+      if (total==0) $scope.avg=undefined;
       else
         $scope.avg = (total/$scope.vrijednosti.length).toFixed(2);
       console.log($scope.avg);
