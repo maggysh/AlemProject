@@ -9,45 +9,97 @@
 
 <div class="panel panel-default" style="width: 99%">
   <div class="panel-heading"><label>Postavljanje parametara za automatsko generisanje izvjestaja</label></div>
-  <form class="form-inline" role="form" style="padding-left:30px; padding-top:2%">
-
-    <div class="form-group" >
-      <select class="form-control" ng-model="pregled.id">
-        <option value="" selected disabled hidden>Odaberite stanicu</option>
-        <option name="stanica" ng-repeat="(key,value) in pregled.stanice" value="{{key}}">{{value.Naziv}}</option>
+  
+  <div style="display:flex; flex-direction:row;">
+    <form  style="padding-left:30px; padding-top:2%; ">
+      <div class="form-group" style="width:15em;">
+        <select class="form-control" ng-model="pregled.id" ng-change="odabranaStanica()">
+          <option value="" selected disabled hidden>Odaberite stanicu</option>
+          <option name="stanica" ng-repeat="(key,value) in pregled.stanice" value="{{key}}">{{value.Naziv}}</option>
+        </select>
+        <button id="saveButton" class="btn btn-primary" style="margin-top:1em; width:100%; visibility:hidden;"  ng-click="novoStanje(pregled.stanice[pregled.id].id)">Spasi promjene</button>
+      </div>
+    </form>
+      <form id="izvjestajDetails" style="display: flex; flex-direction:row; visibility:hidden" >
+        <div style="margin:1em;">
+          <input type="checkbox" ng-model="pregled.stanice[pregled.id].Dnevni" ng-click="dnevniClick()"
+          ng-true-value="'Da'" ng-false-value="'Ne'">
+          <label>Dnevni:</label><br/>
+          <div id= "dnevniDetails" >
+            <div id="dnevniTime" class="input-group" style="width:9em;">
+                <input type="text" class="form-control"  ng-model="DnevniTime" ng-value="DnevniTime">
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-time"></span>
+                </span>
+            </div>
+          </div>
+        </div>
+        <div style="margin:1em;">
+          <input type="checkbox" ng-model="pregled.stanice[pregled.id].Sedmicni" ng-click="sedmicniClick()"
+          ng-true-value="'Da'" ng-false-value="'Ne'">
+          <label>Sedmicni:</label><br/>
+          <div id="sedmicniDetails">
+              <p>Trenutno izvjestaj dolazi: {{SedmicnPodaci}}</p>
+            <select id="sedmicniDay" class="form-control" ng-model="SedmicniDan" >
+                <option value="" selected disabled hidden>{{SedmicniDan}}</option>
+                <option name="weekDay" ng-repeat="day in weekDays" value="{{day.broj}}">{{day.dan}}</option>
+            </select>
+            <div id="sedmicniTime" class="input-group" style="width:9em;">
+                <input type="text" class="form-control" ng-model="SedmicniTime"  ng-value="SedmicniTime">
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-time"></span>
+                </span>
+            </div>
+          </div>
+        </div>
+        <div style="margin:1em;">
+          <input type="checkbox" ng-model=" pregled.stanice[pregled.id].Mjesecni" ng-click="mjesecniClick()"
+          ng-true-value="'Da'" ng-false-value="'Ne'">
+          <label>Mjesecni:</label><br/>
+          <div id="mjesecniDetails">
+              <select id="mjesecniDay" class="form-control" ng-model="MjesecniDan"  >
+                  <option name="monthDay" ng-repeat="day in monthDays" value="{{day}}">{{day}}</option>
+              </select>
+              <div id="mjesecniTime" class="input-group" style="width:9em;">
+                  <input type="text" class="form-control"  ng-model="MjesecniTime" ng-value="MjesecniTime">
+                  <span class="input-group-addon">
+                      <span class="glyphicon glyphicon-time"></span>
+                  </span>
+              </div>
+          </div>
+        </div>
+        
+      </form>
+    </div>
+     <!-- <div class="form-group">
+        <input class="form-control" value="Dnevni: {{pregled.stanice[pregled.id].Dnevni}}" readonly>
+      </div>
+      <div class="form-group">
+        <input class="form-control" value="Sedmicni: {{pregled.stanice[pregled.id].Sedmicni}}" readonly>
+      </div>
+      <div class="form-group">
+        <input class="form-control" value="Mjesecni: {{pregled.stanice[pregled.id].Mjesecni}}" readonly>
+      </div>
+  
+      <select class="form-control" ng-model="dnevni">
+        <option value="" selected disabled hidden>Dnevni</option>
+        <option value="1">Da</option>
+        <option value="0">Ne</option>
       </select>
-    </div>
-    <div class="form-group">
-      <input class="form-control" value="Dnevni: {{pregled.stanice[pregled.id].Dnevni}}" readonly>
-    </div>
-    <div class="form-group">
-      <input class="form-control" value="Sedmicni: {{pregled.stanice[pregled.id].Sedmicni}}" readonly>
-    </div>
-    <div class="form-group">
-      <input class="form-control" value="Mjesecni: {{pregled.stanice[pregled.id].Mjesecni}}" readonly>
-    </div>
-
-    <select class="form-control" ng-model="dnevni">
-      <option value="" selected disabled hidden>Dnevni</option>
-      <option value="1">Da</option>
-      <option value="0">Ne</option>
-    </select>
-
-    <select class="form-control" ng-model="sedmicni">
-      <option value="" selected disabled hidden>Sedmicni</option>
-      <option value="1">Da</option>
-      <option value="0">Ne</option>
-    </select>
-
-    <select class="form-control" ng-model="mjesecni">
-      <option value="" selected disabled hidden>Mjesecni</option>
-      <option value="1">Da</option>
-      <option value="0">Ne</option>
-    </select>
-
-    <button type="submit" class="btn btn-primary btn" type="button" ng-click="novoStanje(pregled.stanice[pregled.id].id)">Spasi promjene</button>
-
-  </form><br><br>
+  
+      <select class="form-control" ng-model="sedmicni">
+        <option value="" selected disabled hidden>Sedmicni</option>
+        <option value="1">Da</option>
+        <option value="0">Ne</option>
+      </select>
+  
+      <select class="form-control" ng-model="mjesecni">
+        <option value="" selected disabled hidden>Mjesecni</option>
+        <option value="1">Da</option>
+        <option value="0">Ne</option>
+      </select>
+  
+        -->
   <div class="panel-footer"><label></label></div>
 </div>
 
