@@ -26,7 +26,7 @@ angular.module('appApp')
         else
           total = total + entry;
       });
-      if (total==0) $scope.avg=undefined;
+      if ($scope.min==Infinity || $scope.max==Infinity) $scope.avg=undefined;
       else
         $scope.avg = (total/$scope.vrijednosti.length).toFixed(2);
       console.log($scope.avg);
@@ -244,7 +244,7 @@ angular.module('appApp')
                  if (value && value.trim().length > 0  && !findItemWithValue(distinctItems, value)) { //----------------------------
                    distinctItems.push({
                      value: value,
-                     selected: true
+                     selected: false
                    });
                  }
                }
