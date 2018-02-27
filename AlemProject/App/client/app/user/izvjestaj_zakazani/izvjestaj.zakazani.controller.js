@@ -21,7 +21,9 @@ angular.module('appApp')
     $scope.SedmicniDan="";
     $scope.MjesecniDan="";
 
-    $scope.SedmicniPodaci="U pet ppopodne";
+    $scope.TrenutniDnevni="";
+    $scope.TrenutniSedmicni="";
+    $scope.TrenutniMjesecni="";
     
     //---------------------------------------------------------------------------------------------
     $scope.Init = function(){
@@ -30,7 +32,6 @@ angular.module('appApp')
         $scope.info.id = response.data.user.id;
         $http.get('/api/user/izvjestaj/automatski/' + $scope.info.id).then(function(data){
           $scope.pregled.stanice = data.data;
-          console.log($scope.pregled.stanice);
         })
       });
     };
@@ -78,23 +79,15 @@ angular.module('appApp')
       mjesecniValue : true
     };
     $scope.odabranaStanica = function(){
-      console.log($scope.SedmicniDan);
       if($scope.i==0) $scope.i++;
       else if($scope.i==1){
         $scope.clicked=true;
         document.getElementById("saveButton").style.visibility="visible";
         document.getElementById("izvjestajDetails").style.visibility="visible";
-        $scope.SedmicniDan=$scope.pregled.stanice[$scope.pregled.id].SedmicniDan;
-        $scope.MjesecniDan=$scope.pregled.stanice[$scope.pregled.id].MjesecniDan;
-        $scope.DnevniTime=$scope.pregled.stanice[$scope.pregled.id].DnevniTime;
-        $scope.SedmicniTime=$scope.pregled.stanice[$scope.pregled.id].SedmicniTime;
-        $scope.MjesecniTime=$scope.pregled.stanice[$scope.pregled.id].MjesecniTime;
 
-        $scope.dnevniClick();
-        $scope.sedmicniClick();
-        $scope.mjesecniClick();
-      
-      }else{
+        $scope.i++;
+      }
+      if($scope.i >1){
 
       $scope.SedmicniDan=$scope.pregled.stanice[$scope.pregled.id].SedmicniDan;
       $scope.MjesecniDan=$scope.pregled.stanice[$scope.pregled.id].MjesecniDan;
@@ -102,6 +95,14 @@ angular.module('appApp')
       $scope.SedmicniTime=$scope.pregled.stanice[$scope.pregled.id].SedmicniTime;
       $scope.MjesecniTime=$scope.pregled.stanice[$scope.pregled.id].MjesecniTime;
 
+      $scope.TrenutniDnevni=$scope.DnevniTime;
+      // var dan = $scope.weekDays.filter(function( day ) {
+        
+      //   if(day.broj ==$scope.SedmicniDan )
+      //   return day.dan;
+      // });
+      $scope.TrenutniSedmicni=$scope.SedmicniTime + " " + dan ;
+      $scope.TrenutniMjesecni=$scope.MjesecniTime + " " + $scope.MjesecniDan;
       $scope.dnevniClick();
       $scope.sedmicniClick();
       $scope.mjesecniClick();

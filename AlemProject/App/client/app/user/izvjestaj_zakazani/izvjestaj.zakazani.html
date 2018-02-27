@@ -26,6 +26,7 @@
           ng-true-value="'Da'" ng-false-value="'Ne'">
           <label>Dnevni:</label><br/>
           <div id= "dnevniDetails" >
+              <p>Trenutno izvjestaj dolazi: {{TrenutniDnevni}}</p>
             <div id="dnevniTime" class="input-group" style="width:9em;">
                 <input type="text" class="form-control"  ng-model="DnevniTime" ng-value="DnevniTime">
                 <span class="input-group-addon">
@@ -39,7 +40,7 @@
           ng-true-value="'Da'" ng-false-value="'Ne'">
           <label>Sedmicni:</label><br/>
           <div id="sedmicniDetails">
-              <p>Trenutno izvjestaj dolazi: {{SedmicnPodaci}}</p>
+              <p>Trenutno izvjestaj dolazi: {{TrenutniSedmicni}}</p>
             <select id="sedmicniDay" class="form-control" ng-model="SedmicniDan" >
                 <option value="" selected disabled hidden>{{SedmicniDan}}</option>
                 <option name="weekDay" ng-repeat="day in weekDays" value="{{day.broj}}">{{day.dan}}</option>
@@ -57,6 +58,7 @@
           ng-true-value="'Da'" ng-false-value="'Ne'">
           <label>Mjesecni:</label><br/>
           <div id="mjesecniDetails">
+              <p>Trenutno izvjestaj dolazi: {{TrenutniMjesecni}}</p>
               <select id="mjesecniDay" class="form-control" ng-model="MjesecniDan"  >
                   <option name="monthDay" ng-repeat="day in monthDays" value="{{day}}">{{day}}</option>
               </select>
