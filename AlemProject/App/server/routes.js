@@ -12,7 +12,6 @@ var async_ForEach = require('async');
 var fs = require('fs');
 var pdf = require('html-pdf');
 var mailer2 = require("nodemailer");
-var pdfmake = require('pdfmake');
 var path = require('path');
 var CronJob = require('cron').CronJob;
 var svi_izvjestaji = {dnevni:[],sedmicni:[],mjesecni:[]};
