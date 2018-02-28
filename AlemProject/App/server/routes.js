@@ -15,6 +15,7 @@ var path = require('path');
 var CronJob = require('cron').CronJob;
 var svi_izvjestaji = {dnevni:[],sedmicni:[],mjesecni:[]};
 var user_emails = [];
+var Sequelize = require('sequelize');
 
 
 module.exports = function(app, passport){
@@ -76,9 +77,9 @@ module.exports = function(app, passport){
           }
         });
 
-     //   send_email("brgulja.lejla@gmail.com", 13,42,'s');     
-     //   send_email("brgulja.lejla@gmail.com", 13,42,'m'); 
-    //    send_email("brgulja.lejla@gmail.com", 13,42,'d');  
+        //send_email("brgulja.lejla@gmail.com", 13,42,'s');     
+        //send_email("brgulja.lejla@gmail.com", 13,42,'m'); 
+        //send_email("brgulja.lejla@gmail.com", 13,42,'d');  
     
       });
     });
@@ -1096,7 +1097,7 @@ module.exports = function(app, passport){
     });
   });
   //===========================================================================================================
-  // Ruta koja šalje izvještaj na zadani email u određennom formatu sa datim podacima
+  // Funkcija koja šalje izvještaj na zadani email u određennom formatu sa datim podacima
   //===========================================================================================================
 
   var send_email= function(email,userID, stanicaID,type){ // type: 'd'-dnevni,'m'-mjesecni,'s'-sedmicni
@@ -1140,8 +1141,8 @@ module.exports = function(app, passport){
   
         function(arg1, callback){
           var jsonObj = [];
-          async.forEachOf(arg1, function(entry, key, callback){
-            models.vrijednost.findAll({where: {SenzorId: entry.dataValues.id}}).then(function(data){
+          async.forEachOf(arg1, function(entry, key, callback){//izmjena query-a
+            models.vrijednost.findAll({where: [{SenzorId: entry.dataValues.id}, {Datum: {$gte:startDate}}]}).then(function(data){
   
               jsonObj.push({"senzor": entry, "vrijednosti": data});
               callback(null, jsonObj);
