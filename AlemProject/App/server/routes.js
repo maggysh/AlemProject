@@ -8,7 +8,6 @@ var path = require('path');
 var models = require('./models');
 var async = require('async');
 var async_ForEach = require('async');
-
 var fs = require('fs');
 var pdf = require('html-pdf');
 var mailer2 = require("nodemailer");
@@ -16,6 +15,7 @@ var path = require('path');
 var CronJob = require('cron').CronJob;
 var svi_izvjestaji = {dnevni:[],sedmicni:[],mjesecni:[]};
 var user_emails = [];
+
 
 module.exports = function(app, passport){
 
@@ -51,6 +51,19 @@ module.exports = function(app, passport){
   //===========================================================================================================
 
   app.put('/update/izvjestaj', function(req,res){
+
+    console.log({
+      Dnevni: req.body.dnevni,
+      Sedmicni: req.body.sedmicni,
+      Mjesecni: req.body.mjesecni,
+      DnevniTime: req.body.DnevniTime,
+      SedmicniTime: req.body.SedmicniTime,
+      MjesecniTime: req.body.MjesecniTime,
+      SedmicniDan: req.body.SedmicniDan,
+      MjesecniDan: req.body.MjesecniDan
+    });
+
+    console.log(svi_izvjestaji);
 
     var dnevniPostoji=false;
     svi_izvjestaji.dnevni.forEach(izvjestaj => {
@@ -452,7 +465,7 @@ module.exports = function(app, passport){
   //===========================================================================================================
   app.get('/senzor/:id', function(req, res){
     models.senzor.findAll({ where: { StanicaId: req.params.id } }).then(function(senzor){
-      console.log(senzor);//*********************************OBRISAIT
+   //   console.log(senzor);//*********************************OBRISAIT
       res.json(senzor);
     })
   });
@@ -701,22 +714,21 @@ module.exports = function(app, passport){
           async.forEachOf(arg1, function(entry, key, callback){
             models.stanica.findAll({where: {id: entry.dataValues.StanicaId}}).then(function(data){
                 //console.log(data);
-                var a = odredi(entry.dataValues.Dnevni);
-                var b = odredi(entry.dataValues.Sedmicni);
-                var c = odredi(entry.dataValues.Mjesecni);
-                jsonObj.push({
-                  'id': data[0].dataValues.id,
-                  'Naziv': data[0].dataValues.Naziv,
-                  'Kod_stanice': data[0].dataValues.Kod_stanice,
-                  'Dnevni':  a,//entry.dataValues.Dnevni,
-                  'Sedmicni': b,
-                  'Mjesecni': c,
-                  'DnevniTime':entry.dataValues.DnevniTime,
-                  'SedmicniTime':entry.dataValues.SedmicniTime,
-                  'MjesecniTime':entry.dataValues.MjesecniTime,
-                  'SedmicniDan':entry.dataValues.SedmicniDan,
-                  'MjesecniDan':entry.dataValues.MjesecniDan 
-  
+              var a = odredi(entry.dataValues.Dnevni);
+              var b = odredi(entry.dataValues.Sedmicni);
+              var c = odredi(entry.dataValues.Mjesecni);
+              jsonObj.push({
+                'id': data[0].dataValues.id,
+                'Naziv': data[0].dataValues.Naziv,
+                'Kod_stanice': data[0].dataValues.Kod_stanice,
+                'Dnevni':  a,//entry.dataValues.Dnevni,
+                'Sedmicni': b,
+                'Mjesecni': c,
+                'DnevniTime':entry.dataValues.DnevniTime,
+                'SedmicniTime':entry.dataValues.SedmicniTime,
+                'MjesecniTime':entry.dataValues.MjesecniTime,
+                'SedmicniDan':entry.dataValues.SedmicniDan,
+                'MjesecniDan':entry.dataValues.MjesecniDan 
 
               });
               callback(null, jsonObj);
@@ -1000,8 +1012,7 @@ module.exports = function(app, passport){
       res.json(user);
     });
   });
-
- //===========================================================================================================
+  //===========================================================================================================
   // Ruta koja šalje izvještaj na zadani email u određennom formatu sa datim podacima
   //===========================================================================================================
 
@@ -1411,7 +1422,6 @@ var tipoviSenzora_AVG = function (collection) {
     collection = distinctDatum.datumi;
     return {collection:collection, distinctTipSenzora:distinctTipSenzora}
 }
-
 
   //===========================================================================================================
   //================================= OSTALE RUTE =============================================================
