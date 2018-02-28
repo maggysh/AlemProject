@@ -22,11 +22,13 @@
     </form>
       <form id="izvjestajDetails" style="display: flex; flex-direction:row; visibility:hidden" >
         <div style="margin:1em;">
-          <input type="checkbox" ng-model="pregled.stanice[pregled.id].Dnevni" ng-click="dnevniClick()"
-          ng-true-value="'Da'" ng-false-value="'Ne'">
-          <label>Dnevni:</label><br/>
+
+          <label>Dnevni izvještaj:</label><br/>
+          <p>{{TrenutniDnevni}}</p>
+          
+          <button ng-click="buttonDnevni_clicked()"  class="btn btn-primary" >{{ButtonDnevni}}</button><br>
+          <button id="ukloniDnevniButton" style="margin-top: 2px;" ng-click="button_ukloniDnevni_clicked()"  class="btn btn-danger">Ukloni izvještaj</button>
           <div id= "dnevniDetails" >
-              <p>Trenutno izvjestaj dolazi: {{TrenutniDnevni}}</p>
             <div id="dnevniTime" class="input-group" style="width:9em;">
                 <input type="text" class="form-control"  ng-model="DnevniTime" ng-value="DnevniTime">
                 <span class="input-group-addon">
@@ -36,13 +38,12 @@
           </div>
         </div>
         <div style="margin:1em;">
-          <input type="checkbox" ng-model="pregled.stanice[pregled.id].Sedmicni" ng-click="sedmicniClick()"
-          ng-true-value="'Da'" ng-false-value="'Ne'">
-          <label>Sedmicni:</label><br/>
+          <label>Sedmični izvještaj:</label><br/>
+          <p>{{TrenutniSedmicni}}</p>
+          <button ng-click="buttonSedmicni_clicked() " class="btn btn-primary" >{{ButtonSedmicni}}</button>
+          <button id="ukloniSedmicniButton" style="margin-top: 2px;" ng-click="button_ukloniSedmicni_clicked()"  class="btn btn-danger">Ukloni izvještaj</button>
           <div id="sedmicniDetails">
-              <p>Trenutno izvjestaj dolazi: {{TrenutniSedmicni}}</p>
             <select id="sedmicniDay" class="form-control" ng-model="SedmicniDan" >
-                <option value="" selected disabled hidden>{{SedmicniDan}}</option>
                 <option name="weekDay" ng-repeat="day in weekDays" value="{{day.broj}}">{{day.dan}}</option>
             </select>
             <div id="sedmicniTime" class="input-group" style="width:9em;">
@@ -54,11 +55,11 @@
           </div>
         </div>
         <div style="margin:1em;">
-          <input type="checkbox" ng-model=" pregled.stanice[pregled.id].Mjesecni" ng-click="mjesecniClick()"
-          ng-true-value="'Da'" ng-false-value="'Ne'">
-          <label>Mjesecni:</label><br/>
+          <label>Mjesečni izvještaj:</label><br/>
+          <p>{{TrenutniMjesecni}}</p>
+          <button ng-click="buttonMjesecni_clicked()" class="btn btn-primary" >{{ButtonMjesecni}}</button>
+          <button id="ukloniMjesecniButton" style="margin-top: 2px;" ng-click="button_ukloniMjesecni_clicked()"  class="btn btn-danger">Ukloni izvještaj</button>
           <div id="mjesecniDetails">
-              <p>Trenutno izvjestaj dolazi: {{TrenutniMjesecni}}</p>
               <select id="mjesecniDay" class="form-control" ng-model="MjesecniDan"  >
                   <option name="monthDay" ng-repeat="day in monthDays" value="{{day}}">{{day}}</option>
               </select>

@@ -19,6 +19,74 @@ var user_emails = [];
 
 module.exports = function(app, passport){
 
+  //app.post('/proba',function(req, res){
+    models.user_stanica.findAll()
+    .then(function(raspored_izvjestaja){
+      models.user.findAll().then(function(users){
+        
+        users.forEach(user => {
+          user_emails.push({id:user.id, email:user.email });
+        });
+        raspored_izvjestaja.forEach(instanca => {
+          var email = user_emails.filter(function( obj ) {
+            if(obj.id == instanca.UserId)
+            return obj.email;
+          });
+          if(instanca.Dnevni==true){
+            var cronTime = "00 "+instanca.DnevniTime.split(':')[1]+" "+instanca.DnevniTime.split(':')[0] + " * * *";
+            var job=new CronJob({
+              //sekunde minute sati dan_u_mjesecu(1-31) mjesec(0-11) dan_u_sedmici(0-6)(Sun-Sat)
+              cronTime: cronTime,
+              onTick: function() {   
+                send_email(email,instanca.UserId,stanicaID,'d');        
+              },
+              start: false,
+              timeZone: 'Europe/Berlin'
+            });
+            job.start();
+            svi_izvjestaji.dnevni.push({cronJob:job,cronTime:cronTime, userID: instanca.UserId, email:email, stanicaID: instanca.StanicaId});
+          }
+          if(instanca.Sedmicni==true){
+            var cronTime = "00 "+instanca.SedmicniTime.split(':')[1]+" "+instanca.SedmicniTime.split(':')[0] + " * * "+instanca.SedmicniDan;
+            var job=new CronJob({
+              //sekunde minute sati dan_u_mjesecu(1-31) mjesec(0-11) dan_u_sedmici(0-6)(Sun-Sat)
+              cronTime: cronTime,
+              onTick: function() {   
+                send_email(email,instanca.UserId,stanicaID,'s');        
+              },
+              start: false,
+              timeZone: 'Europe/Berlin'
+            });
+            job.start();
+            svi_izvjestaji.sedmicni.push({cronJob:job,cronTime:cronTime, userID: instanca.UserId, email:email, stanicaID: instanca.StanicaId});
+          }
+          if(instanca.Mjesecni==true){
+            var cronTime = "00 "+instanca.MjesecniTime.split(':')[1]+" "+instanca.MjesecniTime.split(':')[0] + " "+ instanca.MjesecniDan +" * *";
+            var job=new CronJob({
+              //sekunde minute sati dan_u_mjesecu(1-31) mjesec(0-11) dan_u_sedmici(0-6)(Sun-Sat)
+              cronTime: cronTime,
+              onTick: function() {   
+                send_email(email,instanca.UserId,stanicaID,'m');        
+              },
+              start: false,
+              timeZone: 'Europe/Berlin'
+            });
+            job.start();
+            svi_izvjestaji.mjesecni.push({cronJob:job,cronTime:cronTime, userID: instanca.UserId, email:email, stanicaID: instanca.StanicaId});
+          }
+        });
+
+     //   send_email("brgulja.lejla@gmail.com", 13,42,'s');     
+     //   send_email("brgulja.lejla@gmail.com", 13,42,'m'); 
+    //    send_email("brgulja.lejla@gmail.com", 13,42,'d');  
+    
+      });
+    });
+    
+   // res.end();
+ // });
+
+
   //===========================================================================================================
   // Rute za login/logout. Passport rute.
   //===========================================================================================================
@@ -51,8 +119,18 @@ module.exports = function(app, passport){
   //===========================================================================================================
 
   app.put('/update/izvjestaj', function(req,res){
-
-    console.log({
+    console.log("prije update: ");
+    console.log(svi_izvjestaji);
+    svi_izvjestaji.dnevni.forEach(izvjestaj => {
+      console.log('job status: ', izvjestaj.cronJob.running);
+    });
+    svi_izvjestaji.sedmicni.forEach(izvjestaj => {
+      console.log('job status: ', izvjestaj.cronJob.running);
+    });
+    svi_izvjestaji.mjesecni.forEach(izvjestaj => {
+      console.log('job status: ', izvjestaj.cronJob.running);
+    });
+   /* console.log({
       Dnevni: req.body.dnevni,
       Sedmicni: req.body.sedmicni,
       Mjesecni: req.body.mjesecni,
@@ -61,9 +139,11 @@ module.exports = function(app, passport){
       MjesecniTime: req.body.MjesecniTime,
       SedmicniDan: req.body.SedmicniDan,
       MjesecniDan: req.body.MjesecniDan
+    });*/
+    var email = user_emails.filter(function( obj ) {
+      if(obj.id == req.body.user)
+      return obj.email;
     });
-
-    console.log(svi_izvjestaji);
 
     var dnevniPostoji=false;
     svi_izvjestaji.dnevni.forEach(izvjestaj => {
@@ -75,7 +155,7 @@ module.exports = function(app, passport){
             //sekunde minute sati dan_u_mjesecu(1-31) mjesec(0-11) dan_u_sedmici(0-6)(Sun-Sat)
             cronTime: izvjestaj.cronTime,
             onTick: function() {   
-              send_email(email,instanca.UserId,stanicaID,'d');        
+              send_email(email,req.body.user,izvjestaj.stanicaID,'d');          
             },
             start: false,
             timeZone: 'Europe/Berlin'
@@ -91,21 +171,19 @@ module.exports = function(app, passport){
         dnevniPostoji=true;
       }
     });
-    if(dnevniPostoji===false && req.body.dnevni==1){
+    if(dnevniPostoji==false && req.body.dnevni==1){
       var cronTime =cronTime="00 "+req.body.DnevniTime.split(':')[1]+" "+req.body.DnevniTime.split(':')[0] + " * * *";
       var job=new CronJob({
         //sekunde minute sati dan_u_mjesecu(1-31) mjesec(0-11) dan_u_sedmici(0-6)(Sun-Sat)
         cronTime: cronTime,
         onTick: function() {   
-          send_email(email,instanca.UserId,stanicaID,'d');        
+          send_email(email,req.body.user,izvjestaj.stanicaID,'d');        
         },
         start: false,
         timeZone: 'Europe/Berlin'
       });
-      var email = user_emails.filter(function( obj ) {
-        if(obj.id == req.body.user)
-        return obj.email;
-      });
+
+      job.start();
       svi_izvjestaji.dnevni.push({cronJob:job,cronTime:cronTime, userID: req.body.user, email:email, stanicaID: req.body.stanica});
     }
 
@@ -120,7 +198,7 @@ module.exports = function(app, passport){
             //sekunde minute sati dan_u_mjesecu(1-31) mjesec(0-11) dan_u_sedmici(0-6)(Sun-Sat)
             cronTime: izvjestaj.cronTime,
             onTick: function() {   
-              send_email(email,instanca.UserId,stanicaID,'s');        
+              send_email(email,req.body.user,izvjestaj.stanicaID,'s');        
             },
             start: false,
             timeZone: 'Europe/Berlin'
@@ -143,15 +221,12 @@ module.exports = function(app, passport){
         //sekunde minute sati dan_u_mjesecu(1-31) mjesec(0-11) dan_u_sedmici(0-6)(Sun-Sat)
         cronTime: cronTime,
         onTick: function() {   
-          send_email(email,instanca.UserId,stanicaID,'s');        
+          send_email(email,req.body.user,izvjestaj.stanicaID,'s');        
         },
         start: false,
         timeZone: 'Europe/Berlin'
       });
-      var email = user_emails.filter(function( obj ) {
-        if(obj.id == req.body.user)
-        return obj.email;
-      });
+      job.start();
       svi_izvjestaji.sedmicni.push({cronJob:job,cronTime:cronTime, userID: req.body.user, email:email, stanicaID: req.body.stanica});
     
     }
@@ -166,7 +241,7 @@ module.exports = function(app, passport){
             //sekunde minute sati dan_u_mjesecu(1-31) mjesec(0-11) dan_u_sedmici(0-6)(Sun-Sat)
             cronTime: izvjestaj.cronTime,
             onTick: function() {   
-              send_email(email,instanca.UserId,stanicaID,'m');        
+              send_email(email,req.body.user,izvjestaj.stanicaID,'m');        
             },
             start: false,
             timeZone: 'Europe/Berlin'
@@ -190,17 +265,26 @@ module.exports = function(app, passport){
           //sekunde minute sati dan_u_mjesecu(1-31) mjesec(0-11) dan_u_sedmici(0-6)(Sun-Sat)
           cronTime: cronTime,
           onTick: function() {   
-            send_email(email,instanca.UserId,stanicaID,'m');        
+            send_email(email,req.body.user,izvjestaj.stanicaID,'m');        
           },
           start: false,
           timeZone: 'Europe/Berlin'
         });
-        var email = user_emails.filter(function( obj ) {
-          if(obj.id == req.body.user)
-          return obj.email;
-        });
+        job.start();
         svi_izvjestaji.mjesecni.push({cronJob:job,cronTime:cronTime, userID: req.body.user, email:email, stanicaID: req.body.stanica});
     }
+
+    console.log("nakon update: ");
+    console.log(svi_izvjestaji);
+    svi_izvjestaji.dnevni.forEach(izvjestaj => {
+      console.log('job status: ', izvjestaj.cronJob.running);
+    });
+    svi_izvjestaji.sedmicni.forEach(izvjestaj => {
+      console.log('job status: ', izvjestaj.cronJob.running);
+    });
+    svi_izvjestaji.mjesecni.forEach(izvjestaj => {
+      console.log('job status: ', izvjestaj.cronJob.running);
+    });
 
     models.user_stanica.find({where:{UserId: req.body.user, StanicaId: req.body.stanica}}).then(function(response){
       return response.updateAttributes({
@@ -729,8 +813,7 @@ module.exports = function(app, passport){
                 'MjesecniTime':entry.dataValues.MjesecniTime,
                 'SedmicniDan':entry.dataValues.SedmicniDan,
                 'MjesecniDan':entry.dataValues.MjesecniDan 
-
-              });
+              })
               callback(null, jsonObj);
             });
           }, function(err){
@@ -1015,71 +1098,6 @@ module.exports = function(app, passport){
   //===========================================================================================================
   // Ruta koja šalje izvještaj na zadani email u određennom formatu sa datim podacima
   //===========================================================================================================
-
-  //app.post('/proba',function(req, res){
-    models.user_stanica.findAll()
-    .then(function(raspored_izvjestaja){
-  
-      models.user.findAll().then(function(users){
-        
-        users.forEach(user => {
-          user_emails.push({id:user.id, email:user.email });
-        });
-        raspored_izvjestaja.forEach(instanca => {
-
-          var email = user_emails.filter(function( obj ) {
-            if(obj.id == instanca.UserId)
-            return obj.email;
-          });
-
-          if(instanca.Dnevni){
-            var cronTime = "00 "+instanca.DnevniTime.split(':')[1]+" "+instanca.DnevniTime.split(':')[0] + " * * *";
-            var job=new CronJob({
-              //sekunde minute sati dan_u_mjesecu(1-31) mjesec(0-11) dan_u_sedmici(0-6)(Sun-Sat)
-              cronTime: cronTime,
-              onTick: function() {   
-                send_email(email,instanca.UserId,stanicaID,'d');        
-              },
-              start: false,
-              timeZone: 'Europe/Berlin'
-            });
-            svi_izvjestaji.dnevni.push({cronJob:job,cronTime:cronTime, userID: instanca.UserId, email:email, stanicaID: instanca.StanicaId});
-          }
-          if(instanca.Sedmicni){
-            var cronTime = "00 "+instanca.SedmicniTime.split(':')[1]+" "+instanca.SedmicniTime.split(':')[0] + " * * "+instanca.SedmicniDan;
-            var job=new CronJob({
-              //sekunde minute sati dan_u_mjesecu(1-31) mjesec(0-11) dan_u_sedmici(0-6)(Sun-Sat)
-              cronTime: cronTime,
-              onTick: function() {   
-                send_email(email,instanca.UserId,stanicaID,'s');        
-              },
-              start: false,
-              timeZone: 'Europe/Berlin'
-            });
-            svi_izvjestaji.sedmicni.push({cronJob:job,cronTime:cronTime, userID: instanca.UserId, email:email, stanicaID: instanca.StanicaId});
-          }
-          if(instanca.Mjesecni){
-            var cronTime = "00 "+instanca.MjesecniTime.split(':')[1]+" "+instanca.MjesecniTime.split(':')[0] + " "+ instanca.MjesecniDan +" * *";
-            var job=new CronJob({
-              //sekunde minute sati dan_u_mjesecu(1-31) mjesec(0-11) dan_u_sedmici(0-6)(Sun-Sat)
-              cronTime: cronTime,
-              onTick: function() {   
-                send_email(email,instanca.UserId,stanicaID,'m');        
-              },
-              start: false,
-              timeZone: 'Europe/Berlin'
-            });
-            svi_izvjestaji.mjesecni.push({cronJob:job,cronTime:cronTime, userID: instanca.UserId, email:email, stanicaID: instanca.StanicaId});
-          }
-        });
-
-     //   send_email("brgulja.lejla@gmail.com", 13,42,'s');     
-     //   send_email("brgulja.lejla@gmail.com", 13,42,'m'); 
-    //    send_email("brgulja.lejla@gmail.com", 13,42,'d');  
-      });
-    });
-   // res.end();
- // });
 
   var send_email= function(email,userID, stanicaID,type){ // type: 'd'-dnevni,'m'-mjesecni,'s'-sedmicni
     var startDate = new Date();

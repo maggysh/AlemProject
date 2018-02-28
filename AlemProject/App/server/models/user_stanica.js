@@ -14,6 +14,26 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: false
+    },
+    DnevniTime: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    SedmicniTime: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    MjesecniTime: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    SedmicniDan: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    MjesecniDan: {
+      type: DataTypes.INTEGER,
+      allowNull: true
     }
 
 
