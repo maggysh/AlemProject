@@ -28,11 +28,16 @@ angular.module('appApp')
     $scope.ButtonDnevni="";
     $scope.ButtonSedmicni="";
     $scope.ButtonMjesecni="";
+    $scope.user="";
+
+    $scope.userEmail="";
     var DaNe=["Ne","Da"];
     
     //---------------------------------------------------------------------------------------------
     $scope.Init = function(){
       $http.get('/loggedin').then(function (response) {
+        $scope.user=response.data.user;
+        $scope.userEmail=response.data.user.email;
         //$scope.info.name = response.data.user.ime_prezime;
         $scope.info.id = response.data.user.id;
         $http.get('/api/user/izvjestaj/automatski/' + $scope.info.id).then(function(data){
@@ -283,4 +288,32 @@ angular.module('appApp')
       $scope.novoStanje($scope.pregled.stanice[$scope.pregled.id].id);
     }
 
+    $scope.button_changeEmail_clicked = function (){
+      var paragraph = document.getElementById("emailParagraph");
+      var input = document.getElementById("emailInput");
+      var button = document.getElementById("emailButton");
+      var cancelButton = document.getElementById("cancelEditEmail");
+
+      if(button.innerText=="Promijeni e-mail"){
+        input.style.display="block";
+        paragraph.style.display="none";
+        button.innerText="Spasi izmjene";
+        cancelButton.style.display="block";
+      }else{
+        $scope.userEmail=$scope.user.email;
+        input.style.display="none";
+        paragraph.style.display="block";
+        button.innerText="Promijeni e-mail";
+        cancelButton.style.display="none";
+        $http.post('/edit/user/email', {email: $scope.user.email, id:$scope.user.id}).then(function(response){});
+      }
+
+      $scope.button_cancelEditEmail_clicked = function(){
+        $scope.user.email=$scope.userEmail;
+        input.style.display="none";
+        paragraph.style.display="block";
+        button.innerText="Promijeni e-mail";
+        cancelButton.style.display="none";
+      }
+    }
   });

@@ -19,6 +19,10 @@
         </select>
         <button id="saveButton" class="btn btn-primary" style="margin-top:1em; width:100%; visibility:hidden;"  ng-click="novoStanje(pregled.stanice[pregled.id].id)">Spasi promjene</button>
       </div>
+      <p id="emailParagraph"><b>E-mailovi dolaze na:</b><br> {{ user.email }}</p>
+      <input id="emailInput"  class="form-control"  style="display:none;" type="text"  ng-model="user.email" ></input>
+      <button id="emailButton" ng-click="button_changeEmail_clicked()" class="btn btn-primary" >Promijeni e-mail</button>
+      <button id="cancelEditEmail" ng-click="button_cancelEditEmail_clicked()" style="display:none;" class="btn btn-danger">Odustani</button>
     </form>
       <form id="izvjestajDetails" style="display: flex; flex-direction:row; visibility:hidden" >
         <div style="margin:1em;">

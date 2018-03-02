@@ -483,6 +483,16 @@ module.exports = function(app, passport){
   });
 
   //===========================================================================================================
+  // Ruta kooja mijenja e-mail korisnika u bazi
+  //===========================================================================================================
+  app.post('/edit/user/email', function(req, res){
+    models.user.update(
+      { email: req.body.email }, 
+      { where: { id: req.body.id }}
+    );
+    res.end();
+  });
+  //===========================================================================================================
   // Ruta koja kreira unos u tabeli user_stanica. Omogućava da korisnik ima pristup stanici.
   //===========================================================================================================
   app.post('/api/admin/prava', function(req, res){
