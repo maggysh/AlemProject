@@ -33,13 +33,15 @@ module.exports = function(app, passport){
             if(obj.id == instanca.UserId)
             return obj.email;
           });
+          if(email[0]!=undefined && email[0] !=null) email=email[0].email;
+        
           if(instanca.Dnevni==true){
             var cronTime = "00 "+instanca.DnevniTime.split(':')[1]+" "+instanca.DnevniTime.split(':')[0] + " * * *";
             var job=new CronJob({
               //sekunde minute sati dan_u_mjesecu(1-31) mjesec(0-11) dan_u_sedmici(0-6)(Sun-Sat)
               cronTime: cronTime,
               onTick: function() {   
-                send_email(email,instanca.UserId,stanicaID,'d');        
+                send_email(email,instanca.UserId,instanca.StanicaId,'d');        
               },
               start: false,
               timeZone: 'Europe/Berlin'
@@ -53,7 +55,7 @@ module.exports = function(app, passport){
               //sekunde minute sati dan_u_mjesecu(1-31) mjesec(0-11) dan_u_sedmici(0-6)(Sun-Sat)
               cronTime: cronTime,
               onTick: function() {   
-                send_email(email,instanca.UserId,stanicaID,'s');        
+                send_email(email,instanca.UserId,instanca.StanicaId,'s');        
               },
               start: false,
               timeZone: 'Europe/Berlin'
@@ -67,7 +69,7 @@ module.exports = function(app, passport){
               //sekunde minute sati dan_u_mjesecu(1-31) mjesec(0-11) dan_u_sedmici(0-6)(Sun-Sat)
               cronTime: cronTime,
               onTick: function() {   
-                send_email(email,instanca.UserId,stanicaID,'m');        
+                send_email(email,instanca.UserId,instanca.StanicaId,'m');        
               },
               start: false,
               timeZone: 'Europe/Berlin'
@@ -146,6 +148,8 @@ module.exports = function(app, passport){
       return obj.email;
     });
 
+    email=email[0].email;
+
     var dnevniPostoji=false;
     svi_izvjestaji.dnevni.forEach(izvjestaj => {
       if(izvjestaj.userID==req.body.user && izvjestaj.stanicaID==req.body.stanica){
@@ -156,7 +160,7 @@ module.exports = function(app, passport){
             //sekunde minute sati dan_u_mjesecu(1-31) mjesec(0-11) dan_u_sedmici(0-6)(Sun-Sat)
             cronTime: izvjestaj.cronTime,
             onTick: function() {   
-              send_email(email,req.body.user,izvjestaj.stanicaID,'d');          
+              send_email(email,req.body.user,req.body.stanica,'d');          
             },
             start: false,
             timeZone: 'Europe/Berlin'
@@ -178,7 +182,7 @@ module.exports = function(app, passport){
         //sekunde minute sati dan_u_mjesecu(1-31) mjesec(0-11) dan_u_sedmici(0-6)(Sun-Sat)
         cronTime: cronTime,
         onTick: function() {   
-          send_email(email,req.body.user,izvjestaj.stanicaID,'d');        
+          send_email(email,req.body.user,req.body.stanica,'d');        
         },
         start: false,
         timeZone: 'Europe/Berlin'
@@ -199,7 +203,7 @@ module.exports = function(app, passport){
             //sekunde minute sati dan_u_mjesecu(1-31) mjesec(0-11) dan_u_sedmici(0-6)(Sun-Sat)
             cronTime: izvjestaj.cronTime,
             onTick: function() {   
-              send_email(email,req.body.user,izvjestaj.stanicaID,'s');        
+              send_email(email,req.body.user,req.body.stanica,'s');        
             },
             start: false,
             timeZone: 'Europe/Berlin'
@@ -222,7 +226,7 @@ module.exports = function(app, passport){
         //sekunde minute sati dan_u_mjesecu(1-31) mjesec(0-11) dan_u_sedmici(0-6)(Sun-Sat)
         cronTime: cronTime,
         onTick: function() {   
-          send_email(email,req.body.user,izvjestaj.stanicaID,'s');        
+          send_email(email,req.body.user,req.body.stanica,'s');        
         },
         start: false,
         timeZone: 'Europe/Berlin'
@@ -242,7 +246,7 @@ module.exports = function(app, passport){
             //sekunde minute sati dan_u_mjesecu(1-31) mjesec(0-11) dan_u_sedmici(0-6)(Sun-Sat)
             cronTime: izvjestaj.cronTime,
             onTick: function() {   
-              send_email(email,req.body.user,izvjestaj.stanicaID,'m');        
+              send_email(email,req.body.user,req.body.stanica,'m');        
             },
             start: false,
             timeZone: 'Europe/Berlin'
@@ -266,7 +270,7 @@ module.exports = function(app, passport){
           //sekunde minute sati dan_u_mjesecu(1-31) mjesec(0-11) dan_u_sedmici(0-6)(Sun-Sat)
           cronTime: cronTime,
           onTick: function() {   
-            send_email(email,req.body.user,izvjestaj.stanicaID,'m');        
+            send_email(email,req.body.user,req.body.stanica,'m');        
           },
           start: false,
           timeZone: 'Europe/Berlin'
@@ -486,6 +490,9 @@ module.exports = function(app, passport){
   // Ruta kooja mijenja e-mail korisnika u bazi
   //===========================================================================================================
   app.post('/edit/user/email', function(req, res){
+    user_emails.forEach(user => {
+      if(user.id==req.body.id) user.email=req.body.email;
+    });
     models.user.update(
       { email: req.body.email }, 
       { where: { id: req.body.id }}
@@ -1111,6 +1118,7 @@ module.exports = function(app, passport){
   //===========================================================================================================
 
   var send_email= function(email,userID, stanicaID,type){ // type: 'd'-dnevni,'m'-mjesecni,'s'-sedmicni
+  console.log(email);
     var startDate = new Date();
     if(type=='d'){
       startDate.setDate(startDate.getDate() - 1);  
