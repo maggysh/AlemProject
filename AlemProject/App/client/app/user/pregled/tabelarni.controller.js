@@ -232,7 +232,9 @@ angular.module('appApp')
                  query.matchAny.items = getSelectedOptions();
                  var numberOfItems = query.matchAny.items.length;
                  if (numberOfItems === 0 || numberOfItems === scope.distinctItems.length) {
-                   query.matchAny.all = true;
+                  // query.matchAny.all = true; IZMJENA
+                   query.matchAny.all = false ;
+
                  } else {
                    query.matchAny.all = false;
                  }
