@@ -24,10 +24,10 @@ var processedDir = './processed/';
 //   dali su dospjele sve očekivane datoteke
 
 // -----------------------------------------------------------------------------
-var processingInterval = 9000;
-var maxNumberOfIntervals = 10;
-//var processingInterval = 360000;
-//var maxNumberOfIntervals = 24;
+// var processingInterval = 9000;
+// var maxNumberOfIntervals = 10;
+var processingInterval = 360000;
+var maxNumberOfIntervals = 24;
 var intervalCounter = 0;
 
 // -----------------------------------------------------------------------------
