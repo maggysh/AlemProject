@@ -16,7 +16,6 @@ angular.module('appApp')
     //---------------------------------------------------------------------------------------------
     $scope.Init = function(){
       $http.get('/loggedin').then(function (response) {
-        //$scope.info.name = response.data.user.ime_prezime;
         $scope.info.id = response.data.user.id;
         $http.get('/api/user/link/' + $scope.info.id).then(function(data){
           $scope.pregled.stanice = data.data;
@@ -26,6 +25,7 @@ angular.module('appApp')
     $scope.Init();
     //---------------------------------------------------------------------------------------------
     //Uzimanje svih tipova senzora
+    //---------------------------------------------------------------------------------------------
     $scope.tipoviSenzora = function(){
       $scope.distinctTipSenzora = [];
       $scope.distinctDatum = [];
@@ -36,14 +36,12 @@ angular.module('appApp')
       angular.forEach($scope.collection, function(item) {
         var value = item.Tip_senzora;
         var date = item.Datum.slice(0, 10);
-        //var date = $filter('date')(new Date(datex._i), "MM/dd/yyyy");
         if (value && value.trim().length > 0 && $scope.distinctTipSenzora.indexOf(value) === -1) {
           $scope.distinctTipSenzora.push(value);
         };
         if (date && date.trim().length > 0 && $scope.temp.indexOf(date) === -1) {
           $scope.temp.push(date);
           $scope.distinctDatum.datumi[i] = [];
-          //$scope.distinctDatum.datumi[i].push(date);
           $scope.distinctDatum.datumi[i][0] = date;
           i++;
         };
@@ -58,7 +56,6 @@ angular.module('appApp')
         var k = 0;
         var t = -1;
         var date = item.Datum.slice(0, 10);
-        //var date = $filter('date')(new Date(item.Datum), "dd/MM/yyyy");
         while(t == -1){
           t = $scope.distinctDatum.datumi[k][0].indexOf(date);
           k++;
@@ -111,13 +108,12 @@ angular.module('appApp')
       $scope.displayed = [].concat($scope.collection);
     };
     //---------------------------------------------------------------------------------------------
-    $scope.printIt = function(){
+    $scope.printItPDF = function(){
 
       var data = [];
       angular.forEach($scope.collection, function(entry, key){
         var temp = {};
         angular.forEach(entry, function(value, keyy){
-          
           if(keyy == 0){
             temp["Datum"] = value;
           }
@@ -191,7 +187,6 @@ angular.module('appApp')
       var doc = new jsPDF('p', 'pt', 'a4', true);
       doc.setFont("courier", "normal");
       doc.setFontSize(fontSize);
-      //doc.text(50,100,"hi table");
 
       var options = {
         theme: 'grid',
@@ -224,7 +219,6 @@ angular.module('appApp')
         console.log(result[i]);
         
         doc.autoTable(columns[i], result[i], options);
-        //height = doc.drawTable(result[i], {xstart:10,ystart:10,tablestart:70,marginleft:50});
       }
 
       doc.save("satnica-izvjestaj.pdf");
@@ -233,19 +227,15 @@ angular.module('appApp')
     $scope.printItCSV = function(){
       console.log("scope ",$scope.collection);
       var data = [];
-      //var data = $scope.collection.slice();
-      // var data =$scope.collection.join(';');
       console.log("data",data);
       var temp={};
       console.log("scople colleciton",$scope.collection);
       var csvTemp={};
-      var  csvContent="";//'data:text/csv;charset=utf-8,';
+      var  csvContent="";
       angular.forEach($scope.collection, function(entry, key){
         angular.forEach(entry, function(value, keyy){
-          //if(keyy < entry.length ){
             for(var i=0;i<entry.length;i++) {
               if(entry[i]==undefined) csvContent+=' '+';';
-              //var res=entry.split(' ')
               if(i==entry.length-1) {
                 if (entry[i] == undefined)
                   csvContent += ' ' + '\r\n';
@@ -278,21 +268,9 @@ angular.module('appApp')
           link.click();
           document.body.removeChild(link);
       }
-      // var encodedUri = encodeURI(csvContent);
-      // var link = document.createElement("a");
-      // link.setAttribute("href", encodedUri);
-      // link.setAttribute("download", "my_data.csv");
-      // // document.body.appendChild(link); // Required for FF
+    };  
 
-      // link.click();
-
-
-
-      //  var temp = {};
-    };   //
-
-    $scope.printIt3 = function(){
-      
+    $scope.printItXML = function(){
         console.log("scope ",$scope.collection);
         var data = [];
         console.log("data",data);
@@ -331,7 +309,7 @@ angular.module('appApp')
   
     };
 
-    $scope.printIt4 = function(){
+    $scope.printItTXT = function(){
       
       console.log("scope ",$scope.collection);
       var data = [];
@@ -392,12 +370,6 @@ angular.module('appApp')
     
       document.body.removeChild(element);
   };
-    //temp[$scope.distinctTipSenzora[keyy-1]]=value;
-    //    csvTemp=$scope.convertArrayOfObjectsToCSV();
-    console.log("csv");
-    // };
-    // });
-    //data.push(csvTemp);
     //---------------------------------------------------------------------------------------------
     //DATE TIME PICKER
     $scope.today = function() {

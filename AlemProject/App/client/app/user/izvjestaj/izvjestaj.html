@@ -40,9 +40,9 @@
     <div style="display:flex; flex-direction:row;">
       <div style="display:inline-block">
         <button type="submit" class="btn btn-primary btn" type="button" ng-click="Osvjezi()">Osvježi</button>
-        <button  class="btn btn-primary btn" type="button" ng-click="printIt()">PDF</button>
-        <button  class="btn btn-primary btn" type="button" ng-click="printIt2()">CSV</button>
-        <button  class="btn btn-primary btn" type="button" ng-click="printIt3()">XML</button>
+        <button  class="btn btn-primary btn" type="button" ng-click="printItPDF()">PDF</button>
+        <button  class="btn btn-primary btn" type="button" ng-click="printItCSV()">CSV</button>
+        <button  class="btn btn-primary btn" type="button" ng-click="printItXML()">XML</button>
       </div>
       <div class="input-group" style="width:20%; margin: 0em 0.3em;" > 
         <select class="form-control" data-live-search="true"  ng-model="textOption">
@@ -50,7 +50,7 @@
           <option value="svi">Svi senzori</option>
           <option name="senzor" ng-repeat="senzor in distinctTipSenzora" value="{{senzor}}">{{senzor}}</option>  </select> 
         <span class="input-group-btn">
-          <button  class="btn btn-primary btn" type="button" ng-click="printIt4()">TXT</button>
+          <button  class="btn btn-primary btn" type="button" ng-click="printItTXT()">TXT</button>
         </span>
       </div>
   </div>

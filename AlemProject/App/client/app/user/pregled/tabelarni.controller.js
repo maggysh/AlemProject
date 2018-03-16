@@ -1,8 +1,7 @@
 'use strict';
-(function(ng) {
 
 angular.module('appApp')
-  .controller('tabelarniPrikazCtrl', ['$scope', '$http', '$filter', function ($scope, $http, $filter) {
+  .controller('tabelarniPrikazCtrl', function ($scope, $http, $filter) {
 
     $scope.collection = [];
     $scope.displayed = [];
@@ -11,39 +10,64 @@ angular.module('appApp')
     $scope.max = 0;
     $scope.min = 0;
     $scope.avg = 0;
-    $scope.vrijednosti = [];
 
-    $scope.$watch('displayed', function(newValue) {
-      $scope.vrijednosti = [];
-      angular.forEach($scope.displayed, function(entry, key){
-        $scope.vrijednosti.push(entry.Vrijednost);
-      });
-      $scope.max = Math.max.apply(Math, $scope.vrijednosti);
-      $scope.min = Math.min.apply(Math, $scope.vrijednosti);
-      var total = 0;
-      angular.forEach($scope.vrijednosti, function(entry, key){
-        if(entry==undefined) total=total;
-        else
-          total = total + entry;
-      });
-      if ($scope.min==Infinity || $scope.max==Infinity) $scope.avg=undefined;
-      else
-        $scope.avg = (total/$scope.vrijednosti.length).toFixed(2);
-      console.log($scope.avg);
-    }, true);
+    //novo
+    $scope.filteri = {stanice:[], kodoviSenzora:[], naziviSenzora:[]};
+    $scope.selektovani = {stanice:[], kodoviSenzora:[], naziviSenzora:[]};
+    $scope.pocetniDatum='';
+    $scope.krajnjiDatum='';
+    $scope.vrijednostOd='';
+    $scope.vrijednostDo='';
+    $scope.displayedVrijednosti=[];
+    $scope.itemsCount=0;
+    $scope.itemsPerPage=15;
+    $scope.currentPage='';
+    $scope.maxSize=5;
 
-    //--------------------------------------------------------
+    $scope.tableDisplayed=0;
+    
+    $scope.pageChanged = function(){
+      $http.get('/api/tabela/batch', 
+      {params: {selektovani: ($scope.selektovani), 
+       pocetniDatum:($scope.pocetniDatum),
+       krajnjiDatum:($scope.krajnjiDatum),
+       vrijednostOd:$scope.vrijednostOd,
+       vrijednostDo:$scope.vrijednostDo,
+       UserId: $scope.info.id,
+       pageNumber: $scope.currentPage-1
+     }}).then(function(vrijednosti){
+       console.log("vrijednosti",vrijednosti);
+       $scope.displayedVrijednosti = vrijednosti.data.vrijednosti;
+       $scope.itemsCount = vrijednosti.data.count;
+     });
+    }
 
     $scope.pregledInit = function() {
       $http.get('/loggedin').then(function (response) {
         $scope.info.id = response.data.user.id;
         $http.get('/api/user/link/' + $scope.info.id).then(function (data) {
+          
            angular.forEach(data.data, function(value) {
-                $scope.ucitajVrijednosti(value[0].id);
+             $scope.filteri.stanice.push(value[0].Naziv);
+             $http.get('/api/home/filteri/' + value[0].id).then(function(kodovi_nazivi){
+              
+              for(var i=0; i<kodovi_nazivi.data.kodoviSenzora.length; i++){
+                console.log($scope.filteri.naziviSenzora);
+                console.log(kodovi_nazivi.data.naziviSenzora[i]);
+                console.log(" ");
+                if($scope.filteri.naziviSenzora.indexOf(kodovi_nazivi.data.naziviSenzora[i])==-1){
+                  $scope.filteri.naziviSenzora.push(kodovi_nazivi.data.naziviSenzora[i]);
+                }
+                if($scope.filteri.kodoviSenzora.indexOf(kodovi_nazivi.data.kodoviSenzora[i])==-1){
+                  $scope.filteri.kodoviSenzora.push(kodovi_nazivi.data.kodoviSenzora[i]);
+                }
+              }
+             });
            });
         });
         $scope.displayed = [].concat($scope.collection);
       });
+      
     }
 
     //-----------------------------------------------------------------------------------------------------
@@ -67,422 +91,120 @@ angular.module('appApp')
       });
 
     };
+    //---------------------------------------------------------------------------------------------
+    //DATE TIME PICKER
+    $scope.today = function() {
+      $scope.dt = new Date();
+    };
+    $scope.today();
 
-    //-----------------------------------------------------------------------------------------------------
-  }])
+    $scope.clear = function () {
+      $scope.dt = null;
+    };
 
-  //=========================================================================================================
-  //=========================================================================================================
+    $scope.toggleMin = function() {
+      $scope.minDate = $scope.minDate ? null : new Date();
+    };
+    $scope.toggleMin();
+    $scope.maxDate = new Date(2020, 5, 22);
 
+    $scope.open_prije = function($event) {
+      $scope.status_prije.opened = true;
+    };
+    $scope.open_poslije = function($event) {
+      $scope.status_poslije.opened = true;
+    };
 
-.directive('stSelectDistinct', [function() {
-      return {
-        restrict: 'E',
-        require: '^stTable',
-        scope: {
-          collection: '=',
-          predicate: '@',
-          predicateExpression: '='
+    $scope.setDate = function(year, month, day) {
+      $scope.dt = new Date(year, month, day);
+    };
+
+    $scope.dateOptions = {
+      formatYear: 'yy',
+      startingDay: 1
+    };
+
+    $scope.formats = ['yyyy-MM-dd'];
+    $scope.format = $scope.formats[0];
+
+    $scope.status_prije = {
+      opened: false
+    };
+    $scope.status_poslije = {
+      opened: false
+    };
+
+    var tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    var afterTomorrow = new Date();
+    afterTomorrow.setDate(tomorrow.getDate() + 2);
+    $scope.events =
+      [
+        {
+          date: tomorrow,
+          status: 'full'
         },
-        template: '<select ng-model="selectedOption" ng-change="optionChanged(selectedOption)" ng-options="opt for opt in distinctItems"></select>',
-        //template: 'app/user/pregled/distinct.html',
-        link: function(scope, element, attr, table) {
-
-          var getPredicate = function() {
-            var predicate = scope.predicate;
-            if (!predicate && scope.predicateExpression) {
-              predicate = scope.predicateExpression;
-            }
-            return predicate;
-          }
-
-          scope.$watch('collection', function(newValue) {
-            var predicate = getPredicate();
-
-            if (newValue) {
-              var temp = [];
-              scope.distinctItems = ['Sve'];
-
-              angular.forEach(scope.collection, function(item) {
-                var value = item[predicate];
-
-                if (value && value.trim().length > 0 && temp.indexOf(value) === -1) {
-                  temp.push(value);
-                }
-              });
-              temp.sort();
-
-              scope.distinctItems = scope.distinctItems.concat(temp);
-              scope.selectedOption = scope.distinctItems[0];
-              scope.optionChanged(scope.selectedOption);
-            }
-          }, true);
-
-          scope.optionChanged = function(selectedOption) {
-            var predicate = getPredicate();
-
-            var query = {};
-
-            query.distinct = selectedOption;
-
-            if (query.distinct === 'Sve') {
-              query.distinct = '';
-            }
-
-            table.search(query, predicate);
-          };
-
+        {
+          date: afterTomorrow,
+          status: 'partially'
         }
-      }
-    }])
+      ];
 
-    //=================================================================================================================
-    //=================================================================================================================
-    .directive('stSelectMultiple', [function() {
-           return {
-             restrict: 'E',
-             require: '^stTable',
-             scope: {
-               collection: '=',
-               predicate: '@',
-               predicateExpression: '='
-             },
-             templateUrl: 'app/user/pregled/multiple.html',
-             link: function(scope, element, attr, table) {
-               scope.dropdownLabel = '';
-               scope.filterChanged = filterChanged;
+    $scope.getDayClass = function(date, mode) {
+      if (mode === 'day') {
+        var dayToCheck = new Date(date).setHours(0,0,0,0);
 
-               scope.$watch('collection', function(newValue) {
-                     initialize();
-               }, true);
+        for (var i=0;i<$scope.events.length;i++){
+          var currentDay = new Date($scope.events[i].date).setHours(0,0,0,0);
 
-               function initialize() {
-                 bindCollection(scope.collection);
-                 //console.log(scope.collection);
-               }
-
-               function getPredicate() {
-                 var predicate = scope.predicate;
-                 if (!predicate && scope.predicateExpression) {
-                   predicate = scope.predicateExpression;
-                 }
-                 return predicate;
-               }
-
-               function getDropdownLabel() {
-                 var allCount = scope.distinctItems.length;
-
-                 var selected = getSelectedOptions();
-
-                 if (allCount === selected.length || selected.length === 0) {
-                   return 'Sve';
-                 }
-
-                 if (selected.length === 1) {
-                   return selected[0];
-                 }
-
-                 return selected.length + ' stavke';
-               }
-
-               function getSelectedOptions() {
-                 var selectedOptions = [];
-
-                 angular.forEach(scope.distinctItems, function(item) {
-                   if (item.selected) {
-                     selectedOptions.push(item.value);
-                   }
-                 });
-
-                 return selectedOptions;
-               }
-
-               function bindCollection(collection) {
-                 var predicate = getPredicate();
-                 var distinctItems = [];
-
-                 angular.forEach(collection, function(item) {
-                   var value = item[predicate];
-                   fillDistinctItems(value, distinctItems);
-                 });
-
-                 distinctItems.sort(function(obj, other) {
-                   if (obj.value > other.value) {
-                     return 1;
-                   } else if (obj.value < other.value) {
-                     return -1;
-                   }
-                   return 0;
-                 });
-
-                 scope.distinctItems = distinctItems;
-                 //console.log(scope.distinctItems);
-                 filterChanged();
-               }
-
-               function filterChanged() {
-                 scope.dropdownLabel = getDropdownLabel();
-
-                 var predicate = getPredicate();
-
-                 var query = {
-                   matchAny: {}
-                 };
-
-                 query.matchAny.items = getSelectedOptions();
-                 var numberOfItems = query.matchAny.items.length;
-                 if (numberOfItems === 0 || numberOfItems === scope.distinctItems.length) {
-                  // query.matchAny.all = true; IZMJENA
-                   query.matchAny.all = false ;
-
-                 } else {
-                   query.matchAny.all = false;
-                 }
-
-                 table.search(query, predicate);
-               }
-
-               function fillDistinctItems(value, distinctItems) {
-                 if (value && value.trim().length > 0  && !findItemWithValue(distinctItems, value)) { //----------------------------
-                   distinctItems.push({
-                     value: value,
-                     selected: false
-                   });
-                 }
-               }
-
-               function findItemWithValue(collection, value) {
-                 var found = _.find(collection, function(item) {
-                   return item.value === value;
-                 });
-
-                 return found;
-               }
-             }
-           }
-         }])
-      //===============================================================================================================
-      //===============================================================================================================
-  .directive('stDateRange', ['$timeout', function ($timeout) {
-    return {
-      restrict: 'E',
-      require: '^stTable',
-      scope: {
-        before: '=',
-        after: '='
-      },
-      templateUrl: 'app/user/pregled/date.html',
-
-      link: function (scope, element, attr, table) {
-
-        var inputs = element.find('input');
-        var inputBefore = ng.element(inputs[0]);
-        var inputAfter = ng.element(inputs[1]);
-        var predicateName = attr.predicate;
-
-
-        [inputBefore, inputAfter].forEach(function (input) {
-
-          input.bind('blur', function () {
-
-
-            var query = {};
-
-            if (!scope.isBeforeOpen && !scope.isAfterOpen) {
-
-              if (scope.before) {
-                query.before = scope.before;
-              }
-
-              if (scope.after) {
-                query.after = scope.after;
-              }
-
-              scope.$apply(function () {
-                table.search(query, predicateName);
-              })
-            }
-          });
-        });
-
-        function open(before) {
-          return function ($event) {
-            $event.preventDefault();
-            $event.stopPropagation();
-
-            if (before) {
-              scope.isBeforeOpen = true;
-            } else {
-              scope.isAfterOpen = true;
-            }
+          if (dayToCheck === currentDay) {
+            return $scope.events[i].status;
           }
         }
-
-        scope.openBefore = open(true);
-        scope.openAfter = open();
       }
+
+      return '';
+    };
+    //---------------------------------------------------------------------------------------------
+    $scope.toggleSelectionStanice = function(stanica){
+      
+      if($scope.selektovani.stanice.indexOf(stanica)==-1)$scope.selektovani.stanice.push(stanica);
+      else $scope.selektovani.stanice.splice($scope.selektovani.stanice.indexOf(stanica),1);
     }
-  }])
-  //=============================================================================================
-  //=============================================================================================
-  .directive('stNumberRange', ['$timeout', function ($timeout) {
-    return {
-      restrict: 'E',
-      require: '^stTable',
-      scope: {
-        lower: '=',
-        higher: '='
-      },
-      templateUrl: 'app/user/pregled/number.html',
-      link: function (scope, element, attr, table) {
-        var inputs = element.find('input');
-        var inputLower = ng.element(inputs[0]);
-        var inputHigher = ng.element(inputs[1]);
-        var predicateName = attr.predicate;
+    //---------------------------------------------------------------------------------------------
+    $scope.toggleSelectionKodoviSenzora = function(kodSenzora){
+      
+      if($scope.selektovani.kodoviSenzora.indexOf(kodSenzora)==-1) $scope.selektovani.kodoviSenzora.push(kodSenzora);
+      else $scope.selektovani.kodoviSenzora.splice($scope.selektovani.kodoviSenzora.indexOf(kodSenzora),1);
+    }    
+    //---------------------------------------------------------------------------------------------
+    $scope.toggleSelectionNazivSenzora = function(nazivSenzora){
+      
+      if($scope.selektovani.naziviSenzora.indexOf(nazivSenzora)==-1) $scope.selektovani.naziviSenzora.push(nazivSenzora);
+      else $scope.selektovani.naziviSenzora.splice($scope.selektovani.naziviSenzora.indexOf(nazivSenzora),1);
+    }
+    //---------------------------------------------------------------------------------------------
+    $scope.osvjezi = function(){
+     console.log($scope.selektovani);
+     console.log($scope.pocetniDatum);
+     console.log($scope.krajnjiDatum);
+     console.log($scope.vrijednostOd);
+     console.log($scope.vrijednostDo);
+     $scope.tableDisplayed=1;
+     $scope.currentPage=1;
+     $http.get('/api/tabela/batch', 
+      {params: {selektovani: ($scope.selektovani), 
+        pocetniDatum:($scope.pocetniDatum),
+        krajnjiDatum:($scope.krajnjiDatum),
+        vrijednostOd:$scope.vrijednostOd,
+        vrijednostDo:$scope.vrijednostDo,
+        UserId: $scope.info.id,
+        pageNumber: 0
+      }}).then(function(vrijednosti){
+        console.log("vrijednosti",vrijednosti);
+        $scope.displayedVrijednosti = vrijednosti.data.vrijednosti;
+        $scope.itemsCount = vrijednosti.data.count;
+      });
+    }
+  });
 
-        [inputLower, inputHigher].forEach(function (input, index) {
-
-          input.bind('blur', function () {
-            var query = {};
-
-            if (scope.lower) {
-              query.lower = scope.lower;
-            }
-
-            if (scope.higher) {
-              query.higher = scope.higher;
-            }
-
-            scope.$apply(function () {
-              table.search(query, predicateName)
-            });
-          });
-        });
-      }
-    };
-  }])
-    //=================================================================================================================
-    //=================================================================================================================
-  .directive('stRatio',[function(){
-    return {
-      link:function(scope, element, attr){
-        var ratio=+(attr.stRatio);
-
-        element.css('width',ratio+'%');
-
-      }
-    };
-  }])
-  //--------------------------------------------------------------------------------------------------------------------
-  //--------------------------------------------------------------------------------------------------------------------
-    .filter('customFilter', ['$filter', function($filter) {
-          var filterFilter = $filter('filter');
-          var standardComparator = function standardComparator(obj, text) {
-            text = ('' + text).toLowerCase();
-            return ('' + obj).toLowerCase().indexOf(text) > -1;
-          };
-
-          return function customFilter(array, expression) {
-            function customComparator(actual, expected) {
-
-              var isBeforeActivated = expected.before;
-              var isAfterActivated = expected.after;
-              var isLower = expected.lower;
-              var isHigher = expected.higher;
-              var higherLimit;
-              var lowerLimit;
-              var itemDate;
-              var queryDate;
-
-              if (ng.isObject(expected)) {
-                //exact match
-                if (expected.distinct) {
-                  if (!actual || actual.toLowerCase() !== expected.distinct.toLowerCase()) {
-                    return false;
-                  }
-
-                  return true;
-                }
-
-                //matchAny
-                if (expected.matchAny) {
-                  if (expected.matchAny.all) {
-                    return true;
-                  }
-
-                  if (!actual) {
-                    return false;
-                  }
-
-                  for (var i = 0; i < expected.matchAny.items.length; i++) {
-                    if (actual.toLowerCase() === expected.matchAny.items[i].toLowerCase()) {
-                      return true;
-                    }
-                  }
-
-                  return false;
-                }
-
-                //date range
-                if (expected.before || expected.after) {
-                  try {
-                    if (isBeforeActivated) {
-                      higherLimit = expected.before;
-
-                      itemDate = new Date(actual);
-                      queryDate = new Date(higherLimit);
-
-                      if (itemDate > queryDate) {
-                        return false;
-                      }
-                    }
-
-                    if (isAfterActivated) {
-                      lowerLimit = expected.after;
-
-
-                      itemDate = new Date(actual);
-                      queryDate = new Date(lowerLimit);
-
-                      if (itemDate < queryDate) {
-                        return false;
-                      }
-                    }
-
-                    return true;
-                  } catch (e) {
-                    return false;
-                  }
-
-                } else if (isLower || isHigher) {
-                  //number range
-                  if (isLower) {
-                    higherLimit = expected.lower;
-
-                    if (actual > higherLimit) {
-                      return false;
-                    }
-                  }
-
-                  if (isHigher) {
-                    lowerLimit = expected.higher;
-                    if (actual < lowerLimit) {
-                      return false;
-                    }
-                  }
-
-                  return true;
-                }
-                //etc
-
-                return true;
-
-              }
-              return standardComparator(actual, expected);
-            }
-
-            var output = filterFilter(array, expression, customComparator);
-            return output;
-          };
-        }]);
-        })(angular);

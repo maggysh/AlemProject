@@ -3,10 +3,80 @@
   <style>
     html                    { overflow-y:scroll; }
     body                    { padding-top:0px; }
-    #tabela{
-      margin-left: 10px;
+    table{
+      padding: 1em;
+      width: 100%;
     }
-  </style>
+    th {
+      padding:1em;
+    }
+    a {
+      color: #fff;
+    }
+    .dropdown dd,
+    .dropdown dt {
+      margin: 0px;
+      padding: 0px;
+    }
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding-left: 0em;
+    }
+
+    .dropdown a,
+    .dropdown a:visited {
+      color: black;
+      text-decoration: none;
+      outline: none;
+      font-size: 12px;
+    }
+
+    .dropdown dt a {
+      background-color: white;
+      display: block;
+      padding: 8px 20px 5px 10px;
+      min-height: 25px;
+      line-height: 24px;
+      overflow: hidden;
+      border: 0;
+      width: 272px;
+    }
+
+    .dropdown dt a span,
+    .multiSel span {
+      cursor: pointer;
+      display: inline-block;
+      padding: 0 3px 2px 0;
+    }
+
+    .dropdown dd ul {
+      background-color: rgb(255, 255, 255);
+      border: 0;
+      color: black;
+      display: none;
+      left: 0px;
+      top: 2px;
+      width: 280px;
+      list-style: none;
+      height: 100px;
+      overflow: auto;
+    }
+
+    .dropdown span.value {
+      display: none;
+    }
+
+    .dropdown dd ul li a {
+      padding: 5px;
+      display: block;
+    }
+
+    .dropdown dd ul li a:hover {
+      background-color: #fff;
+    }
+
+</style>
 </header>
 
 <!-- INIT -->
@@ -14,57 +84,110 @@
 <!-- TABELA -->
 <div ng-init="pregledInit()">
 <body ng-controller="tabelarniPrikazCtrl">
-<table st-set-filter="customFilter" st-table="displayed" st-safe-src="collection" class="table table-bordered table-striped">
-      <thead>
-      <tr>
-          <th st-sort="Naziv">Naziv stanice</th>
-          <th st-sort="Kod_senzora">Kod senzora</th>
-          <th st-sort="Tip_senzora">Tip senzora</th>
-          <th st-sort="Datum">Datum</th>
-          <th st-sort="Vrijednost">Vrijednost</th>
-      </tr>
-      <tr>
-            <th style="width:12%">
-                <st-select-multiple collection="collection" predicate="Naziv"></st-select-multiple>
-            </th>
-            <th style="width:15%">
-              <st-select-multiple collection="collection" predicate="Kod_senzora"></st-select-multiple>
-            </th>
-            <th style="width:15%">
-                <st-select-multiple collection="collection" predicate="Tip_senzora"></st-select-multiple>
-            </th>
-            <th style="width:13%">
-                 <st-date-range predicate="Datum" before="query.before" after="query.after"></st-date-range>
-            </th>
-            <th style="width:12%">
-              <st-number-range predicate="Vrijednost" lower="query.lower" higher="query.higher"></st-number-range>
-            </th>
+
+<table style="vertical-align: top; ">
+    <tr style="border: 1px #dddddd solid; background:#f5f5f5; height: 3em;">
+      <th>Odaberite stanice: </th>
+      <th>Odaberite senzore: </th>
+      <th>Odaberite vrijeme: </th>
+      <th>Odaberite opseg vrijednosti: </th>
+    </tr>
+    <tr style="border-bottom: 1px #dddddd solid;">
+        <th>
+          <div style="overflow-y: scroll; height: 20em;">
+            <ul>
+              <li ng-repeat="stanica in filteri.stanice">
+                  <input
+                    type="checkbox"
+                    value="{{stanica}}"
+                    ng-click="toggleSelectionStanice(stanica)"
+                  > {{stanica}}
+              </li>
+            </ul>
+          </div>
+        </th>
+        <th>
+          <div style="overflow-y: scroll; height: 20em;">
+            <ul>
+              <li ng-repeat="nazivSenzora in filteri.naziviSenzora">
+                <input
+                  type="checkbox"
+                  value="{{nazivSenzora}}"
+                  ng-click="toggleSelectionNazivSenzora(nazivSenzora)"
+                > {{nazivSenzora}}
+              </li>    
+            </ul>   
+          </div>
+        </th>
+        <th style="vertical-align: top;">
+          <div class="form-group">
+            <div class="input-group" style="width:16em">
+              <input id="startDate" type="text" class="form-control" datepicker-popup="dd/MM/yyyy" ng-model="pocetniDatum" is-open="status_prije.opened"
+                      datepicker-options="dateOptions"  ng-required="true" close-text="Close" placeholder="Početni datum"/>
+              <span class="input-group-btn">
+                  <button type="button" class="btn btn-default" ng-click="open_prije($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+              </span>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group" style="width:16em">
+              <input id="endDate" type="text" class="form-control" datepicker-popup="dd/MM/yyyy" ng-model="krajnjiDatum" is-open="status_poslije.opened"
+                      datepicker-options="dateOptions"  ng-required="true" close-text="Close" placeholder="Krajnji datum"/>
+              <span class="input-group-btn">
+                  <button type="button" class="btn btn-default" ng-click="open_poslije($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+              </span>
+            </div>
+          </div> 
+        </th>
+        <th  style="vertical-align: top;">
+          <ul>  
+            <li >
+              <label>Niže od:</label>
+              <input class="form-control" ng-model="vrijednostOd" type="number" step="0.01">  
+            </li>
+            <li>
+              <label >Više od:</label>
+              <input class="form-control" ng-model="vrijednostDo" type="number" step="0.01">
+            </li>
+            <li style="margin-top:1em;">
+              <button style="width:100%; height:2em;" ng-click="osvjezi()">Osvježi</button>
+            </li>
+          </ul>
+        </th>
 
       </tr>
-      </thead>
-      <tbody>
-      <tr ng-repeat="row in displayed">
-            <td>{{row.Naziv}}</td>
-            <td>{{row.Kod_senzora}}</td>
-            <td>{{row.Tip_senzora}}</td>
-            <td>{{row.Datum}}</td>
-            <td>{{row.Vrijednost}}</td>
-      </tr>
-      </tbody><br>
-      <tfoot><br>
-      <tr>
-        <td colspan="8" class="text-center">
-          <!--<div st-pagination="" st-items-by-page="16" st-displayed-pages="5"></div>-->
-          <div st-items-by-page="15" st-pagination="" st-template="app/user/pregled/page.html"></div>
-        </td>
-      </tr>
-      </tfoot>
-
 </table>
+<div  ng-show="tableDisplayed" >
+  <table>
+    <tr style="border: 1px #dddddd solid; background:#f5f5f5; height: 3em;">
+      <th>Naziv stanice</th>
+      <th>Kod senzora</th>
+      <th>Tip senzora</th>
+      <th>Datum</th>
+      <th>Vrijednost</th>
+    </tr>
+    <tr ng-repeat="vrijednost in displayedVrijednosti" style="border-bottom: #dddddd 1px solid; height: 2em;">
+      <td style="padding-left: 1em;">{{ vrijednost.stanica }}</td>
+      <td style="padding-left: 1em;">{{ vrijednost.kod_senzora }}</td>
+      <td style="padding-left: 1em;">{{ vrijednost.tip_senzora }}</td>
+      <td style="padding-left: 1em;">{{ vrijednost.datum }}</td>
+      <td style="padding-left: 1em;">{{ vrijednost.vrijednost }}</td>
+    </tr>
+  </table>
+  <div style="display: flex; flex-direction: horizontal; justify-content: center;">
+    <div>
+      <pagination boundary-links="true"
+          items-per-page="itemsPerPage"
+          total-items="itemsCount" 
+          max-size=maxSize
+          rotate="false" 
+          ng-model="currentPage" 
+          ng-change="pageChanged()"></pagination>
+    </div>
+  </div>
+  </div>
 </body>
 </div>
-
-
 
 <div style="float:right; width:8%; padding-right:1%">
   <div class="panel panel-default">
@@ -72,7 +195,6 @@
     <div class="panel-heading"><label>{{"Max: " + max}}</label></div>
     <div class="panel-heading"><label>{{"Min: " + min}}</label></div>
     <div class="panel-heading"><label>{{"Avg: " + avg}}</label></div>
-    <!-- <div class="panel-footer">Alem Sistem</div> -->
   </div>
 </div>
 

@@ -26,7 +26,7 @@ var processedDir = './processed/';
 // -----------------------------------------------------------------------------
 // var processingInterval = 9000;
 // var maxNumberOfIntervals = 10;
-var processingInterval = 360000;
+var processingInterval = 3600000 ; //interval je 3600000 ms = 1 h
 var maxNumberOfIntervals = 24;
 var intervalCounter = 0;
 
@@ -36,7 +36,8 @@ var intervalCounter = 0;
 // - globalna varijabla "listOfExpectedFiles" sadrži listu sa imenima datoteka
 //   i flag koji označava dali je datoteka obrađena ili nije
 // -----------------------------------------------------------------------------
-var listOfExpectedFiles = [];
+var listOfExpectedFiles = []; // čitamo iz .json fajla koji su očekivani
+var listOfUnExpectedFiles =  []; // na osnovu fajlova koji ne odgovaraju očekivanim a pristigli su, kreira se ova lista
 
 function addToListOfExpectedFile(fileName) {
     listOfExpectedFiles.push({
@@ -49,19 +50,23 @@ function addToListOfExpectedFile(fileName) {
 function setupListOfExpectedFiles() {
     console.log('--> resetiranje liste očekivanih datoteka');
     listOfExpectedFiles = [];
+    listOfUnExpectedFiles = [];
     fs.readFile("SpisakStanica.json", function (err, data) {   
         if (err) throw err; 
         else{
             podaci =  JSON.parse(data.toString());
-//            listOfExpectedFiles.push({idStanice:'0000031213',brojOcekivanihDatoteka:1});
             for(var i=0; i< podaci.length; i++){
-                listOfExpectedFiles.push({idStanice: podaci[i].idStanice, brojOcekivanihDatoteka:podaci[i].brojOcekivanihDatoteka,processed: false, processedFiles:[]});
+                listOfExpectedFiles
+                .push(
+                    {idStanice: podaci[i].idStanice,
+                     brojOcekivanihDatoteka:podaci[i].brojOcekivanihDatoteka,
+                     processed: false, 
+                     processedFiles:[],
+                     excessFiles: []
+                });
             }
         }
     });
-    // addToListOfExpectedFile("DATA 001.MIS");
-    // addToListOfExpectedFile("DATA 002.MIS");
-    // addToListOfExpectedFile("DATA 003.MIS");
 }
 
 // -----------------------------------------------------------------------------
@@ -82,20 +87,25 @@ function isOnListOfExpectedFiles(file) {
 // -----------------------------------------------------------------------------
 function flagAsProcessed(file) {
     for(i = 0; i < listOfExpectedFiles.length; i++) {
-        console.log("idstanice",listOfExpectedFiles[i].idStanice);
-        console.log("br ocekivanih:",listOfExpectedFiles[i].brojOcekivanihDatoteka);
-        console.log("indexof:",file.indexOf(listOfExpectedFiles[i].idStanice.toString()));
-        console.log("file:",file);
+        console.log("ID stanice: ",listOfExpectedFiles[i].idStanice);
+        console.log("Broj očekivanih: ",listOfExpectedFiles[i].brojOcekivanihDatoteka);
+        console.log("Da li se nalazi na listi očekivanih (-1 znači NE): ",file.indexOf(listOfExpectedFiles[i].idStanice.toString()));
+        console.log("Naziv fajla: ",file);
         console.log(" ");
-        if(file.indexOf(listOfExpectedFiles[i].idStanice.toString())!=-1 && listOfExpectedFiles[i].processedFiles.indexOf(file)==-1) {
-            
-            listOfExpectedFiles[i].processedFiles.push(file);
+        if(file.indexOf(listOfExpectedFiles[i].idStanice.toString())!=-1 
+            && listOfExpectedFiles[i].processedFiles.indexOf(file)==-1
+            && file.indexOf("INFO")==-1) {
+            if(listOfExpectedFiles[i].brojOcekivanihDatoteka<=0){
+                listOfExpectedFiles[i].excessFiles.push(file);
+            }else{
+                listOfExpectedFiles[i].processedFiles.push(file);
+            }
             listOfExpectedFiles[i].brojOcekivanihDatoteka--;
-            console.log("brdatoteka:",listOfExpectedFiles[i].brojOcekivanihDatoteka);
+            console.log("Novi broj očekivanih: ",listOfExpectedFiles[i].brojOcekivanihDatoteka);
             if(listOfExpectedFiles[i].brojOcekivanihDatoteka==0) listOfExpectedFiles[i].processed=true;
             
-            console.log("boolean:",listOfExpectedFiles[i].processed);
-            console.log(" ");
+            console.log("Da li su svi fajlovi procesirani za datu stanicu: ",listOfExpectedFiles[i].processed);
+
             break;
         }
     }
@@ -108,29 +118,40 @@ function flagAsProcessed(file) {
 function statusCheck() {
     console.log('--> provjera statusa');
     var unprocessedFilesExist = false;
+    var excessFilesExist = false;
+
     var initialMessageDisplayed = false;
-    var txt="<p>UPOZORENJE:<br> nisu još dospjele slijedeće datoteke:<br>";
+    var txt="<p>UPOZORENJE:<br>";
     for(i = 0; i < listOfExpectedFiles.length; i++) {
         if(listOfExpectedFiles[i].processed == false) {
             if(!initialMessageDisplayed) {
-                console.log('    UPOZORENJE: nisu još dospjele datoteke za stanice sa id-jem:');
+                console.log('    UPOZORENJE: ');
                 initialMessageDisplayed = true;
             }
             unprocessedFilesExist = true;
             console.log('    ',listOfExpectedFiles[i].idStanice);
             txt+="za stanicu sa ID-jem: " + listOfExpectedFiles[i].idStanice.toString()+' nedostaje '+ listOfExpectedFiles[i].brojOcekivanihDatoteka.toString() + ' fajlova, <br>';
+            console.log(listOfExpectedFiles[i].excessFiles.length)
+
             console.log("STATUS CHECK")
         }
+        if(listOfExpectedFiles[i].excessFiles.length!=0){
+            excessFilesExist=true;
+            txt+="za stanicu sa ID-jem: " + listOfExpectedFiles[i].idStanice.toString()+' je došlo suvišnih '+ listOfExpectedFiles[i].excessFiles.length.toString() + ' fajlova, <br>';
+        }
+        
     }
-    if(unprocessedFilesExist) {
-      //  console.log('    šaljemo mail'); // zadatak
+    for(var i=0; i< listOfUnExpectedFiles.length; i++){
+        txt+="Došlo je: "+ listOfUnExpectedFiles[i].brojDatoteka.toString() + ' fajlova od neočekivane stanice: '+listOfUnExpectedFiles[i].stanica +' <br>';
+    }
+    
+    if(unprocessedFilesExist || excessFilesExist || listOfUnExpectedFiles.length!=0) {
         setTimeout(function() {
-           // var txt = "Stanica: " + stationID + ", senzor: " + senzorID + ", vrijednost " + vrijednost;
             var mail = {
                 from: "node proba <alemsistem365@gmail.com>",
                // to: value.dataValues.email,
-                to:"irma.basic@alemsistem.ba",
-                subject: "Prekoracenje vrijednosti",
+                to:"brgulja.lejla@gmaill.com",
+                subject: "Problemi sa primanjem fajlova",
                 text: "Upozorenje",
                 html: txt
             };
@@ -154,7 +175,8 @@ function statusCheck() {
 // -----------------------------------------------------------------------------
 function processDirectory() {
     fs.readdirSync('./files/').forEach(file => {
-        if(isOnListOfExpectedFiles(path.basename(file))) {
+      //  isOnListOfExpectedFiles(path.basename(file));
+        if(isOnListOfExpectedFiles(path.basename(file)) & file.indexOf("INFO")==-1) {
             fs.rename(inputDir+file, processedDir+file, function (err) {
               if (err) {
                   console.log('--> greška tokom obrade:',file);
@@ -163,6 +185,23 @@ function processDirectory() {
                   console.log("try my best")    
               }
             });
+        }else if(file.indexOf("INFO")==-1){
+            fs.rename(inputDir+file, processedDir+file, function (err) {
+                if (err) {
+                    console.log('--> greška tokom obrade:',file);
+                }
+            });
+            var f = file.split(' ');
+            var postoji = false;
+            for(var i = 0; i < listOfUnExpectedFiles.length; i++){
+                if(listOfUnExpectedFiles[i].stanica == f[1]){
+                    postoji=true;
+                    listOfUnExpectedFiles[i].brojDatoteka++;
+                }
+            }
+            if(!postoji) listOfUnExpectedFiles.push({stanica:f[1],brojDatoteka:1});
+
+            console.log(listOfUnExpectedFiles);
         }
     });
 }
@@ -186,7 +225,7 @@ setImmediate(setupListOfExpectedFiles);
 setImmediate(processDirectory);
 setInterval(() => {
     console.log("interval: ",intervalCounter + '\n');
-    console.log(listOfExpectedFiles);
+    //console.log(listOfExpectedFiles);
     if(++intervalCounter >= maxNumberOfIntervals) {
         setImmediate(statusCheck);
         setImmediate(setupListOfExpectedFiles);

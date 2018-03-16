@@ -16,19 +16,38 @@ var CronJob = require('cron').CronJob;
 var svi_izvjestaji = {dnevni:[],sedmicni:[],mjesecni:[]};
 var user_emails = [];
 var Sequelize = require('sequelize');
+var dbCreds = require('./creds.json');
 
+var sequelize = new Sequelize(dbCreds.schema, dbCreds.username, dbCreds.password, {
+  host: dbCreds.host,
+  dialect: dbCreds.database,
+  port: dbCreds.port,
+  pool: {
+    max: 5,
+    min: 0,
+    idle: 10000
+  },
+  define: {
+    timestamps: false,
+  }
+});
 
 module.exports = function(app, passport){
 
-  //app.post('/proba',function(req, res){
+
+    //===================================================================================================
+    //===Kreiranje lokalnog niza svi_izvjestaji, ovaj niz čuva podatke o svim izvještajima koji se trebaju
+    //===slati i u kojem periodu. U njoj se pored podataka cuvaju i CronJob instance koje se pozivaju 
+    //===periodicno u zavisnosti od toga da li je dnevni/sedmicni/mjesecni.
+    //===================================================================================================
     models.user_stanica.findAll()
     .then(function(raspored_izvjestaja){
       models.user.findAll().then(function(users){
-        
         users.forEach(user => {
-          user_emails.push({id:user.id, email:user.email });
+          user_emails.push({id:user.id, email:user.email });  //priprema svih e-mailova korisnika
         });
-        raspored_izvjestaja.forEach(instanca => {
+        
+        raspored_izvjestaja.forEach(instanca => { //foreach petlja za svaki red u tabeli user_stanica
           var email = user_emails.filter(function( obj ) {
             if(obj.id == instanca.UserId)
             return obj.email;
@@ -78,17 +97,9 @@ module.exports = function(app, passport){
             svi_izvjestaji.mjesecni.push({cronJob:job,cronTime:cronTime, userID: instanca.UserId, email:email, stanicaID: instanca.StanicaId});
           }
         });
-
-        //send_email("brgulja.lejla@gmail.com", 13,42,'s');     
-        //send_email("brgulja.lejla@gmail.com", 13,42,'m'); 
-        //send_email("brgulja.lejla@gmail.com", 13,42,'d');  
     
       });
     });
-    
-   // res.end();
- // });
-
 
   //===========================================================================================================
   // Rute za login/logout. Passport rute.
@@ -118,41 +129,111 @@ module.exports = function(app, passport){
   });
 
   //===========================================================================================================
-  // Update user_stanice na osnovu proslijeđenih podataka (automatsko generisanje izvjestaja)
+  // Ruta za dobijanje svih potrebnih podataka za filtere na stranici tabela
+  //===========================================================================================================
+  app.get('/api/home/filteri/:idStanice', function(req,res){
+    var naziviSenzora = [];
+    var kodoviSenzora = [];
+
+    models.tip_senzora.findAll().then(function(tipovi){ 
+      models.senzor.findAll({ where: {StanicaId: req.params.idStanice}}).then(function(senzori){
+
+        senzori.forEach(senzor => {
+          var naziv = tipovi.filter(function( obj ) {
+
+            if(obj.id == senzor.TipSenzoraId){
+              console.log("hej super je sve");
+
+              console.log(obj.Tip_Senzora);
+              return obj.Tip_Senzora;
+            }
+          });
+        naziviSenzora.push(naziv[0].Tip_Senzora); 
+        kodoviSenzora.push(senzor.Kod_senzora);
+        });
+        res.json({naziviSenzora:naziviSenzora, kodoviSenzora:kodoviSenzora});
+      });
+    });
+  });
+
+  //===========================================================================================================
+  // Ruta za slanje batcheva
   //===========================================================================================================
 
+  app.get('/api/tabela/batch', function(req, res){
+    var pageNumber=req.query.pageNumber; // odredjuje na kojoj stranici se trenutno nalazi korisnik
+    var offsetStep = 15; // odredjuje koliko ce se podataka prikazivati na jednoj stranici
+    var selektovani = JSON.parse(req.query.selektovani); // podaci koje je korisnik selektovao
+
+     models.user_senzor.findAll({
+      attributes: ['SenzorId'],
+      where: {UserId: req.query.UserId}
+    }).then(function(d){
+      var senzoriUsera= [];
+      for(var i = 0; i < d.length; i++) senzoriUsera.push(d[i].SenzorId);
+      models.senzor.findAll({
+        attributes: ['id'],
+        where: {id: senzoriUsera},
+        include: [{model: models.stanica, where: {Naziv: selektovani.stanice}},
+                  {model: models.tip_senzora, where:{Tip_Senzora: selektovani.naziviSenzora}}]})
+      .then(function(senzoriStanica){
+        
+        var senzoriStanicaUsera= [];
+        for(var i = 0; i < senzoriStanica.length; i++) senzoriStanicaUsera.push(senzoriStanica[i].id);
+        models.vrijednost.findAndCountAll({
+          where: [{Datum: {$gte:req.query.pocetniDatum}},
+            {Datum: {$lte:req.query.krajnjiDatum}},
+            {Vrijednost: {$lte:req.query.vrijednostOd}},
+            {Vrijednost: {$gte:req.query.vrijednostDo}},
+            {SenzorId: senzoriStanicaUsera}],
+          include: [{model: models.senzor, include: [{model: models.stanica},{model: models.tip_senzora}]}],
+          offset: offsetStep*pageNumber, // koliko cemo rezultata preskociti
+          limit: offsetStep // koliko cemo uzeti
+        }).then(function(vrijednosti){
+          var response= [];
+          for(var i = 0; i<vrijednosti.rows.length; i++){
+            var datum= vrijednosti.rows[i].Datum.toISOString().replace(/T/, ' ').replace(/\..+/, '');
+            datum=datum.split(' ');
+            var dat= (datum[0].split('-')).reverse();
+            response.push({
+              "stanica": vrijednosti.rows[i].Senzor.Stanica.Naziv,
+              "kod_senzora": vrijednosti.rows[i].Senzor.Kod_senzora,
+              "tip_senzora": vrijednosti.rows[i].Senzor.Tip_senzora.Tip_Senzora,
+              "datum": dat[0]+'.'+dat[1]+'.'+dat[2]+'. '+datum[1],
+              "vrijednost": vrijednosti.rows[i].Vrijednost
+            });
+          }
+          // saljemo podatke i broj ukupnih podataka koji odgovaraju ogranicenjima da znamo koliko nam
+          // stranica treba za pagination tabele
+          res.json({vrijednosti:response, count: vrijednosti.count});
+        })
+      })
+      
+    });
+  
+  });
+
+  //===========================================================================================================
+  // Update user_stanice na osnovu proslijeđenih podataka (automatsko generisanje izvjestaja)
+  //===========================================================================================================
+ 
   app.put('/update/izvjestaj', function(req,res){
-    console.log("prije update: ");
-    console.log(svi_izvjestaji);
-    svi_izvjestaji.dnevni.forEach(izvjestaj => {
-      console.log('job status: ', izvjestaj.cronJob.running);
-    });
-    svi_izvjestaji.sedmicni.forEach(izvjestaj => {
-      console.log('job status: ', izvjestaj.cronJob.running);
-    });
-    svi_izvjestaji.mjesecni.forEach(izvjestaj => {
-      console.log('job status: ', izvjestaj.cronJob.running);
-    });
-   /* console.log({
-      Dnevni: req.body.dnevni,
-      Sedmicni: req.body.sedmicni,
-      Mjesecni: req.body.mjesecni,
-      DnevniTime: req.body.DnevniTime,
-      SedmicniTime: req.body.SedmicniTime,
-      MjesecniTime: req.body.MjesecniTime,
-      SedmicniDan: req.body.SedmicniDan,
-      MjesecniDan: req.body.MjesecniDan
-    });*/
+    
+    //pronalazak e-maila korisnika koji zeli updateovati izvjestaj
     var email = user_emails.filter(function( obj ) {
       if(obj.id == req.body.user)
       return obj.email;
     });
-
     email=email[0].email;
-
+    //-------------------------------------------------------------------------------------
+    //Stopiranje se odnosi na postojece CRON job-ove koji salju izvjestaj po starom terminu
+    //-------------------------------------------------------------------------------------
+    //pronalazak, stopiranje i dodavanje novog termina za dnevni izvjestaj
+    //--------------------------------------------------------------------
     var dnevniPostoji=false;
     svi_izvjestaji.dnevni.forEach(izvjestaj => {
       if(izvjestaj.userID==req.body.user && izvjestaj.stanicaID==req.body.stanica){
+        
         if(req.body.dnevni==1 && izvjestaj.cronTime!="00 "+req.body.DnevniTime.split(':')[1]+" "+req.body.DnevniTime.split(':')[0] + " * * *"){
           izvjestaj.cronJob.stop();
           izvjestaj.cronTime="00 "+req.body.DnevniTime.split(':')[1]+" "+req.body.DnevniTime.split(':')[0] + " * * *";
@@ -167,6 +248,7 @@ module.exports = function(app, passport){
           });
           izvjestaj.cronJob=job;
           izvjestaj.cronJob.start();
+
         }else if(req.body.dnevni==0){
           izvjestaj.cronJob.stop();
           izvjestaj.cronJob=null;
@@ -192,6 +274,9 @@ module.exports = function(app, passport){
       svi_izvjestaji.dnevni.push({cronJob:job,cronTime:cronTime, userID: req.body.user, email:email, stanicaID: req.body.stanica});
     }
 
+    //--------------------------------------------------------------------
+    //pronalazak, stopiranje i dodavanje novog termina za sedmicni izvjestaj
+    //--------------------------------------------------------------------
     var sedmicniPostoji=false;
     svi_izvjestaji.sedmicni.forEach(izvjestaj => {
 
@@ -236,6 +321,9 @@ module.exports = function(app, passport){
     
     }
 
+    //--------------------------------------------------------------------
+    //pronalazak, stopiranje i dodavanje novog termina za mjesecni izvjestaj
+    //--------------------------------------------------------------------
     var mjesecniPostoji = false;
     svi_izvjestaji.mjesecni.forEach(izvjestaj => {
       if(izvjestaj.userID==req.body.user && izvjestaj.stanicaID==req.body.stanica){
@@ -279,18 +367,21 @@ module.exports = function(app, passport){
         svi_izvjestaji.mjesecni.push({cronJob:job,cronTime:cronTime, userID: req.body.user, email:email, stanicaID: req.body.stanica});
     }
 
-    console.log("nakon update: ");
-    console.log(svi_izvjestaji);
-    svi_izvjestaji.dnevni.forEach(izvjestaj => {
-      console.log('job status: ', izvjestaj.cronJob.running);
-    });
-    svi_izvjestaji.sedmicni.forEach(izvjestaj => {
-      console.log('job status: ', izvjestaj.cronJob.running);
-    });
-    svi_izvjestaji.mjesecni.forEach(izvjestaj => {
-      console.log('job status: ', izvjestaj.cronJob.running);
-    });
+    // console.log("nakon update: ");
+    // console.log(svi_izvjestaji);
+    // svi_izvjestaji.dnevni.forEach(izvjestaj => {
+    //   console.log('job status: ', izvjestaj.cronJob.running);
+    // });
+    // svi_izvjestaji.sedmicni.forEach(izvjestaj => {
+    //   console.log('job status: ', izvjestaj.cronJob.running);
+    // });
+    // svi_izvjestaji.mjesecni.forEach(izvjestaj => {
+    //   console.log('job status: ', izvjestaj.cronJob.running);
+    // });
 
+    //--------------------------------------------------------------------
+    //Update izvjestaja u bazi
+    //--------------------------------------------------------------------
     models.user_stanica.find({where:{UserId: req.body.user, StanicaId: req.body.stanica}}).then(function(response){
       return response.updateAttributes({
         Dnevni: req.body.dnevni,
@@ -707,7 +798,6 @@ module.exports = function(app, passport){
           callback(null, jsonObj);
         });
 
-        //callback(null, "done");
 
       },
 
@@ -757,7 +847,7 @@ module.exports = function(app, passport){
             res.json(results);
           });
 
-});
+  });
 
   //===========================================================================================================
   // Ruta za uzimanje podataka o dozvoljenim stanicama za korisnika
@@ -846,8 +936,8 @@ module.exports = function(app, passport){
 
   });
   //===========================================================================================================
-  // Ruta za uzimanje svih vrijednosti za svaki senzor u stanici. Ruta je privremeno za uzimanje svih vrijednosti
-  // i bit će modifikovana da uzima samo vrijednosti u protekla 24 sata
+  // Ruta za uzimanje svih vrijednosti za svaki senzor u stanici. Ruta je privremeno za uzimanje 
+  // svih vrijednosti i bit će modifikovana da uzima samo vrijednosti u protekla 24 sata
   //===========================================================================================================
   app.get('/api/user/pregled/dnevni/:id', function(req, res){
 
@@ -884,7 +974,7 @@ module.exports = function(app, passport){
   });
 
   //===========================================================================================================
-  // RUTA KOJA SE KORISTI ZA DOBIJANEJ PODATAKA U TABU NOTIFIKACIJE
+  // RUTA KOJA SE KORISTI ZA DOBIJANJE PODATAKA U TABU NOTIFIKACIJE
   //===========================================================================================================
   app.get('/api/notifikacije/:id', function(req, res){
 
@@ -960,9 +1050,9 @@ module.exports = function(app, passport){
   });
 
   //===========================================================================================================
-    // Ruta za uzimanje svih vrijednosti za odredjeni senzor u stanici. Ruta je privremeno za uzimanje svih
-    // vrijednosti i bit će modifikovana
-    //===========================================================================================================
+  // Ruta za uzimanje svih vrijednosti za odredjeni senzor u stanici. Ruta je privremeno za uzimanje svih
+  // vrijednosti i bit će modifikovana
+  //===========================================================================================================
     app.get('/api/user/pregled/dnevni/:id/:tip', function(req, res){
 
       async.waterfall([
@@ -998,8 +1088,8 @@ module.exports = function(app, passport){
     });
 
     //===========================================================================================================
-        //RUTA_IZVJESTAJ Pronalazi sve vrijednosti za odabranu stanicu koje su u okviru odabranih datuma
-        //===========================================================================================================
+    //RUTA_IZVJESTAJ Pronalazi sve vrijednosti za odabranu stanicu koje su u okviru odabranih datuma
+    //===========================================================================================================
         app.get('/api/user/izvjestaj/:id', function(req, res){
 
           async.waterfall([
@@ -1118,7 +1208,7 @@ module.exports = function(app, passport){
   //===========================================================================================================
 
   var send_email= function(email,userID, stanicaID,type){ // type: 'd'-dnevni,'m'-mjesecni,'s'-sedmicni
-  console.log(email);
+    //provjera tipa izvjestaja za dobijanje datuma za query
     var startDate = new Date();
     if(type=='d'){
       startDate.setDate(startDate.getDate() - 1);  
@@ -1127,7 +1217,6 @@ module.exports = function(app, passport){
     }else if(type=='s'){
       startDate.setDate(startDate.getDate() - 7);  
     }
-
     async.waterfall([
       function(callback){
         models.user_stanica.findAll({where: {UserId: userID}}).then(function(userstanica){
@@ -1181,7 +1270,7 @@ module.exports = function(app, passport){
       
             if(time>startDate) {
               time = time.getTime();
-
+              //  formatiranje datuma i kreiranje kolekcije podataka za generisanje pdf-a
               var datumDodjele=(coll[i].vrijednosti[j].Datum).toISOString().replace(/T/, ' ').replace(/\..+/, '');
               var dijelovi=datumDodjele.split(' ');
               var dat=(dijelovi[0].split('-')).reverse();
@@ -1265,8 +1354,9 @@ module.exports = function(app, passport){
                 text: "Podaci su u attachmentu",
                 html: "Podaci su u attachmentu",
                 attachments : attachments
-              };
-              var smtpTransport = mailer2.createTransport({
+              }; 
+              // UPOZORENJE! moze uzrokovati gresku, onda obrisati 'SMTP'
+              var smtpTransport = mailer2.createTransport('SMTP',{ 
                 service: "Gmail",
                 auth: {
                     user: "alemsistem365@gmail.com",
@@ -1362,8 +1452,11 @@ var prepareDataForPdf = function(collection,distinctTipSenzora,splitSize){
 
   return {columns: grupe, result: result};
 }
-
-// --PDF-statistika----------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------
+// --Ovo su iste funkcije kao funkcija tipoviSenzora() 
+// --u izvjestaj.statistika.controller i izvjestaj.controller
+// --Funkcije sluze za pripremanje podataka za export u pdf
+//------------------------------------------------------------------------------------------------------
 var tipoviSenzora_satnica = function (collection) {
   var distinctTipSenzora = [];
   var distinctDatum = [];
@@ -1413,7 +1506,6 @@ var tipoviSenzora_AVG = function (collection) {
     for(var j=0; j<collection.length; j++){
       var value = collection[j].Tip_senzora;
       var date = collection[j].Datum.slice(0, 10);
-      //var date = $filter('date')(new Date(datex._i), "MM/dd/yyyy");
       if (value && value.trim().length > 0 && distinctTipSenzora.indexOf(value) === -1) {
         distinctTipSenzora.push(value);
       };
@@ -1472,6 +1564,7 @@ var tipoviSenzora_AVG = function (collection) {
   app.get('/*', function(req, res){
       res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
   });
+
 
 };
 

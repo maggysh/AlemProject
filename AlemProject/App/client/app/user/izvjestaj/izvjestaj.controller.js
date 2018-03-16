@@ -16,7 +16,6 @@ angular.module('appApp')
     //---------------------------------------------------------------------------------------------
     $scope.Init = function(){
       $http.get('/loggedin').then(function (response) {
-        //$scope.info.name = response.data.user.ime_prezime;
         $scope.info.id = response.data.user.id;
         $http.get('/api/user/link/' + $scope.info.id).then(function(data){
           $scope.pregled.stanice = data.data;
@@ -35,7 +34,6 @@ angular.module('appApp')
       var i = 0;
       angular.forEach($scope.collection, function(item) {
         var value = item.Tip_senzora;
-        //var date =$filter('date')(new Date(item.Datum), "dd/MM/yyyy");
         var date = item.Datum;
 
         if (value && value.trim().length > 0 && $scope.distinctTipSenzora.indexOf(value) === -1) {
@@ -88,7 +86,7 @@ angular.module('appApp')
       $scope.displayed = [].concat($scope.collection);
     };
     //---------------------------------------------------------------------------------------------
-    $scope.printIt = function(){
+    $scope.printItPDF = function(){
 
       var data = [];
       angular.forEach($scope.collection, function(entry, key){
@@ -168,7 +166,6 @@ angular.module('appApp')
       var doc = new jsPDF('p', 'pt', 'a4', true);
       doc.setFont("courier", "normal");
       doc.setFontSize(fontSize);
-      //doc.text(50,100,"hi table");
 
       var options = {
         theme: 'grid',
@@ -201,27 +198,24 @@ angular.module('appApp')
         console.log(result[i]);
         
         doc.autoTable(columns[i], result[i], options);
-        //height = doc.drawTable(result[i], {xstart:10,ystart:10,tablestart:70,marginleft:50});
       }
 
       doc.save("satnica-izvjestaj.pdf");
 
     };
 
-    $scope.printIt2 = function(){
+    $scope.printItCSV = function(){
       console.log("scope ",$scope.collection);
        var data = [];
        console.log("data",data);
        var temp={};
        console.log("scope colleciton",$scope.collection);
        var csvTemp={};
-      var  csvContent= "";//'data:text/csv;charset=utf-8,';
+      var  csvContent= "";
       angular.forEach($scope.collection, function(entry, key){
         angular.forEach(entry, function(value, keyy){
-            //if(keyy < entry.length ){
               for(var i=0;i<entry.length;i++) {
                 if(entry[i]==undefined) csvContent+=' '+';';
-                //var res=entry.split(' ')
                 if(i==entry.length-1) {
                   if (entry[i] == undefined)
                     csvContent += ' ' + '\r\n';
@@ -233,7 +227,6 @@ angular.module('appApp')
                   else csvContent += entry[i] + ';';
                 }
               }
-          //}
         });
       });
       var csvData = csvContent;
@@ -255,14 +248,10 @@ angular.module('appApp')
           link.click();
           document.body.removeChild(link);
       }
-          //  var encodedUri = encodeURI(csvContent);
-          //  var link = document.createElement("a");
-          //  link.setAttribute("href", encodedUri);
-          //  link.setAttribute("download", "my_data.csv");
-          //  link.click();
+
  };
 
-    $scope.printIt3 = function(){
+    $scope.printItXML = function(){
       
         console.log("scope ",$scope.collection);
         var data = [];
@@ -302,7 +291,7 @@ angular.module('appApp')
   
     };
 
-    $scope.printIt4 = function(){
+    $scope.printItTXT = function(){
       
       console.log("scope ",$scope.collection);
       var data = [];
@@ -364,51 +353,7 @@ angular.module('appApp')
     
       document.body.removeChild(element);
       
-  };
-    /*$scope.convertArrayOfObjectsToCSV=function() {
-      var result, ctr, keys, data;
-      var columnDelimiter=',';
-      var lineDelimiter='\n';
-      angular.forEach($scope.collection, function (entry, key) {
-        console.log("prvi");
-        angular.forEach(entry, function (value, keyy) {
-          console.log("drugi");
-        var temp = {};
-        if (keyy == 0) {
-          temp["Datum"] = value;
-        }
-        else {
-            temp[$scope.distinctTipSenzora[keyy - 1]] = value;
-          console.log("treci");
-         //   columnDelimiter = args.columnDelimiter || ',';
-         //   lineDelimiter = args.lineDelimiter || '\n';
-            //keys = Object.keys(data[0]);
-          foreach(temp, function(value,key))
-          {
-            console.log(temp);
-          }
-
-           /* result = '';
-            result += keys.join(columnDelimiter);
-            console.log("cetvrti");
-            result += lineDelimiter;
-            temp.forEach(function (item) {
-              ctr = 0;
-              keys.forEach(function (key) {
-                if (ctr > 0) result += columnDelimiter;
-
-                result += item[key];
-                ctr++;
-              });
-              result += lineDelimiter;
-            });
-
-            return result;
-
-          }
-        });
-      }
-    };*/
+    };
     //---------------------------------------------------------------------------------------------
     //DATE TIME PICKER
     $scope.today = function() {
